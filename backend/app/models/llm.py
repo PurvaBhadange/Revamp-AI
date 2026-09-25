@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Type, TypeVar
 from pydantic import BaseModel
 from app.core.config import settings
 
-logger = logging.getLogger("omnitransform.llm")
+logger = logging.getLogger("revamp_ai.llm")
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -66,23 +66,29 @@ class LLMService:
         try:
             return schema_class()
         except Exception:
-            # Construct empty args dictionary
+            from pydantic import BaseModel
             fields = schema_class.model_fields
             args = {}
             for k, v in fields.items():
-                if v.annotation == str:
+                annotation = v.annotation
+                if annotation == str:
                     args[k] = ""
-                elif v.annotation == list or getattr(v.annotation, "__origin__", None) == list:
+                elif annotation == list or getattr(annotation, "__origin__", None) == list:
                     args[k] = []
-                elif v.annotation == dict or getattr(v.annotation, "__origin__", None) == dict:
+                elif annotation == dict or getattr(annotation, "__origin__", None) == dict:
                     args[k] = {}
-                elif v.annotation == int or v.annotation == float:
+                elif annotation == int or annotation == float:
                     args[k] = 0
-                elif v.annotation == bool:
+                elif annotation == bool:
                     args[k] = False
+                elif isinstance(annotation, type) and issubclass(annotation, BaseModel):
+                    args[k] = self._construct_fallback(annotation)
                 else:
                     args[k] = None
-            return schema_class(**args)
+            try:
+                return schema_class(**args)
+            except Exception:
+                return schema_class.model_construct(**args)
 
     def _call_gemini(self, prompt: str, system_prompt: Optional[str] = None, use_fast_model: bool = False) -> str:
         model_name = self.gemini_fast_model if use_fast_model else self.gemini_model

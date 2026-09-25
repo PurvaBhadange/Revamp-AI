@@ -60,7 +60,8 @@ export const ArtifactDetailPage: React.FC<ArtifactDetailPageProps> = ({ id }) =>
   const handleDownload = async () => {
     if (!artifact) return;
     try {
-      await artifactsApi.downloadFile(artifact.id, `${artifact.artifact_type}_${artifact.id}`);
+      const artType = (artifact as any).artifact_type || artifact.type || 'artifact';
+      await artifactsApi.downloadFile(artifact.id, `${artType}_${artifact.id}`);
     } catch (err) {
       alert('Download failed. Ensure backend API server is available.');
     }
@@ -79,6 +80,8 @@ export const ArtifactDetailPage: React.FC<ArtifactDetailPageProps> = ({ id }) =>
     );
   }
 
+  const artType = (artifact as any).artifact_type || artifact.type || 'unknown';
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -94,17 +97,18 @@ export const ArtifactDetailPage: React.FC<ArtifactDetailPageProps> = ({ id }) =>
           </div>
           <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
             <FileCode className="h-6 w-6 text-indigo-400" />
-            {artifact.title}
+            {artifact.title || 'Untitled Deliverable'}
           </h1>
           <div className="flex items-center gap-3 text-xs text-slate-400 mt-2 font-mono">
-            <span>Type: <strong className="text-slate-200 uppercase">{artifact.artifact_type}</strong></span>
+            <span>Type: <strong className="text-slate-200 uppercase">{artType.replace('_', ' ')}</strong></span>
             <span>•</span>
             <span className="flex items-center gap-1">
               <Clock className="h-3 w-3 text-slate-500" />
-              {new Date(artifact.created_at).toLocaleString()}
+              {artifact.created_at ? new Date(artifact.created_at).toLocaleString() : 'N/A'}
             </span>
           </div>
         </div>
+
 
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleCopy} className="border-slate-700 bg-slate-900 text-slate-200 text-xs">

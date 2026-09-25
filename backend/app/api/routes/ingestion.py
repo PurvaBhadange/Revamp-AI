@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, File, Form, UploadFile, status
 from sqlalchemy.orm import Session
 from app.db.database import get_db
@@ -13,15 +14,17 @@ router = APIRouter(prefix="/ingestion", tags=["Multimodal Ingestion"])
 
 @router.post("/upload", response_model=IngestionResponse, status_code=status.HTTP_201_CREATED)
 async def upload_file(
-    project_id: str = Form(...),
     file: UploadFile = File(...),
+    project_id: Optional[str] = Form(None),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    target_project_id = project_id or "default_project"
     content = await file.read()
     doc = ingestion_service.process_file_upload(
-        db, project_id=project_id, filename=file.filename, content=content, content_type=file.content_type
+        db, project_id=target_project_id, filename=file.filename, content=content, content_type=file.content_type
     )
+
     audit_service.log_action(db, action="upload_file", resource="source_document", user_id=current_user.id, resource_id=doc.id)
     return IngestionResponse(
         ingestion_id=doc.id,

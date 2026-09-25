@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.logging import setup_logging, logger
-from app.core.exceptions import OmniTransformException
+from app.core.exceptions import RevampAIException
 from app.db.database import engine, Base
 
 # Import all models to ensure metadata registration
@@ -53,8 +53,8 @@ async def add_request_metadata(request: Request, call_next):
     return response
 
 # Custom Exception Handler
-@app.exception_handler(OmniTransformException)
-async def omnitransform_exception_handler(request: Request, exc: OmniTransformException):
+@app.exception_handler(RevampAIException)
+async def revamp_ai_exception_handler(request: Request, exc: RevampAIException):
     request_id = getattr(request.state, "request_id", str(uuid.uuid4()))
     return JSONResponse(
         status_code=exc.status_code,

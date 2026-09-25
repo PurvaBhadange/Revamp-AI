@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 from fastapi import HTTPException, status
 
-class OmniTransformException(Exception):
+class RevampAIException(Exception):
     def __init__(
         self,
         code: str,
@@ -15,7 +15,7 @@ class OmniTransformException(Exception):
         self.details = details or {}
         super().__init__(self.message)
 
-class AuthenticationError(OmniTransformException):
+class AuthenticationError(RevampAIException):
     def __init__(self, message: str = "Authentication failed", details: Optional[Dict[str, Any]] = None):
         super().__init__(
             code="AUTHENTICATION_FAILED",
@@ -24,7 +24,7 @@ class AuthenticationError(OmniTransformException):
             details=details,
         )
 
-class AuthorizationError(OmniTransformException):
+class AuthorizationError(RevampAIException):
     def __init__(self, message: str = "Permission denied", details: Optional[Dict[str, Any]] = None):
         super().__init__(
             code="PERMISSION_DENIED",
@@ -33,7 +33,7 @@ class AuthorizationError(OmniTransformException):
             details=details,
         )
 
-class NotFoundError(OmniTransformException):
+class NotFoundError(RevampAIException):
     def __init__(self, message: str = "Resource not found", details: Optional[Dict[str, Any]] = None):
         super().__init__(
             code="NOT_FOUND",
@@ -42,7 +42,7 @@ class NotFoundError(OmniTransformException):
             details=details,
         )
 
-class ValidationError(OmniTransformException):
+class ValidationError(RevampAIException):
     def __init__(self, message: str = "Validation error", details: Optional[Dict[str, Any]] = None):
         super().__init__(
             code="VALIDATION_ERROR",
@@ -51,7 +51,7 @@ class ValidationError(OmniTransformException):
             details=details,
         )
 
-class GenerationError(OmniTransformException):
+class GenerationError(RevampAIException):
     def __init__(self, message: str = "Generation failed", details: Optional[Dict[str, Any]] = None):
         super().__init__(
             code="GENERATION_FAILED",

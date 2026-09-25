@@ -22,6 +22,23 @@ class TransformationService:
         language: str,
         output_formats: List[str]
     ) -> Transformation:
+        from app.db.models.project import Project
+        from app.db.models.user import User
+        proj = db.query(Project).filter(Project.id == project_id).first()
+        if not proj:
+            user = db.query(User).first()
+            if not user:
+                from app.services.auth_service import auth_service
+                user = auth_service.register_user(db, "admin@revamp.ai", "AdminPass123!", "Default Admin")
+            proj = Project(
+                id=project_id,
+                name="Cybersecurity Intelligence Project",
+                description="Auto-created default project",
+                owner_id=user.id
+            )
+            db.add(proj)
+            db.commit()
+
         transformation = Transformation(
             project_id=project_id,
             source_document_ids=source_document_ids,
@@ -100,7 +117,25 @@ class TransformationService:
         trans.status = "completed"
         trans.current_stage = "completed"
         if final_state.central_context:
-            trans.central_context = final_state.central_context.model_dump()
+            ico_dump = final_state.central_context.model_dump()
+            trans.central_context = ico_dump
+            trans.ico_data = ico_dump
+            trans.detected_intent = ico_dump.get("detected_intent", "security_alert")
+            trans.ico_status = ico_dump.get("status", "approved")
+            
+            # Store version 1 record if none exists
+            from app.db.models.transformation import ICOVersion
+            existing = db.query(ICOVersion).filter(ICOVersion.transformation_id == trans.id, ICOVersion.version_number == 1).first()
+            if not existing:
+                v1 = ICOVersion(
+                    transformation_id=trans.id,
+                    version_number=1,
+                    status=trans.ico_status,
+                    ico_data=ico_dump,
+                    edited_by="system"
+                )
+                db.add(v1)
+
         db.commit()
 
         # Persist generated artifacts to database

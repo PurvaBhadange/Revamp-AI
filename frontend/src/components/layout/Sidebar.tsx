@@ -79,7 +79,7 @@ export function Sidebar({ currentRoute, onNavigate }: SidebarProps) {
           </div>
           {!isSidebarCollapsed && (
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-slate-100 uppercase tracking-wider">OMNITRANSFORM</span>
+              <span className="text-xs font-bold text-slate-100 uppercase tracking-wider">REVAMP AI</span>
               <span className="text-[10px] text-blue-400 font-mono">CYBER INTEL v1.0</span>
             </div>
           )}

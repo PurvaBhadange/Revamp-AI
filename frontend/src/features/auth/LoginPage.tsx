@@ -11,7 +11,7 @@ interface LoginPageProps {
 
 export function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const { login, isLoading, error } = useAuthStore();
-  const [email, setEmail] = useState('admin@omnitransform.ai');
+  const [email, setEmail] = useState('admin@revamp.ai');
   const [password, setPassword] = useState('AdminPass123!');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +32,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600 text-white font-bold shadow-lg border border-blue-400/40 mb-2">
             <Shield className="h-7 w-7" />
           </div>
-          <h1 className="text-xl font-bold tracking-wider text-slate-100 uppercase">OMNITRANSFORM AI</h1>
+          <h1 className="text-xl font-bold tracking-wider text-slate-100 uppercase">REVAMP AI</h1>
           <p className="text-xs text-slate-400 max-w-sm">
             Automated Cybersecurity Intelligence & Content Transformation Engine
           </p>
@@ -63,7 +63,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="analyst@omnitransform.ai"
+                  placeholder="admin@revamp.ai"
                   required
                 />
               </div>
@@ -89,7 +89,7 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
         {/* Demo Credentials Note */}
         <div className="p-3 rounded-md bg-dark-900 border border-dark-800 text-center">
           <p className="text-[11px] text-slate-400">
-            Demo Operator Credentials: <span className="text-blue-400 font-mono">admin@omnitransform.ai</span> / <span className="text-blue-400 font-mono">AdminPass123!</span>
+            Demo Operator Credentials: <span className="text-blue-400 font-mono">admin@revamp.ai</span> / <span className="text-blue-400 font-mono">AdminPass123!</span>
           </p>
         </div>
       </div>

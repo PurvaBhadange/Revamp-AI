@@ -30,10 +30,14 @@ import {
 } from 'lucide-react';
 
 interface NewTransformationPageProps {
-  onNavigate: (route: string) => void;
+  onNavigate?: (route: string) => void;
 }
 
 export function NewTransformationPage({ onNavigate }: NewTransformationPageProps) {
+  const navigate = onNavigate || ((route: string) => {
+    window.history.pushState({}, '', route);
+    window.dispatchEvent(new Event('popstate'));
+  });
   const {
     currentStage,
     projectId,
@@ -133,7 +137,7 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
       });
 
       addNotification({ type: 'success', title: 'Transformation Job Enqueued', message: `Job #${res.job_id.substring(0, 8)} created` });
-      onNavigate(`/jobs/${res.job_id}`);
+      navigate(`/jobs/${res.job_id}`);
     } catch (err: any) {
       addNotification({ type: 'error', title: 'Transformation Failed', message: err.message });
     } finally {

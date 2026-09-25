@@ -24,13 +24,11 @@ class AuthService:
 
     def authenticate_user(self, db: Session, email: str, password: str) -> User:
         user = db.query(User).filter(User.email == email.lower()).first()
-        if not user:
-            # Auto-register operator credentials if no user exists yet
-            user = self.register_user(db, email=email.lower(), password=password, full_name="Default Admin Operator")
-            return user
-
-        if not verify_password(password, user.hashed_password):
+        if not user or not verify_password(password, user.hashed_password):
             raise AuthenticationError(message="Invalid email or password")
+        if not user.is_active:
+            raise AuthenticationError(message="User account is inactive")
+        return user
         if not user.is_active:
             raise AuthenticationError(message="User account is inactive")
         return user

@@ -12,10 +12,14 @@ import { Activity, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react';
 
 interface JobProcessingPageProps {
   jobId: string;
-  onNavigate: (route: string) => void;
+  onNavigate?: (route: string) => void;
 }
 
 export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps) {
+  const navigate = onNavigate || ((route: string) => {
+    window.history.pushState({}, '', route);
+    window.dispatchEvent(new Event('popstate'));
+  });
   const { setActiveJobId, addNotification } = useUIStore();
   const [eventLogs, setEventLogs] = useState<string[]>([]);
   const [isReconnecting, setIsReconnecting] = useState(false);
@@ -47,7 +51,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
         if (evt.event === 'job.completed') {
           setActiveJobId(null);
           addNotification({ type: 'success', title: 'Transformation Complete', message: 'All communication artifacts generated' });
-          onNavigate(`/transform/${jobId}`);
+          navigate(`/transform/${jobId}`);
         }
       },
       () => {
@@ -60,7 +64,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
       unsubscribe();
       setActiveJobId(null);
     };
-  }, [jobId, setActiveJobId, refetch, onNavigate, addNotification]);
+  }, [jobId, setActiveJobId, refetch, navigate, addNotification]);
 
   if (!jobStatus) {
     return <LoadingSpinner text={`Restoring Job #${jobId.substring(0, 8)} Session...`} />;
@@ -87,7 +91,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
           <div className="flex items-center space-x-3">
             <StatusBadge status={jobStatus.status} />
             {isFinished && (
-              <Button variant="primary" onClick={() => onNavigate(`/transform/${jobId}`)}>
+              <Button variant="primary" onClick={() => navigate(`/transform/${jobId}`)}>
                 Review Artifacts <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}

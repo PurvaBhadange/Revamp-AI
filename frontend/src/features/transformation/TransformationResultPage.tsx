@@ -23,16 +23,22 @@ import {
   CheckCircle2,
   RefreshCw,
   Play,
-  FileText
+  FileText,
+  Layers
 } from 'lucide-react';
+import { ICOInspector } from '@/components/common/ICOInspector';
 import { useUIStore } from '@/stores/uiStore';
 
 interface TransformationResultPageProps {
   transformationId: string;
-  onNavigate: (route: string) => void;
+  onNavigate?: (route: string) => void;
 }
 
 export function TransformationResultPage({ transformationId, onNavigate }: TransformationResultPageProps) {
+  const navigate = onNavigate || ((route: string) => {
+    window.history.pushState({}, '', route);
+    window.dispatchEvent(new Event('popstate'));
+  });
   const { addNotification } = useUIStore();
   const [selectedSlideIdx, setSelectedSlideIdx] = useState(0);
 
@@ -54,7 +60,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
     return (
       <div className="p-8 text-center">
         <h3 className="text-sm font-semibold text-slate-300">Transformation not found</h3>
-        <Button className="mt-4" onClick={() => onNavigate('/dashboard')}>Return to Dashboard</Button>
+        <Button className="mt-4" onClick={() => navigate('/dashboard')}>Return to Dashboard</Button>
       </div>
     );
   }
@@ -62,12 +68,15 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
   const ctx = trans.central_context;
   const artifactList = artifacts || [];
 
-  const execBriefArt = artifactList.find((a) => a.type === 'executive_brief');
-  const advisoryArt = artifactList.find((a) => a.type === 'advisory');
-  const socialArt = artifactList.find((a) => a.type === 'social');
-  const presentationArt = artifactList.find((a) => a.type === 'presentation');
-  const infographicArt = artifactList.find((a) => a.type === 'infographic');
-  const videoArt = artifactList.find((a) => a.type === 'video' || a.type === 'video_script');
+  const getArtType = (a: any) => (a.type || a.artifact_type || '').toLowerCase();
+
+  const execBriefArt = artifactList.find((a) => getArtType(a).includes('brief') || getArtType(a).includes('executive'));
+  const advisoryArt = artifactList.find((a) => getArtType(a).includes('advisory') || getArtType(a).includes('security'));
+  const socialArt = artifactList.find((a) => getArtType(a).includes('social') || getArtType(a).includes('linkedin') || getArtType(a).includes('twitter') || getArtType(a).includes('x'));
+  const presentationArt = artifactList.find((a) => getArtType(a).includes('presentation') || getArtType(a).includes('deck') || getArtType(a).includes('pptx'));
+  const infographicArt = artifactList.find((a) => getArtType(a).includes('infographic'));
+  const videoArt = artifactList.find((a) => getArtType(a).includes('video') || getArtType(a).includes('script') || getArtType(a).includes('audio'));
+
 
   const handleCopyText = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -102,7 +111,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
             </div>
             <div className="flex items-center space-x-2">
               <StatusBadge status={trans.status} />
-              <Button variant="outline" size="sm" onClick={() => onNavigate('/transform/new')}>
+              <Button variant="outline" size="sm" onClick={() => navigate('/transform/new')}>
                 New Transformation
               </Button>
             </div>
@@ -125,6 +134,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
       {/* Artifact Viewers Tabs */}
       <Tabs defaultValue="executive">
         <TabsList className="w-full justify-start overflow-x-auto">
+          <TabsTrigger value="ico"><Layers className="h-3.5 w-3.5 mr-1.5 text-blue-400" /> ICO Context & Provenance</TabsTrigger>
           <TabsTrigger value="executive"><Shield className="h-3.5 w-3.5 mr-1.5" /> Executive Brief</TabsTrigger>
           <TabsTrigger value="advisory"><FileCheck className="h-3.5 w-3.5 mr-1.5" /> Security Advisory</TabsTrigger>
           <TabsTrigger value="social"><Share2 className="h-3.5 w-3.5 mr-1.5" /> Social Campaign</TabsTrigger>
@@ -132,6 +142,11 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
           <TabsTrigger value="infographic"><PieChart className="h-3.5 w-3.5 mr-1.5" /> Infographic Data</TabsTrigger>
           <TabsTrigger value="video"><Video className="h-3.5 w-3.5 mr-1.5" /> Video Package</TabsTrigger>
         </TabsList>
+
+        {/* TAB 0: ICO CONTEXT & PROVENANCE */}
+        <TabsContent value="ico">
+          <ICOInspector ico={ctx} readOnly={true} />
+        </TabsContent>
 
         {/* TAB 1: EXECUTIVE BRIEF */}
         <TabsContent value="executive">

@@ -1,211 +1,267 @@
-# OmniTransform AI Backend
-**Gen AI Platform for Automated Cybersecurity Intelligence & Content Transformation**
+# Revamp AI — SIH 2026
 
-OmniTransform AI is a production-grade backend engine designed for SIH Problem Statement 26154: *"Gen AI Platform for Automated Content Transformation"*. It processes multimodal cybersecurity intelligence inputs (PDF, DOCX, TXT, PNG, JPG, MP3, MP4, Web URLs, Raw Text) and transforms them into multiple audience-tailored communication artifacts (Executive Briefs, Technical Security Advisories, LinkedIn & Twitter social campaigns, Editable PPTX slides, Infographic visual structures, and Video Packages with TTS narration audio and SRT subtitles).
+GenAI Platform for Automated Cybersecurity Intelligence & Content Transformation
 
----
+Smart India Hackathon 2026 · Problem Statement 26154 · NTRO/NCIIPC
 
-## 1. Project Overview & Architecture
+Revamp AI is a multimodal, RAG-grounded and agentic AI platform that converts raw cybersecurity intelligence into consistent, audience-specific communication artifacts such as executive briefs, security advisories, social campaigns, presentations, infographics and video packages.
 
-OmniTransform AI is architected around a **Shared Central Context** design pattern to guarantee 100% cross-output consistency across executive, technical, and media artifacts.
+## 🎯 Problem & Solution
 
-### Transformation Pipeline Architecture
+Cybersecurity analysts often need to manually transform the same intelligence into multiple formats for different audiences. Revamp AI provides a unified pipeline:
 
 ```
-INPUT (PDF / DOCX / TXT / Image / Audio / Video / URL / Text)
-  │
-  ▼
-INGESTION & PARSING (PyMuPDF, python-docx, Tesseract OCR, Faster-Whisper, BeautifulSoup)
-  │
-  ▼
-NORMALIZATION (Standardized NormalizedDocument Schema)
-  │
-  ▼
-CENTRAL CONTEXT AGENT (Authoritative Shared Source of Truth)
-  │
-  ▼
-RAG RETRIEVAL (SentenceTransformers + Qdrant Vector Store)
-  │
-  ▼
-PARALLEL SPECIALIZED AGENTS
-  ├── Executive Brief Agent
-  ├── Security Advisory Agent
-  ├── Social Campaign Agent (LinkedIn & Twitter/X)
-  ├── Presentation Slide Agent
-  ├── Infographic Data Agent
-  └── Video Script & Storyboard Agent
-  │
-  ▼
-COMPLIANCE & GUARDRAIL AGENT (Source Grounding, PII Masking, Severity Consistency)
-  │
-  ▼
-ARTIFACT RENDERERS (WeasyPrint PDF, python-pptx PPTX, SVG Infographic, edge-tts MP3, SRT, ZIP)
-  │
-  ▼
-PREVIEW & DOWNLOAD ENDPOINTS
+Cybersecurity Input
+       ↓
+Multimodal Ingestion
+       ↓
+Normalization & Central Context
+       ↓
+Cybersecurity RAG
+       ↓
+Agentic Transformation
+       ↓
+Validation & Guardrails
+       ↓
+Multiple Communication Artifacts
 ```
 
----
+The shared central context acts as the source of truth, helping maintain factual consistency across all generated outputs.
 
-## 2. Tech Stack
+## 🚀 Key Capabilities
 
-- **Framework**: Python 3.11, FastAPI 0.116.1, Uvicorn 0.35.0, Pydantic v2.11.7
-- **Database & ORM**: PostgreSQL / SQLite, SQLAlchemy 2.0.43, Alembic 1.14.1
-- **Async Job & Queue**: Redis 5.2.1, Celery 5.5.3, Server-Sent Events (SSE)
-- **AI & Orchestration**: LangGraph 0.6.6, LangChain 0.3.27, Gemini 2.5 Flash (`gemini-2.5-flash`), Gemini 2.5 Flash Lite (`gemini-2.5-flash-lite`), Ollama (`llama3.1:8b`)
-- **Vector Search & RAG**: Qdrant (`qdrant-client`), `sentence-transformers` (`all-MiniLM-L6-v2`)
-- **Multimodal Processors**: PyMuPDF (`fitz`), `python-docx`, `pytesseract` (OCR), `faster-whisper` (Audio Speech-to-Text), `httpx` & `beautifulsoup4`
-- **Artifact Renderers**: `WeasyPrint` / `reportlab` (PDF), `python-pptx` (PowerPoint), `edge-tts` (Voice Narration MP3), `zipfile` & custom SRT formatter
+### 1. Multimodal Intelligence Ingestion
+Supports:
+- PDF, DOCX, TXT
+- PNG, JPG
+- MP3, MP4
+- Web URLs
+- Raw text
 
----
+### 2. Cybersecurity RAG
+Retrieves relevant domain knowledge from a vector knowledge base containing resources such as:
+- MITRE ATT&CK
+- NIST
+- Security advisory templates
+- Organization-specific knowledge
 
-## 3. Environment Variables
+### 3. Specialized AI Agents
+| Agent | Output |
+| :--- | :--- |
+| **Executive Brief** | Executive-level risk, impact & actions |
+| **Security Advisory** | Technical advisory with indicators & mitigation |
+| **Social Campaign** | LinkedIn & X/Twitter content |
+| **Presentation** | Editable PPTX |
+| **Infographic** | Structured visual data |
+| **Video Package** | Script, storyboard, MP3 & SRT |
 
-Create `.env` in the root directory based on `.env.example`:
+### 4. Configurable Transformation
+Users can control:
+- Target audience
+- Tone
+- Objective
+- Severity
+- Language
+- Output formats
 
-```ini
-APP_NAME=OmniTransform AI
-ENVIRONMENT=development
-DEBUG=true
+### 5. Validation & Guardrails
+The pipeline validates:
+- Source grounding
+- Cross-output consistency
+- Severity consistency
+- PII handling
+- Output structure
 
-# LLM Providers
-LLM_PROVIDER=gemini
-GEMINI_API_KEY=your_actual_gemini_api_key
-GEMINI_MODEL=gemini-2.5-flash
-GEMINI_FAST_MODEL=gemini-2.5-flash-lite
+## 🏗️ Architecture
 
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.1:8b
-
-# Vector Database
-QDRANT_URL=http://localhost:6333
-QDRANT_API_KEY=
-
-# Relational Database
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/omnitransform
-
-# Redis & Celery
-REDIS_URL=redis://localhost:6379/0
-
-# Security
-SECRET_KEY=secure_random_32_character_secret_key
-JWT_SECRET_KEY=another_secure_random_32_character_jwt_secret_key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=1440
-
-# Storage
-STORAGE_PATH=./storage
-
-# CORS Frontend Integration
-FRONTEND_URL=http://localhost:5173
-ALLOWED_ORIGINS=http://localhost:5173
+```
+                    User
+                     │
+                     ▼
+              React Frontend
+                     │
+                     ▼
+                 FastAPI
+                     │
+        ┌────────────┼────────────┐
+        ▼            ▼            ▼
+    PostgreSQL     Redis        Storage
+                     │
+                   Celery
+                     │
+                     ▼
+                 LangGraph
+                     │
+       ┌─────────────┼─────────────┐
+       ▼             ▼             ▼
+   Ingestion        RAG       AI Agents
+       │             │             │
+       │           Qdrant          │
+       │                           │
+       └─────────────┬─────────────┘
+                     ▼
+             Guardrails
+                     │
+                     ▼
+              Artifact Renderers
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+        PDF        PPTX      Video/Audio
+                     │
+                     ▼
+              Preview / Download
 ```
 
----
+## 🛠️ Technology Stack
 
-## 4. Quick Start & Service Execution
+### Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
 
-### Docker Setup (PostgreSQL + Redis + Qdrant)
+### Backend
+- Python 3.11
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Redis
+- Celery
 
-Run background services with Docker Compose:
+### AI & RAG
+- LangGraph
+- LangChain
+- Gemini 2.5 Flash
+- Ollama / Llama 3.1 8B
+- Qdrant
+- Sentence Transformers
 
+### Multimodal Processing
+- PyMuPDF
+- python-docx
+- Tesseract OCR
+- Faster-Whisper
+- BeautifulSoup
+
+### Artifact Generation
+- python-pptx
+- WeasyPrint
+- Edge-TTS
+- SVG
+- SRT
+
+## 🔄 Transformation Flow
+
+```
+1. Upload intelligence
+        ↓
+2. Parse & normalize
+        ↓
+3. Extract facts and context
+        ↓
+4. Retrieve relevant knowledge
+        ↓
+5. Route to specialized agents
+        ↓
+6. Generate selected outputs
+        ↓
+7. Validate & apply guardrails
+        ↓
+8. Render artifacts
+        ↓
+9. Preview & download
+```
+
+## 📦 Supported Outputs
+- ✓ Executive Brief
+- ✓ Security Advisory PDF
+- ✓ LinkedIn / X Campaign
+- ✓ Editable PPTX
+- ✓ Infographic / SVG
+- ✓ Video Script
+- ✓ TTS Narration MP3
+- ✓ SRT Subtitles
+- ✓ Video Package ZIP
+
+## 🔌 API
+
+The frontend communicates exclusively with the FastAPI backend.
+
+- `/api/v1/auth`
+- `/api/v1/projects`
+- `/api/v1/ingestion`
+- `/api/v1/transformations`
+- `/api/v1/jobs`
+- `/api/v1/artifacts`
+- `/api/v1/knowledge-base`
+- `/api/v1/audit`
+- `/api/v1/settings`
+
+API documentation: `http://localhost:8000/docs`
+
+## ⚙️ Quick Start
+
+### 1. Clone
+```bash
+git clone https://github.com/PurvaBhadange/Revamp-AI.git
+cd Revamp-AI
+```
+
+### 2. Configure
+```bash
+cp .env.example .env
+```
+Add the required API keys and local service configuration.
+
+### 3. Start infrastructure
 ```bash
 docker-compose up -d
 ```
 
-### PostgreSQL Setup
-
-If running standalone PostgreSQL:
+### 4. Start backend
 ```bash
-createdb omnitransform
-```
-
-### Redis Setup
-
-Ensure Redis server is running locally on port `6379`:
-```bash
-redis-server
-```
-
-### Qdrant Setup
-
-Qdrant runs on port `6333`. Note that the backend features an **in-memory vector store fallback** if Qdrant is temporarily offline or running isolated tests.
-
-### Local Ollama Setup (Air-Gapped / Privacy Mode)
-
-To use local LLM inference via Ollama:
-1. Install Ollama from https://ollama.com
-2. Pull Llama 3.1 model:
-   ```bash
-   ollama pull llama3.1:8b
-   ```
-3. Set `LLM_PROVIDER=ollama` in your `.env`.
-
----
-
-## 5. Running the Backend & Celery Worker
-
-### Start FastAPI Server
-
-```bash
+pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
-FastAPI interactive docs will be available at:
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-- OpenAPI JSON: `http://localhost:8000/openapi.json`
 
-### Start Celery Worker
-
-In a separate terminal:
+### 5. Start Celery
 ```bash
 celery -A app.workers.celery_app worker --loglevel=info
 ```
 
----
+## 🧪 Testing
 
-## 6. Frontend Integration (Bolt Contract)
-
-The Bolt frontend communicates exclusively with FastAPI endpoints:
-
-| Bolt Contract Function | Backend API Mapping | Method |
-| :--- | :--- | :--- |
-| `auth.login()` | `/api/v1/auth/login` | POST |
-| `auth.logout()` | `/api/v1/auth/logout` | POST |
-| `auth.me()` | `/api/v1/auth/me` | GET |
-| `projects.list()` | `/api/v1/projects` | GET |
-| `projects.get()` | `/api/v1/projects/{id}` | GET |
-| `projects.create()` | `/api/v1/projects` | POST |
-| `ingestion.upload()` | `/api/v1/ingestion/upload` | POST |
-| `ingestion.getStatus()` | `/api/v1/ingestion/{id}` | GET |
-| `transformations.create()` | `/api/v1/transformations` | POST |
-| `transformations.get()` | `/api/v1/transformations/{id}` | GET |
-| `jobs.getStatus()` | `/api/v1/jobs/{id}` | GET |
-| `jobs.subscribe()` | `/api/v1/jobs/{id}/events` | GET (SSE) |
-| `artifacts.list()` | `/api/v1/artifacts` | GET |
-| `artifacts.download()` | `/api/v1/artifacts/{id}/download` | GET |
-| `artifacts.regenerate()` | `/api/v1/artifacts/{id}/regenerate` | POST |
-| `knowledgeBase.search()` | `/api/v1/knowledge-base/search` | POST |
-| `audit.list()` | `/api/v1/audit` | GET |
-| `settings.get()` | `/api/v1/settings` | GET |
-
----
-
-## 7. Testing
-
-Run automated pytest test cases:
-
+Run automated tests:
 ```bash
-python -m pytest backend/tests -v
+python -m pytest tests -v
 ```
 
-All external LLM and network calls are safely mocked so unit tests run cleanly without external credentials.
+The E2E workflow covers:
+Authentication → Upload → Ingestion → Context → RAG → Agent Execution → Artifact Generation → Validation → Preview → Download
 
----
+## 🔐 Security
 
-## 8. Security Notes
+Revamp AI includes:
+- JWT authentication
+- Secure password hashing
+- Input & MIME validation
+- Path-traversal protection
+- Environment-based secrets
+- Audit logging
+- Source-grounding checks
+- PII handling
+- Controlled error responses
 
-- All file uploads pass MIME type & path traversal validations.
-- API keys, JWT secrets, and DB passwords are isolated in environment variables.
-- Passwords are securely hashed with Argon2 / PBKDF2 sha256.
-- Sensitive source documents and stack traces are suppressed in HTTP error responses.
+Never commit `.env`, API keys or database credentials.
+
+## 🎯 SIH 2026
+
+- **Problem Statement**: 26154
+- **Organization**: NTRO / NCIIPC
+- **Domain**: Cybersecurity & Generative AI
+- **Solution**: Revamp AI
+- **Architecture**: Multimodal + RAG + Multi-Agent
+
+*One intelligence source. One central context. Multiple consistent communication outputs.*

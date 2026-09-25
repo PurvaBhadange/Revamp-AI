@@ -6,18 +6,18 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app
 from app.db.database import Base, get_db
 
+from sqlalchemy.pool import StaticPool
+
 SQLALCHEMY_TEST_DATABASE_URL = "sqlite:///:memory:"
 
 engine = create_engine(
     SQLALCHEMY_TEST_DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool
 )
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create tables initially
-Base.metadata.create_all(bind=engine)
-
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="function", autouse=True)
 def db():
     Base.metadata.create_all(bind=engine)
     session = TestingSessionLocal()

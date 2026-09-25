@@ -1,7 +1,7 @@
-# OmniTransform AI — E2E Test Data Pack & Expected Results Specification
+# Revamp AI — E2E Test Data Pack & Expected Results Specification
 
 > **BENCHMARK CLASSIFICATION**: SYNTHETIC E2E VERIFICATION SUITE  
-> **TARGET SUITE**: OmniTransform AI Processing & Transformation Engine  
+> **TARGET SUITE**: Revamp AI Processing & Transformation Engine  
 > **COHERENT INCIDENT ID**: `INC-2026-8894`
 
 ---

@@ -11,15 +11,15 @@ class Settings(BaseSettings):
         extra="ignore"
     )
 
-    APP_NAME: str = "OmniTransform AI"
+    APP_NAME: str = "Revamp AI"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
     # LLM Settings
     LLM_PROVIDER: str = "gemini"  # gemini or ollama
     GEMINI_API_KEY: Optional[str] = Field(default=None)
-    GEMINI_MODEL: str = "gemini-2.5-flash"
-    GEMINI_FAST_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-1.5-flash"
+    GEMINI_FAST_MODEL: str = "gemini-1.5-flash"
 
 
     OLLAMA_BASE_URL: str = "http://localhost:11434"
@@ -28,11 +28,11 @@ class Settings(BaseSettings):
     # Vector Database
     QDRANT_URL: str = "http://localhost:6333"
     QDRANT_API_KEY: Optional[str] = None
-    QDRANT_COLLECTION: str = "omnitransform_kb"
+    QDRANT_COLLECTION: str = "revamp_kb"
 
     # Database
-    DATABASE_URL: str = "sqlite:///./storage/omnitransform.db"
-    # Can also be PostgreSQL URL e.g. postgresql://postgres:postgres@localhost:5432/omnitransform
+    DATABASE_URL: str = "sqlite:///./storage/revamp_ai.db"
+    # Can also be PostgreSQL URL e.g. postgresql://postgres:postgres@localhost:5432/revamp_ai
 
     # Redis & Celery
     REDIS_URL: str = "redis://localhost:6379/0"

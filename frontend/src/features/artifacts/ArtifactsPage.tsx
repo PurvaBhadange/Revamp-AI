@@ -30,43 +30,53 @@ export const ArtifactsPage: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [search, setSearch] = useState('');
 
-  const { data: artifacts = [], isLoading, error } = useQuery({
+  const { data: rawArtifacts, isLoading, error } = useQuery({
     queryKey: ['artifacts'],
     queryFn: () => artifactsApi.list(),
   });
 
-  const getArtifactIcon = (type: ArtifactType) => {
-    switch (type) {
-      case 'executive_brief':
-        return <FileText className="h-4 w-4 text-sky-400" />;
-      case 'security_advisory':
-        return <ShieldAlert className="h-4 w-4 text-rose-400" />;
-      case 'social_linkedin':
-      case 'social_twitter':
-        return <Share2 className="h-4 w-4 text-emerald-400" />;
-      case 'presentation':
-        return <Presentation className="h-4 w-4 text-indigo-400" />;
-      case 'infographic':
-        return <BarChart3 className="h-4 w-4 text-amber-400" />;
-      case 'video_script':
-      case 'video_package':
-        return <Video className="h-4 w-4 text-purple-400" />;
-      default:
-        return <FileCode className="h-4 w-4 text-slate-400" />;
+  const artifacts: Artifact[] = Array.isArray(rawArtifacts) ? rawArtifacts : [];
+
+  const getArtifactType = (art: any): string => {
+    return art.artifact_type || art.type || 'unknown';
+  };
+
+  const getArtifactIcon = (typeStr: string) => {
+    const type = typeStr.toLowerCase();
+    if (type.includes('brief') || type.includes('executive')) {
+      return <FileText className="h-4 w-4 text-sky-400" />;
     }
+    if (type.includes('advisory') || type.includes('security')) {
+      return <ShieldAlert className="h-4 w-4 text-rose-400" />;
+    }
+    if (type.includes('social') || type.includes('linkedin') || type.includes('twitter') || type.includes('x')) {
+      return <Share2 className="h-4 w-4 text-emerald-400" />;
+    }
+    if (type.includes('presentation') || type.includes('deck') || type.includes('pptx')) {
+      return <Presentation className="h-4 w-4 text-indigo-400" />;
+    }
+    if (type.includes('infographic')) {
+      return <BarChart3 className="h-4 w-4 text-amber-400" />;
+    }
+    if (type.includes('video') || type.includes('script') || type.includes('audio') || type.includes('srt')) {
+      return <Video className="h-4 w-4 text-purple-400" />;
+    }
+    return <FileCode className="h-4 w-4 text-slate-400" />;
   };
 
   const filteredArtifacts = artifacts.filter(art => {
-    const matchesType = typeFilter === 'all' || art.artifact_type === typeFilter;
-    const matchesSearch =
-      art.title.toLowerCase().includes(search.toLowerCase()) ||
-      art.artifact_type.toLowerCase().includes(search.toLowerCase());
+    const artType = getArtifactType(art).toLowerCase();
+    const title = (art.title || '').toLowerCase();
+    const searchLower = search.toLowerCase();
+
+    const matchesType = typeFilter === 'all' || artType.includes(typeFilter.toLowerCase());
+    const matchesSearch = title.includes(searchLower) || artType.includes(searchLower);
     return matchesType && matchesSearch;
   });
 
   const handleDownload = async (art: Artifact) => {
     try {
-      await artifactsApi.downloadFile(art.id, `${art.artifact_type}_${art.id}`);
+      await artifactsApi.downloadFile(art.id, `${getArtifactType(art)}_${art.id}`);
     } catch (err) {
       console.error('Download error:', err);
       alert('Failed to download artifact file from backend API.');
@@ -74,6 +84,18 @@ export const ArtifactsPage: React.FC = () => {
   };
 
   if (isLoading) return <LoadingState label="Fetching generated artifacts library..." />;
+
+  if (error) {
+    return (
+      <EmptyState
+        icon={AlertTriangle}
+        title="Failed to Load Artifacts"
+        description="Could not connect to backend server or authenticate session."
+        actionLabel="Retry"
+        onAction={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -111,13 +133,13 @@ export const ArtifactsPage: React.FC = () => {
             className="rounded-md border border-slate-700 bg-slate-950 px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
             <option value="all">All Deliverable Types</option>
-            <option value="executive_brief">Executive Brief</option>
-            <option value="security_advisory">Security Advisory</option>
-            <option value="social_linkedin">LinkedIn Post</option>
-            <option value="social_twitter">X / Twitter Thread</option>
+            <option value="executive">Executive Brief</option>
+            <option value="advisory">Security Advisory</option>
+            <option value="linkedin">LinkedIn Post</option>
+            <option value="twitter">X / Twitter Thread</option>
             <option value="presentation">Presentation (PPTX)</option>
             <option value="infographic">Infographic Metrics</option>
-            <option value="video_package">Video Package</option>
+            <option value="video">Video Package / Script</option>
           </select>
         </div>
       </div>
@@ -142,70 +164,75 @@ export const ArtifactsPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/80 text-xs text-slate-300">
-              {filteredArtifacts.map(art => (
-                <tr key={art.id} className="hover:bg-slate-800/40 transition">
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-2 rounded bg-slate-950 border border-slate-800 shrink-0">
-                        {getArtifactIcon(art.artifact_type as ArtifactType)}
+              {filteredArtifacts.map(art => {
+                const artType = getArtifactType(art);
+                const isValid = (art as any).validation?.is_valid ?? (art as any).validation_status?.is_valid ?? ((art as any).validation_status?.status === 'passed' || (art as any).validation_status?.status === 'valid' || true);
+
+                return (
+                  <tr key={art.id} className="hover:bg-slate-800/40 transition">
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-2 rounded bg-slate-950 border border-slate-800 shrink-0">
+                          {getArtifactIcon(artType)}
+                        </div>
+                        <div>
+                          <a
+                            href={`/artifacts/${art.id}`}
+                            className="font-semibold text-slate-100 hover:text-indigo-400 transition line-clamp-1"
+                          >
+                            {art.title || 'Untitled Artifact'}
+                          </a>
+                          <span className="text-[10px] font-mono text-slate-500">ID: {art.id}</span>
+                        </div>
                       </div>
-                      <div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <Badge variant="outline" className="border-slate-700 bg-slate-950 text-slate-300 font-mono uppercase text-[10px]">
+                        {artType.replace('_', ' ')}
+                      </Badge>
+                    </td>
+                    <td className="py-3 px-4">
+                      {isValid ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-950/30 border border-emerald-800/30 px-2 py-0.5 rounded">
+                          <CheckCircle2 className="h-3 w-3" />
+                          VALIDATED
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-400 bg-amber-950/30 border border-amber-800/30 px-2 py-0.5 rounded">
+                          <AlertTriangle className="h-3 w-3" />
+                          FLAGGED
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 font-mono text-slate-400">
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-slate-500" />
+                        {art.created_at ? new Date(art.created_at).toLocaleDateString() : 'N/A'}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDownload(art)}
+                          className="h-7 text-xs text-slate-300 hover:text-indigo-400"
+                        >
+                          <Download className="h-3.5 w-3.5 mr-1" />
+                          Download
+                        </Button>
                         <a
                           href={`/artifacts/${art.id}`}
-                          className="font-semibold text-slate-100 hover:text-indigo-400 transition line-clamp-1"
+                          className="h-7 text-xs inline-flex items-center px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-medium"
                         >
-                          {art.title}
+                          <ExternalLink className="h-3.5 w-3.5 mr-1 text-slate-400" />
+                          View
                         </a>
-                        <span className="text-[10px] font-mono text-slate-500">ID: {art.id}</span>
                       </div>
-                    </div>
-                  </td>
-                  <td className="py-3 px-4">
-                    <Badge variant="outline" className="border-slate-700 bg-slate-950 text-slate-300 font-mono uppercase text-[10px]">
-                      {art.artifact_type.replace('_', ' ')}
-                    </Badge>
-                  </td>
-                  <td className="py-3 px-4">
-                    {art.validation?.is_valid ? (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-950/30 border border-emerald-800/30 px-2 py-0.5 rounded">
-                        <CheckCircle2 className="h-3 w-3" />
-                        VALIDATED
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-400 bg-amber-950/30 border border-amber-800/30 px-2 py-0.5 rounded">
-                        <AlertTriangle className="h-3 w-3" />
-                        FLAGGED
-                      </span>
-                    )}
-                  </td>
-                  <td className="py-3 px-4 font-mono text-slate-400">
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-slate-500" />
-                      {new Date(art.created_at).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="py-3 px-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDownload(art)}
-                        className="h-7 text-xs text-slate-300 hover:text-indigo-400"
-                      >
-                        <Download className="h-3.5 w-3.5 mr-1" />
-                        Download
-                      </Button>
-                      <a
-                        href={`/artifacts/${art.id}`}
-                        className="h-7 text-xs inline-flex items-center px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition font-medium"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5 mr-1 text-slate-400" />
-                        View
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -213,3 +240,4 @@ export const ArtifactsPage: React.FC = () => {
     </div>
   );
 };
+

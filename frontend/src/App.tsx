@@ -46,7 +46,7 @@ export const AppContent: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center font-mono text-xs text-indigo-400">
-        Initializing OmniTransform AI Platform Session...
+        Initializing Revamp AI Platform Session...
       </div>
     );
   }
@@ -57,57 +57,57 @@ export const AppContent: React.FC = () => {
   }
 
   // Router Dispatcher for Authenticated Shell
+  const handleNavigate = (route: string) => {
+    window.history.pushState({}, '', route);
+    setCurrentPath(route);
+  };
+
   const renderRoute = () => {
     const path = currentPath.toLowerCase();
 
     if (path === '/' || path === '/dashboard') {
-      return <DashboardPage />;
+      return <DashboardPage onNavigate={handleNavigate} />;
     }
     if (path === '/transform/new' || path.startsWith('/transform/new')) {
-      return <NewTransformationPage />;
+      return <NewTransformationPage onNavigate={handleNavigate} />;
     }
     if (path.startsWith('/jobs/')) {
       const jobId = path.split('/jobs/')[1];
-      return <JobProcessingPage jobId={jobId} />;
+      return <JobProcessingPage jobId={jobId} onNavigate={handleNavigate} />;
     }
     if (path.startsWith('/transform/')) {
       const transformId = path.split('/transform/')[1];
-      return <TransformationResultPage transformationId={transformId} />;
+      return <TransformationResultPage transformationId={transformId} onNavigate={handleNavigate} />;
     }
     if (path === '/projects') {
-      return <ProjectsPage />;
+      return <ProjectsPage onNavigate={handleNavigate} />;
     }
     if (path.startsWith('/projects/')) {
       const projId = path.split('/projects/')[1];
-      return <ProjectDetailPage id={projId} />;
+      return <ProjectDetailPage id={projId} onNavigate={handleNavigate} />;
     }
     if (path === '/knowledge-base') {
-      return <KnowledgeBasePage />;
+      return <KnowledgeBasePage onNavigate={handleNavigate} />;
     }
     if (path === '/artifacts') {
-      return <ArtifactsPage />;
+      return <ArtifactsPage onNavigate={handleNavigate} />;
     }
     if (path.startsWith('/artifacts/')) {
       const artId = path.split('/artifacts/')[1];
-      return <ArtifactDetailPage id={artId} />;
+      return <ArtifactDetailPage id={artId} onNavigate={handleNavigate} />;
     }
     if (path === '/templates') {
-      return <TemplatesPage />;
+      return <TemplatesPage onNavigate={handleNavigate} />;
     }
     if (path === '/activity' || path === '/audit') {
-      return <AuditPage />;
+      return <AuditPage onNavigate={handleNavigate} />;
     }
     if (path === '/settings') {
-      return <SettingsPage />;
+      return <SettingsPage onNavigate={handleNavigate} />;
     }
 
     // Default Fallback
-    return <DashboardPage />;
-  };
-
-  const handleNavigate = (route: string) => {
-    window.history.pushState({}, '', route);
-    setCurrentPath(route);
+    return <DashboardPage onNavigate={handleNavigate} />;
   };
 
   const getPageTitle = (path: string): string => {

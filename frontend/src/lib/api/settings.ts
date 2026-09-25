@@ -5,7 +5,7 @@ export const settingsApi = {
   get: async (): Promise<Settings> => {
     if (API_MODE === 'mock') {
       return {
-        app_name: 'OmniTransform AI',
+        app_name: 'Revamp AI',
         environment: 'development',
         llm_provider: 'gemini',
         gemini_model: 'gemini-2.5-flash',
@@ -13,7 +13,7 @@ export const settingsApi = {
         ollama_base_url: 'http://localhost:11434',
         ollama_model: 'llama3.1:8b',
         qdrant_url: 'http://localhost:6333',
-        qdrant_collection: 'omnitransform_kb',
+        qdrant_collection: 'revamp_kb',
         has_gemini_api_key: true,
       };
     }

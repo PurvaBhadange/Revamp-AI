@@ -24,7 +24,7 @@ export const artifactsApi = {
   },
 
   getDownloadUrl: (id: string): string => {
-    const token = localStorage.getItem('omnitransform_jwt');
+    const token = localStorage.getItem('revamp_ai_jwt');
     return `${API_BASE_URL}/api/v1/artifacts/${id}/download?token=${token || ''}`;
   },
 
@@ -34,7 +34,7 @@ export const artifactsApi = {
       return;
     }
 
-    const token = localStorage.getItem('omnitransform_jwt');
+    const token = localStorage.getItem('revamp_ai_jwt');
     const response = await fetch(`${API_BASE_URL}/api/v1/artifacts/${id}/download`, {
       headers: {
         Authorization: `Bearer ${token || ''}`,

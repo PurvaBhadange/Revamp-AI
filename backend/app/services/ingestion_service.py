@@ -25,6 +25,23 @@ class IngestionService:
     ) -> SourceDocument:
         ext = os.path.splitext(filename)[1].lower().strip(".")
         
+        from app.db.models.project import Project
+        from app.db.models.user import User
+        proj = db.query(Project).filter(Project.id == project_id).first()
+        if not proj:
+            user = db.query(User).first()
+            if not user:
+                from app.services.auth_service import auth_service
+                user = auth_service.register_user(db, "admin@revamp.ai", "AdminPass123!", "Default Admin")
+            proj = Project(
+                id=project_id,
+                name="Cybersecurity Intelligence Project",
+                description="Auto-created default project",
+                owner_id=user.id
+            )
+            db.add(proj)
+            db.commit()
+        
         # Determine source type
         if ext in ["pdf"]:
             source_type = "pdf"

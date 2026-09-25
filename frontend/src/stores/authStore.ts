@@ -41,7 +41,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   initialize: async () => {
-    const token = localStorage.getItem('omnitransform_jwt');
+    const token = localStorage.getItem('revamp_ai_jwt');
     if (!token) {
       set({ user: null, isAuthenticated: false, isLoading: false });
       return;
@@ -51,7 +51,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authApi.me();
       set({ user, isAuthenticated: true, isLoading: false });
     } catch {
-      localStorage.removeItem('omnitransform_jwt');
+      localStorage.removeItem('revamp_ai_jwt');
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },

@@ -57,7 +57,7 @@ export function TopBar({ title, onNavigate }: TopBarProps) {
             </div>
             <div className="hidden sm:flex flex-col text-left">
               <span className="text-xs font-semibold text-slate-200">{user?.full_name || 'Threat Analyst'}</span>
-              <span className="text-[10px] text-slate-400 font-mono">{user?.email || 'analyst@omnitransform.ai'}</span>
+              <span className="text-[10px] text-slate-400 font-mono">{user?.email || 'admin@revamp.ai'}</span>
             </div>
           </div>
           <Button variant="ghost" size="sm" onClick={() => logout()} title="Log out">

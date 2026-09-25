@@ -12,6 +12,7 @@ class TransformationState(BaseModel):
     project_id: str
     source_document_ids: List[str] = []
     source_texts: List[str] = []
+    raw_text: Optional[str] = None
     
     # Transformation parameters
     target_audience: str = "executive"

@@ -7,7 +7,7 @@ import { AuditLog } from '@/types/audit';
 
 export const mockUser: User = {
   id: 'usr_mock_001',
-  email: 'analyst@omnitransform.ai',
+  email: 'admin@revamp.ai',
   full_name: 'Senior Threat Analyst',
   role: 'analyst',
   is_active: true,
