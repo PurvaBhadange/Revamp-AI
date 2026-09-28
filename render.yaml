@@ -7,40 +7,21 @@ services:
     plan: starter
     healthCheckPath: /docs
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: revamp-postgres
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: revamp-redis
-          property: connectionString
-      - key: QDRANT_URL
-        value: http://revamp-qdrant:6333
       - key: ENVIRONMENT
         value: production
-      # Add other necessary API keys below in Render Dashboard
+      # The following environment variables must be added securely in the Render Dashboard:
+      # DATABASE_URL (from Neon)
+      - key: DATABASE_URL
+        sync: false
+      # REDIS_URL (from Upstash)
+      - key: REDIS_URL
+        sync: false
+      # QDRANT_URL (from Qdrant Cloud or your own instance)
+      - key: QDRANT_URL
+        sync: false
+      # QDRANT_API_KEY (if applicable)
+      - key: QDRANT_API_KEY
+        sync: false
+      # OPENAI_API_KEY
       - key: OPENAI_API_KEY
         sync: false
-
-  # Qdrant Vector Database (Private Service)
-  - type: pserv
-    name: revamp-qdrant
-    env: docker
-    image: qdrant/qdrant:latest
-    disk:
-      name: qdrant-data
-      mountPath: /qdrant/storage
-      sizeGB: 5
-
-databases:
-  # Managed PostgreSQL Database
-  - name: revamp-postgres
-    plan: starter
-    databaseName: revamp_ai
-    user: revamp_user
-
-redis:
-  - name: revamp-redis
-    plan: starter
