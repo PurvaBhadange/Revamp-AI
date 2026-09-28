@@ -171,8 +171,24 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
                 disabled={loading}
                 onClick={async () => {
                   setLoading(true);
-                  await login('demo@domain.com', 'demo');
-                  onLoginSuccess();
+                  try {
+                    await login('demo@domain.com', 'demo');
+                    onLoginSuccess();
+                  } catch (e) {
+                    try {
+                      // If login fails, try to register the demo user
+                      await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/v1/auth/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: 'demo@domain.com', password: 'demo', full_name: 'Demo User' })
+                      });
+                      await login('demo@domain.com', 'demo');
+                      onLoginSuccess();
+                    } catch (err) {
+                      setLoading(false);
+                      alert('Could not initialize demo account. Is backend running?');
+                    }
+                  }
                 }}
                 className="w-full h-12 flex items-center justify-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-[15px] rounded-lg shadow-sm transition-colors border border-stone-200"
               >
