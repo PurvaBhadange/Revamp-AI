@@ -84,7 +84,7 @@ class TransformationGraphRunner:
                     state.advisory = advisory_agent.run(state)
                     update_progress("advisory_agent", "completed")
 
-                if "social" in routed_formats:
+                if "social" in routed_formats or "twitter" in routed_formats:
                     update_progress("social_agent", f"running{attempt_label}")
                     state.social = social_agent.run(state)
                     update_progress("social_agent", "completed")
@@ -136,15 +136,15 @@ class TransformationGraphRunner:
             
         # Fallback: Intelligent routing maps cybersecurity intent to recommended formats
         intent_routes = {
-            "incident_report": ["executive_brief", "advisory", "social", "presentation", "infographic", "video"],
+            "incident_report": ["executive_brief", "advisory", "social", "twitter", "presentation", "infographic", "video"],
             "vulnerability_advisory": ["advisory", "executive_brief", "presentation", "infographic"],
-            "threat_intelligence": ["social", "executive_brief", "infographic", "presentation"],
+            "threat_intelligence": ["social", "twitter", "executive_brief", "infographic", "presentation"],
             "malware_analysis": ["advisory", "infographic", "video"],
-            "security_alert": ["advisory", "executive_brief", "social"],
+            "security_alert": ["advisory", "executive_brief", "social", "twitter"],
             "risk_assessment": ["executive_brief", "presentation", "infographic"],
             "policy_update": ["executive_brief", "presentation"]
         }
-        return intent_routes.get(intent, ["executive_brief", "advisory", "social", "presentation", "infographic", "video"])
+        return intent_routes.get(intent, ["executive_brief", "advisory", "social", "twitter", "presentation", "infographic", "video"])
 
     def _render_artifacts(self, state: TransformationState):
         prefix = f"trans_{state.transformation_id[:8]}"

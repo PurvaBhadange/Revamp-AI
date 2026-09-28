@@ -42,6 +42,16 @@ class PPTXRenderer:
                     p.font.size = Pt(18)
                     p.font.color.rgb = RGBColor(30, 41, 59)
 
+                # Write speaker notes to the actual PPTX notes pane
+                speaker_notes = slide_info.get("speaker_notes", "")
+                if speaker_notes:
+                    try:
+                        notes_slide = slide.notes_slide
+                        notes_tf = notes_slide.notes_text_frame
+                        notes_tf.text = speaker_notes
+                    except Exception:
+                        pass  # Notes writing is best-effort
+
             prs.save(output_path)
             return output_path
         except Exception as e:
@@ -53,6 +63,9 @@ class PPTXRenderer:
                     f.write(f"Slide: {s.get('title')}\n")
                     for b in s.get("bullets", []):
                         f.write(f"  - {b}\n")
+                    notes = s.get("speaker_notes", "")
+                    if notes:
+                        f.write(f"  [Speaker Notes]: {notes}\n")
                     f.write("\n")
             return txt_path
 

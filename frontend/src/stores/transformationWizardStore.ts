@@ -47,7 +47,7 @@ export const useWizardStore = create<WizardState>((set) => ({
   objective: 'action_required',
   urgencyLevel: 'high',
   language: 'English',
-  selectedOutputs: ['executive_brief', 'advisory', 'social', 'presentation', 'infographic', 'video'],
+  selectedOutputs: ['executive_brief', 'advisory', 'social', 'twitter', 'presentation', 'infographic', 'video'],
 
   setStage: (stage) => set({ currentStage: stage }),
   setProjectId: (id) => set({ projectId: id }),
@@ -79,6 +79,6 @@ export const useWizardStore = create<WizardState>((set) => ({
       objective: 'action_required',
       urgencyLevel: 'high',
       language: 'English',
-      selectedOutputs: ['executive_brief', 'advisory', 'social', 'presentation', 'infographic', 'video'],
+      selectedOutputs: ['executive_brief', 'advisory', 'social', 'twitter', 'presentation', 'infographic', 'video'],
     }),
 }));

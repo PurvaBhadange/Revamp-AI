@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Users, Target, CheckCircle2, ArrowRight, ArrowLeft,
   FileText, Presentation, FileCheck, PieChart, Video, FileOutput,
-  Briefcase, MessageSquare, BarChart3, Megaphone
+  Briefcase, MessageSquare, BarChart3, Megaphone, Globe, Layers, Twitter
 } from 'lucide-react';
 
 import { useWizardStore } from '@/stores/transformationWizardStore';
@@ -14,7 +14,7 @@ interface ConfigureTransformationPageProps {
 }
 
 export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformationPageProps) {
-  const { tone, setTone, selectedOutputs, toggleOutput, targetAudience, setTargetAudience, objective, setObjective } = useWizardStore();
+  const { tone, setTone, selectedOutputs, toggleOutput, targetAudience, setTargetAudience, objective, setObjective, language, setLanguage, urgencyLevel, setUrgencyLevel } = useWizardStore();
   const [activeTab, setActiveTab] = useState('summary');
 
   // Convert array of outputs to a mapped boolean object for the UI checkboxes
@@ -22,6 +22,7 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
     summary: selectedOutputs.includes('executive_brief'),
     presentation: selectedOutputs.includes('presentation'),
     linkedin: selectedOutputs.includes('social'),
+    twitter: selectedOutputs.includes('twitter'),
     advisory: selectedOutputs.includes('advisory'),
     infographic: selectedOutputs.includes('infographic'),
     video: selectedOutputs.includes('video')
@@ -32,6 +33,7 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
       summary: 'executive_brief',
       presentation: 'presentation',
       linkedin: 'social',
+      twitter: 'twitter',
       advisory: 'advisory',
       infographic: 'infographic',
       video: 'video'
@@ -144,6 +146,61 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
               </div>
             </div>
 
+            {/* Language + Level of Detail */}
+            <div className="grid grid-cols-2 gap-4 mb-10">
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">
+                  <Globe className="inline h-3.5 w-3.5 mr-1 text-[#C07050]" strokeWidth={2} />
+                  Output language
+                </label>
+                <div className="relative">
+                  <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                    className="w-full appearance-none bg-white border border-stone-200 rounded-lg px-4 py-3 pl-10 text-[13px] text-stone-800 font-medium shadow-sm focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                  >
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="French">French</option>
+                    <option value="German">German</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Arabic">Arabic</option>
+                    <option value="Chinese">Chinese (Simplified)</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Portuguese">Portuguese</option>
+                    <option value="Russian">Russian</option>
+                  </select>
+                  <Globe className="absolute left-3.5 top-3.5 h-4 w-4 text-[#C07050]" strokeWidth={2} />
+                  <div className="absolute right-3.5 top-4 pointer-events-none">
+                    <svg className="h-3 w-3 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">
+                  <Layers className="inline h-3.5 w-3.5 mr-1 text-[#C07050]" strokeWidth={2} />
+                  Level of detail
+                </label>
+                <div className="relative">
+                  <select
+                    value={urgencyLevel}
+                    onChange={(e) => setUrgencyLevel(e.target.value as any)}
+                    className="w-full appearance-none bg-white border border-stone-200 rounded-lg px-4 py-3 pl-10 text-[13px] text-stone-800 font-medium shadow-sm focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                  >
+                    <option value="low">Brief — High-level overview</option>
+                    <option value="medium">Standard — Balanced depth</option>
+                    <option value="high">Detailed — In-depth analysis</option>
+                    <option value="critical">Comprehensive — Full technical depth</option>
+                  </select>
+                  <Layers className="absolute left-3.5 top-3.5 h-4 w-4 text-[#C07050]" strokeWidth={2} />
+                  <div className="absolute right-3.5 top-4 pointer-events-none">
+                    <svg className="h-3 w-3 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* 2. Tone and Style */}
             <div className="mb-4">
               <h2 className="text-[19px] font-black text-stone-900 mb-1">2. Choose tone and style</h2>
@@ -186,26 +243,31 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
             
             <div className="grid grid-cols-3 gap-4 mb-12">
               {[
-                { id: 'summary', icon: FileText, label: 'Executive Summary', sub: 'PDF / DOCX' },
-                { id: 'presentation', icon: Presentation, label: 'Presentation', sub: 'PPTX' },
-                { id: 'linkedin', icon: FileOutput, label: 'LinkedIn Post', sub: 'Social Media', isSocial: true },
-                { id: 'advisory', icon: FileCheck, label: 'Advisory Note', sub: 'PDF / DOCX' },
-                { id: 'infographic', icon: PieChart, label: 'Infographic', sub: 'Visual' },
-                { id: 'video', icon: Video, label: 'Video Script', sub: 'Text' },
+                { id: 'summary',      icon: FileText,    label: 'Executive Summary', sub: 'Concise brief',        badge: null },
+                { id: 'presentation', icon: Presentation, label: 'Presentation',      sub: 'PPTX + speaker notes', badge: null },
+                { id: 'advisory',     icon: FileCheck,   label: 'Advisory',           sub: 'PDF document',         badge: null },
+                { id: 'infographic',  icon: PieChart,    label: 'Infographic',         sub: 'SVG visual',           badge: null },
+                { id: 'linkedin',     icon: FileOutput,  label: 'LinkedIn Post',       sub: 'Social media',         badge: 'in' },
+                { id: 'twitter',      icon: Twitter,     label: 'X / Twitter Post',    sub: '≤280 chars per tweet', badge: 'X' },
+                { id: 'video',        icon: Video,       label: 'Video Package',       sub: 'Script + MP3 + SRT',   badge: null },
               ].map((f) => {
                 const isSelected = formats[f.id as keyof typeof formats];
                 return (
-                  <div 
+                  <div
                     key={f.id}
                     onClick={() => handleToggle(f.id as keyof typeof formats)}
                     className="cursor-pointer bg-white rounded-xl border border-stone-200 p-3.5 flex items-center justify-between shadow-sm hover:border-[#C07050]/50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${f.isSocial ? 'bg-[#F2F6FA]' : 'bg-[#FAF6F4]'}`}>
-                        {f.isSocial ? (
+                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 ${
+                        f.badge === 'in' ? 'bg-[#F2F6FA]' : f.badge === 'X' ? 'bg-black' : 'bg-[#FAF6F4]'
+                      }`}>
+                        {f.badge === 'in' ? (
                           <div className="h-4 w-4 bg-[#0A66C2] rounded-sm flex items-center justify-center">
                             <span className="text-[9px] font-black text-white leading-none">in</span>
                           </div>
+                        ) : f.badge === 'X' ? (
+                          <span className="text-[11px] font-black text-white leading-none">𝕏</span>
                         ) : (
                           <f.icon className="h-4 w-4 text-[#A35E47]" strokeWidth={1.5} />
                         )}
@@ -215,11 +277,13 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
                         <p className="text-[10px] text-stone-400 mt-0.5">{f.sub}</p>
                       </div>
                     </div>
-                    <div className={`h-[18px] w-[18px] rounded-[4px] border flex items-center justify-center ${isSelected ? 'bg-[#9E573F] border-[#9E573F]' : 'bg-white border-stone-300'}`}>
+                    <div className={`h-[18px] w-[18px] rounded-[4px] border flex items-center justify-center ${
+                      isSelected ? 'bg-[#9E573F] border-[#9E573F]' : 'bg-white border-stone-300'
+                    }`}>
                       {isSelected && <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
 

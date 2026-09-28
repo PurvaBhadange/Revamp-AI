@@ -33,6 +33,8 @@ Executive Summary: {summary}
 Severity: {severity}
 
 Generate 3 to 5 concise scenes (duration 5-10s each).
+Output Language: {state.language}
+Target Audience: {state.target_audience}
 """
         result = llm_service.generate_json(
             prompt=prompt,

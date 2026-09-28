@@ -24,6 +24,7 @@ User Configuration:
 - Urgency Level requested: {state.urgency_level}
 - Target Audience: {state.target_audience}
 - Tone: {state.tone}
+- Output Language: {state.language}
 - User Specified Intent Override: {state.central_context.user_intent if state.central_context and state.central_context.user_intent else 'None'}
 
 Source Document Text:

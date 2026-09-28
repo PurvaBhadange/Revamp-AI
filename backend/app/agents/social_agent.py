@@ -31,9 +31,12 @@ Executive Summary: {summary}
 Severity: {severity}
 
 Generate:
-1. LinkedIn Post: Engaging, professional cybersecurity post formatted with clear sections and linebreaks (Under 3000 chars).
-2. Twitter/X Thread: Concise, impact-driven thread (Under 280 characters).
+1. LinkedIn Post: Engaging, professional post formatted with clear sections and linebreaks (Under 3000 chars).
+2. Twitter/X Thread: Concise, impact-driven thread (Under 280 characters per tweet).
 Include relevant hashtags (e.g., #CyberSecurity #InfoSec #ThreatIntel).
+
+Output Language: {state.language}
+Target Audience: {state.target_audience}
 """
         result = llm_service.generate_json(
             prompt=prompt,

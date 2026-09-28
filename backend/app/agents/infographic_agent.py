@@ -41,6 +41,8 @@ Threat Indicators: {indicators}
 Affected Systems: {affected}
 Timeline: {ctx.timeline if ctx else []}
 Recommended Actions: {recs}
+
+Output Language: {state.language}
 """
         result = llm_service.generate_json(
             prompt=prompt,

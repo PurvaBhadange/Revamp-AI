@@ -32,6 +32,10 @@ Executive Summary: {summary}
 Indicators: {indicators}
 Affected Systems: {affected}
 Recommended Actions: {recs}
+
+Output Language: {state.language}
+Target Audience: {state.target_audience}
+Tone: {state.tone}
 """
         result = llm_service.generate_json(
             prompt=prompt,
