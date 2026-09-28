@@ -1,10 +1,10 @@
 services:
-  # Backend Web Service
+  # Backend Web Service (Combined API + Celery Worker)
   - type: web
     name: revamp-backend
     env: docker
     dockerfilePath: ./Dockerfile
-    plan: starter
+    plan: free
     healthCheckPath: /docs
     envVars:
       - key: ENVIRONMENT
@@ -23,26 +23,5 @@ services:
       - key: UPSTASH_VECTOR_REST_TOKEN
         sync: false
       # OPENAI_API_KEY
-      - key: OPENAI_API_KEY
-        sync: false
-
-  # Background Worker (Celery)
-  - type: worker
-    name: revamp-worker
-    env: docker
-    dockerfilePath: ./Dockerfile
-    dockerCommand: celery -A app.workers.celery_app worker --loglevel=info
-    plan: starter
-    envVars:
-      - key: ENVIRONMENT
-        value: production
-      - key: DATABASE_URL
-        sync: false
-      - key: REDIS_URL
-        sync: false
-      - key: UPSTASH_VECTOR_REST_URL
-        sync: false
-      - key: UPSTASH_VECTOR_REST_TOKEN
-        sync: false
       - key: OPENAI_API_KEY
         sync: false
