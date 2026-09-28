@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { CommandPalette } from './CommandPalette';
+import { MobileBottomNav } from './MobileBottomNav';
 import { useUIStore } from '@/stores/uiStore';
 import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
 import { soundManager } from '@/lib/audio';
@@ -29,12 +30,18 @@ export function AppShell({ title, currentRoute, onNavigate, children }: AppShell
   }, []);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-stone-50 text-stone-900 font-sans selection:bg-orange-200 selection:text-orange-900">
-      <Sidebar currentRoute={currentRoute} onNavigate={onNavigate} />
-      <div className="flex flex-1 flex-col overflow-hidden">
+    <div className="flex h-[100dvh] w-screen overflow-hidden bg-stone-50 text-stone-900 font-sans selection:bg-orange-200 selection:text-orange-900">
+      {/* Sidebar hidden on mobile */}
+      <div className="hidden md:flex">
+        <Sidebar currentRoute={currentRoute} onNavigate={onNavigate} />
+      </div>
+
+      <div className="flex flex-1 flex-col overflow-hidden pb-[72px] md:pb-0">
         {!currentRoute.startsWith('/artifacts') && <TopBar title={title} onNavigate={onNavigate} />}
         <main className="flex-1 flex flex-col overflow-y-auto bg-stone-50">{children}</main>
       </div>
+
+      <MobileBottomNav currentRoute={currentRoute} onNavigate={onNavigate} />
 
       <CommandPalette onNavigate={onNavigate} />
 

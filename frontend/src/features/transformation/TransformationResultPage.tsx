@@ -27,21 +27,21 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
   });
 
   return (
-    <div className="min-h-full bg-[#F8F7F5] font-sans px-10 py-12">
+    <div className="min-h-full bg-[#F8F7F5] font-sans px-4 md:px-10 py-6 md:py-12">
       <div className="max-w-[1300px] mx-auto">
         
         {/* HEADER & TOP RIGHT CARD */}
-        <div className="flex justify-between items-start mb-10">
+        <div className="flex flex-col lg:flex-row justify-between items-start mb-8 md:mb-10 gap-6 lg:gap-0">
           <div>
             <p className="text-[10px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-2">Transformation Complete</p>
-            <h1 className="text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">Your content is ready</h1>
-            <p className="text-[15px] text-stone-500 font-medium">
+            <h1 className="text-3xl md:text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">Your content is ready</h1>
+            <p className="text-[14px] md:text-[15px] text-stone-500 font-medium">
               REVAMP AI has generated {isLoading ? '...' : (artifacts?.length || 0)} outputs from your source document.
             </p>
           </div>
 
           {/* Source Document Card */}
-          <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-4 flex gap-5 w-[520px]">
+          <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-4 flex gap-5 w-full lg:w-[520px]">
             {/* Mini Document */}
             <div className="w-[85px] h-[110px] bg-white border border-stone-200 shadow-sm rounded flex flex-col shrink-0 overflow-hidden relative">
               <div className="p-2 flex-1">
@@ -67,8 +67,8 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
         </div>
 
         {/* FILTERS AND ACTIONS BAR */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 md:gap-0">
+          <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
             <button 
               onClick={() => setActiveFilter('all')}
               className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors ${
@@ -111,7 +111,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
             </button>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full md:w-auto justify-end">
             <button className="h-9 w-9 rounded-lg bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 transition-colors shadow-sm">
               <Search className="h-4 w-4" />
             </button>
@@ -122,7 +122,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
         </div>
 
         {/* OUTPUTS GRID */}
-        <div className="grid grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-12">
           
           {/* Card 1: Executive Summary */}
           {selectedOutputs.includes('executive_brief') && (
@@ -341,17 +341,17 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex items-center justify-between pt-5 border-t border-stone-200">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between pt-5 border-t border-stone-200 gap-4 sm:gap-0">
           <button 
             onClick={() => onNavigate('/transform/new')}
-            className="flex items-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-[14px] px-6 py-3 rounded-lg transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-[14px] px-6 py-3.5 sm:py-3 rounded-lg transition-all shadow-sm"
           >
-            <ArrowLeft className="h-4 w-4" /> Transform another document
+            <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Transform another document</span><span className="sm:hidden">Create another transformation</span>
           </button>
           
           <button 
             onClick={() => onNavigate('/dashboard')}
-            className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[14px] px-6 py-3 rounded-lg transition-all shadow-sm"
+            className="flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[14px] px-6 py-3.5 sm:py-3 rounded-lg transition-all shadow-sm"
           >
             <Folder className="h-4 w-4" /> Save to project
           </button>

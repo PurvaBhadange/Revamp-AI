@@ -36,19 +36,19 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
   };
 
   return (
-    <div className="min-h-full bg-[#F8F7F5] font-sans px-10 py-12">
+    <div className="min-h-full bg-[#F8F7F5] font-sans px-4 md:px-10 py-6 md:py-12">
       <div className="max-w-[1200px] mx-auto">
         
         {/* HEADER */}
-        <div className="flex justify-between items-start mb-12">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-8 md:mb-12">
           <div>
             <p className="text-[10px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-2">New Transformation</p>
-            <h1 className="text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">New Transformation</h1>
-            <p className="text-[15px] text-stone-500 font-medium">Turn your content into clear, audience-ready communication.</p>
+            <h1 className="text-3xl md:text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">New Transformation</h1>
+            <p className="text-[13px] md:text-[15px] text-stone-500 font-medium">Turn your content into professional outputs.</p>
           </div>
 
-          {/* STEPPER */}
-          <div className="flex items-center gap-3 mt-4">
+          {/* DESKTOP STEPPER */}
+          <div className="hidden md:flex items-center gap-3 mt-4">
             {/* Step 1 */}
             <div className="flex items-center gap-2.5">
               <div className="h-9 w-9 rounded-full bg-[#9E573F] text-white flex items-center justify-center text-[11px] font-bold shrink-0 shadow-sm">01</div>
@@ -87,8 +87,26 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
           </div>
         </div>
 
+        {/* MOBILE STEPPER */}
+        <div className="flex md:hidden items-center justify-center mb-8 w-full max-w-xs mx-auto">
+          <div className="flex flex-col items-center gap-1">
+            <div className="h-7 w-7 rounded-full bg-[#9E573F] text-white flex items-center justify-center text-[10px] font-bold shadow-sm">1</div>
+            <span className="text-[10px] font-bold text-stone-900">Source</span>
+          </div>
+          <div className="flex-1 h-px bg-stone-300 mx-2 -mt-4"></div>
+          <div className="flex flex-col items-center gap-1 opacity-50">
+            <div className="h-7 w-7 rounded-full border border-stone-300 bg-white text-stone-500 flex items-center justify-center text-[10px] font-bold">2</div>
+            <span className="text-[10px] font-bold text-stone-500">Settings</span>
+          </div>
+          <div className="flex-1 h-px bg-stone-300 mx-2 -mt-4 opacity-50"></div>
+          <div className="flex flex-col items-center gap-1 opacity-50">
+            <div className="h-7 w-7 rounded-full border border-stone-300 bg-white text-stone-500 flex items-center justify-center text-[10px] font-bold">3</div>
+            <span className="text-[10px] font-bold text-stone-500">Outputs</span>
+          </div>
+        </div>
+
         {/* MAIN SPLIT */}
-        <div className="grid grid-cols-[1fr_420px] gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 md:gap-12">
           
           {/* LEFT COLUMN */}
           <div>
@@ -112,7 +130,7 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
               <h3 className="text-xl font-bold text-stone-900 mb-2">Start with your source</h3>
               <p className="text-[14px] text-stone-500 mb-8">Upload a document, paste text, or add a source link.</p>
               
-              <div className="flex items-center gap-3 w-full max-w-lg mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full mb-8">
                 <input 
                   type="file" 
                   ref={fileInputRef} 
@@ -122,22 +140,22 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
                 <button 
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading}
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] py-2.5 rounded-lg transition-all shadow-sm"
+                  className="w-full flex items-center justify-center gap-2 bg-[#FDEEEB] border border-[#F5D8D0] hover:bg-[#F5D8D0] text-[#9E573F] font-semibold text-[13px] py-4 rounded-lg transition-all shadow-sm flex-col"
                 >
-                  {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileUp className="h-4 w-4" />} 
-                  {isUploading ? 'Uploading...' : 'Upload file'}
+                  {isUploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <FileUp className="h-5 w-5" />} 
+                  {isUploading ? 'Uploading...' : 'Upload'}
                 </button>
                 <button 
                   onClick={() => alert("Paste text triggered")}
-                  className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-2.5 rounded-lg transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-4 rounded-lg transition-all flex-col"
                 >
-                  <FileText className="h-4 w-4" /> Paste text
+                  <FileText className="h-5 w-5" /> Paste text
                 </button>
                 <button 
                   onClick={() => alert("Add URL triggered")}
-                  className="flex-1 flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-2.5 rounded-lg transition-all"
+                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-4 rounded-lg transition-all flex-col"
                 >
-                  <LinkIcon className="h-4 w-4" /> Add URL
+                  <LinkIcon className="h-5 w-5" /> Add URL
                 </button>
               </div>
 
@@ -247,15 +265,15 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex items-center justify-end gap-6 mt-4">
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-between sm:justify-end gap-4 sm:gap-6 mt-8 sm:mt-4">
           <button className="text-[13px] font-semibold text-stone-700 hover:text-stone-900 underline underline-offset-4 transition-colors">
             Save as draft
           </button>
           <button 
             onClick={() => onNavigate('/transform/2')}
-            className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[14px] px-6 py-3 rounded-lg transition-all shadow-sm"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[14px] px-6 py-3.5 rounded-lg transition-all shadow-sm"
           >
-            Continue to Configure <ArrowRight className="h-4 w-4" />
+            Continue <ArrowRight className="h-4 w-4" />
           </button>
         </div>
 

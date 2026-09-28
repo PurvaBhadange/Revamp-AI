@@ -157,15 +157,15 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         />
         <div className="absolute right-0 top-0 bottom-0 w-[45%] bg-gradient-to-l from-transparent via-[#F9F8F6]/80 to-[#F9F8F6]" />
 
-        <div className="relative z-10 max-w-[1200px] mx-auto px-10 py-16">
+        <div className="relative z-10 max-w-[1200px] mx-auto px-4 md:px-10 py-10 md:py-16">
           <p className="text-[11px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">Good morning,</p>
-          <h1 className="text-[64px] font-black text-stone-950 tracking-tight leading-[1] mb-2">
+          <h1 className="text-5xl md:text-[64px] font-black text-stone-950 tracking-tight leading-[1] mb-2">
             {firstName}.
           </h1>
-          <p className="text-[32px] font-medium text-stone-600 mb-6 tracking-tight leading-tight max-w-xl">
+          <p className="text-2xl md:text-[32px] font-medium text-stone-600 mb-6 tracking-tight leading-tight max-w-xl">
             Turn information into communication.
           </p>
-          <p className="text-[15px] text-stone-500 max-w-[440px] leading-relaxed mb-10 font-medium">
+          <p className="text-[13px] md:text-[15px] text-stone-500 max-w-[440px] leading-relaxed mb-10 font-medium">
             Upload a source once and transform it into clear, audience-ready communication across multiple formats.
           </p>
           <button
@@ -177,7 +177,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
         </div>
 
         {/* Floating quote card */}
-        <div className="absolute right-[12%] top-1/2 -translate-y-1/2 z-20 bg-[#F4EFEB] rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.08)] max-w-[240px]">
+        <div className="hidden md:block absolute right-[12%] top-1/2 -translate-y-1/2 z-20 bg-[#F4EFEB] rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.08)] max-w-[240px]">
           <p className="text-lg font-medium text-stone-800 leading-snug mb-8 tracking-tight">
             "Same source.<br />Multiple formats.<br />Real impact."
           </p>
@@ -189,9 +189,9 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
       </div>
 
       {/* ── 4-STEP MINI PROCESS ── */}
-      <div className="bg-white border-b border-stone-200">
-        <div className="max-w-[1200px] mx-auto px-10">
-          <div className="grid grid-cols-4 divide-x divide-stone-100">
+      <div className="bg-white border-b border-stone-200 hidden md:block">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-stone-100">
             {[
               { icon: FileText, title: 'Upload a source', desc: 'Documents, media, text or URLs' },
               { icon: Share2, title: 'Choose outputs', desc: 'Summary, advisory, social and more' },
@@ -213,7 +213,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
       </div>
 
       {/* ── RECENT TRANSFORMATIONS ── */}
-      <div className="max-w-[1200px] mx-auto px-10 pt-8 pb-4">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-8 pb-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-black text-stone-900">Recent Transformations</h2>
           <button onClick={() => onNavigate('/activity')} className="flex items-center gap-1 text-sm font-semibold text-[#C07050] hover:text-[#8B4A2F] transition-colors">
@@ -288,7 +288,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
       </div>
 
       {/* ── TEMPLATES ── */}
-      <div className="max-w-[1200px] mx-auto px-10 pt-6 pb-10">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-10 pt-6 pb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-black text-stone-900">Templates</h2>
           <button onClick={() => onNavigate('/templates')} className="flex items-center gap-1 text-sm font-semibold text-[#C07050] hover:text-[#8B4A2F] transition-colors">
