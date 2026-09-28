@@ -66,7 +66,7 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
     }
 
     return await response.json();
-  } catch (err: any) {
+  } catch (err: unknown) {
     if (err instanceof APIClientError) {
       throw err;
     }

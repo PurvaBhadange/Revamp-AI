@@ -39,7 +39,7 @@ export function Sidebar({ currentRoute, onNavigate }: SidebarProps) {
     { icon: Settings, label: 'Settings', route: '/settings' },
   ];
 
-  const NavItem = ({ icon: Icon, label, route }: { icon: any, label: string, route: string }) => {
+  const NavItem = ({ icon: Icon, label, route }: { icon: unknown, label: string, route: string }) => {
     const isActive = currentRoute === route || (route !== '/dashboard' && currentRoute.startsWith(route));
     return (
       <button

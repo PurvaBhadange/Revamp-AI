@@ -36,7 +36,7 @@ export function UsagePage({ onNavigate }: UsagePageProps) {
               <div className="bg-[#EBDCD5] text-[#8B4A2F] text-[11px] font-bold px-3 py-1 rounded-md border border-[#D4ACA0]/30">Free plan</div>
             </div>
             <p className="text-[14px] text-stone-700 font-medium mb-8 leading-relaxed pr-10">
-              You're currently on the Free plan. Upgrade to unlock higher limits and advanced features.
+              You&apos;re currently on the Free plan. Upgrade to unlock higher limits and advanced features.
             </p>
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] px-6 py-2.5 rounded-lg shadow-sm transition-colors">

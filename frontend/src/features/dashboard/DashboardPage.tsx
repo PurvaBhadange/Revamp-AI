@@ -133,7 +133,7 @@ export function DashboardPage({ onNavigate }: DashboardPageProps) {
   });
 
   const displayItems = (transformations && transformations.length > 0)
-    ? transformations.slice(0, 4).map((t: any, i: number) => ({
+    ? transformations.slice(0, 4).map((t: unknown, i: number) => ({
         id: t.id,
         title: t.central_context?.core_topic || `Transformation ${t.id.substring(0, 8)}`,
         meta: `Job · ${t.id.substring(0, 6)}`,

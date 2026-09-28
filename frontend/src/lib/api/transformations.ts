@@ -33,7 +33,7 @@ export const transformationsApi = {
     return apiFetch<Transformation>(`/transformations/${id}`);
   },
 
-  getICO: async (id: string): Promise<any> => {
+  getICO: async (id: string): Promise<unknown> => {
     if (API_MODE === 'mock') {
       const trans = mockTransformations.find(t => t.id === id) || mockTransformations[0];
       return {
@@ -44,33 +44,33 @@ export const transformationsApi = {
         ico: trans.central_context
       };
     }
-    return apiFetch<any>(`/transformations/${id}/ico`);
+    return apiFetch<unknown>(`/transformations/${id}/ico`);
   },
 
-  updateICO: async (id: string, data: Record<string, any>): Promise<any> => {
+  updateICO: async (id: string, data: Record<string, any>): Promise<unknown> => {
     if (API_MODE === 'mock') {
       return { message: 'ICO updated', version: 2, status: 'review' };
     }
-    return apiFetch<any>(`/transformations/${id}/ico`, {
+    return apiFetch<unknown>(`/transformations/${id}/ico`, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   },
 
-  approveICO: async (id: string): Promise<any> => {
+  approveICO: async (id: string): Promise<unknown> => {
     if (API_MODE === 'mock') {
       return { message: 'ICO approved', version: 1, status: 'approved' };
     }
-    return apiFetch<any>(`/transformations/${id}/ico/approve`, {
+    return apiFetch<unknown>(`/transformations/${id}/ico/approve`, {
       method: 'POST',
     });
   },
 
-  triggerGeneration: async (id: string): Promise<any> => {
+  triggerGeneration: async (id: string): Promise<unknown> => {
     if (API_MODE === 'mock') {
       return { message: 'Generation triggered', transformation_id: id, status: 'running' };
     }
-    return apiFetch<any>(`/transformations/${id}/generate`, {
+    return apiFetch<unknown>(`/transformations/${id}/generate`, {
       method: 'POST',
     });
   },

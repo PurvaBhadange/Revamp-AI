@@ -39,7 +39,7 @@ export const ArtifactsPage: React.FC = () => {
 
   const artifacts: Artifact[] = Array.isArray(rawArtifacts) ? rawArtifacts : [];
 
-  const getArtifactType = (art: any): string => {
+  const getArtifactType = (art: unknown): string => {
     return art.artifact_type || art.type || 'unknown';
   };
 

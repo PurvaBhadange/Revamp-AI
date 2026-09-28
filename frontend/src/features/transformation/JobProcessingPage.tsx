@@ -30,7 +30,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
       }, 300);
       return () => clearInterval(interval);
     } else {
-      setProgress(10);
+      setTimeout(() => setProgress(10), 0);
       const poll = async () => {
         try {
           const data = await transformationsApi.get(jobId);
@@ -151,7 +151,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
             </div>
             <span className="text-[14px] font-black text-stone-900 w-8">{progress}%</span>
           </div>
-          <p className="text-[11px] text-stone-500">This may take a few minutes. You can leave this page — we'll notify you when it's ready.</p>
+          <p className="text-[11px] text-stone-500">This may take a few minutes. You can leave this page — we&apos;ll notify you when it&apos;s ready.</p>
         </div>
 
         {/* BOTTOM SPLIT SECTION */}
@@ -372,7 +372,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
         <div className="flex items-center justify-between mt-10 pt-5 border-t border-stone-200">
           <div className="flex items-center gap-2 text-[12px] text-stone-500">
             <Info className="h-4 w-4" />
-            You can leave this page — we'll notify you here and via email when your content is ready.
+            You can leave this page — we&apos;ll notify you here and via email when your content is ready.
           </div>
           
           <button 

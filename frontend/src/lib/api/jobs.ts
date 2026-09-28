@@ -29,7 +29,7 @@ export const jobsApi = {
     return apiFetch(`/jobs/${jobId}/cancel`, { method: 'POST' });
   },
 
-  subscribeEvents: (jobId: string, onEvent: (evt: SSEJobEvent) => void, onError?: (err: any) => void): (() => void) => {
+  subscribeEvents: (jobId: string, onEvent: (evt: SSEJobEvent) => void, onError?: (err: unknown) => void): (() => void) => {
     if (API_MODE === 'mock') {
       const mockEvents: SSEJobEvent[] = [
         { event: 'job.started', data: { stage: 'ingestion' } },
@@ -68,7 +68,7 @@ export const jobsApi = {
     ];
 
     eventTypes.forEach(evtName => {
-      eventSource.addEventListener(evtName, (e: any) => {
+      eventSource.addEventListener(evtName, (e: unknown) => {
         try {
           const data = JSON.parse(e.data);
           onEvent({ event: evtName, data });
