@@ -54,8 +54,12 @@ class Settings(BaseSettings):
     @property
     def origins_list(self) -> List[str]:
         if not self.ALLOWED_ORIGINS:
-            return [self.FRONTEND_URL]
-        return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
+            origins = [self.FRONTEND_URL]
+        else:
+            origins = [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",") if origin.strip()]
+        
+        # Strip trailing slashes which break CORS origin matching
+        return [o[:-1] if o.endswith('/') else o for o in origins]
 
 
 settings = Settings()

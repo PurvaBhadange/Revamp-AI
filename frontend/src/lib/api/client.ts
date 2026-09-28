@@ -2,8 +2,8 @@
 
 import { APIErrorResponse } from '@/types/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-export const API_MODE = import.meta.env.VITE_API_MODE || 'real';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_MODE = process.env.NEXT_PUBLIC_API_MODE || 'real';
 
 export class APIClientError extends Error {
   code: string;
