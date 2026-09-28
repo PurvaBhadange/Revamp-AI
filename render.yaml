@@ -41,6 +41,6 @@ databases:
     databaseName: revamp_ai
     user: revamp_user
 
-# Managed Redis Instance (Requires Render Redis setup)
-# (Alternatively, you can create a Redis instance manually in the Render dashboard
-# and supply the REDIS_URL environment variable to the backend service)
+redis:
+  - name: revamp-redis
+    plan: starter
