@@ -276,7 +276,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* ═══════════════════════════════════════════════════
           HOW IT WORKS
       ═══════════════════════════════════════════════════ */}
-      <section id="how" className="bg-[#F7F5F2] py-20 border-t border-stone-100">
+      <section id="how" className="bg-[#F7F5F2] py-16 border-t border-stone-100">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] items-start gap-0">
             {/* Left label + heading */}
@@ -323,7 +323,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* ═══════════════════════════════════════════════════
           ONE SOURCE → MULTIPLE OUTPUTS
       ═══════════════════════════════════════════════════ */}
-      <section id="outputs" className="py-24 bg-white border-t border-stone-100">
+      <section id="outputs" className="py-16 bg-white border-t border-stone-100">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="flex flex-col lg:flex-row gap-12 items-center">
             {/* Left */}
@@ -490,7 +490,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* ═══════════════════════════════════════════════════
           USE CASES
       ═══════════════════════════════════════════════════ */}
-      <section id="use-cases" className="py-24 bg-[#F9F8F6] border-t border-stone-200">
+      <section id="use-cases" className="py-16 bg-[#F9F8F6] border-t border-stone-200">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="text-center mb-16">
             <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">Targeted Applications</p>
@@ -514,7 +514,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* ═══════════════════════════════════════════════════
           FEATURES
       ═══════════════════════════════════════════════════ */}
-      <section id="features" className="py-24 bg-white border-t border-stone-200">
+      <section id="features" className="py-16 bg-white border-t border-stone-200">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
             <div className="flex-1">
@@ -557,7 +557,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       {/* ═══════════════════════════════════════════════════
           RESOURCES
       ═══════════════════════════════════════════════════ */}
-      <section id="resources" className="py-24 bg-stone-900 text-white">
+      <section id="resources" className="py-16 bg-stone-900 text-white">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24 text-center">
           <h2 className="text-[34px] font-black leading-[1.1] mb-6">Ready to transform your content?</h2>
           <p className="text-[15px] text-stone-400 mb-10 max-w-[600px] mx-auto">

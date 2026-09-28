@@ -22,7 +22,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
   };
 
   return (
-    <div className="min-h-screen w-full flex bg-[#FDFCFB] font-sans">
+    <div className="h-screen overflow-hidden w-full flex bg-[#FDFCFB] font-sans">
       
       {/* LEFT SIDE: BRANDING & MARKETING */}
       <div className="w-1/2 relative hidden lg:flex flex-col">
@@ -33,15 +33,15 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
         <div className="absolute inset-0 bg-gradient-to-b from-[#FDFCFB] via-[#FDFCFB]/90 to-transparent z-10" />
         
         {/* Left Side Content */}
-        <div className="relative z-20 flex flex-col pt-16 px-16 h-full max-w-[640px] mx-auto w-full">
+        <div className="relative z-20 flex flex-col pt-10 px-16 h-full max-w-[640px] mx-auto w-full">
           
           {/* Logo */}
-          <div className="flex items-center mb-16">
+          <div className="flex items-center mb-10">
             <span className="text-[24px] font-black text-stone-950 tracking-tight">REVAMP</span>
             <span className="text-[24px] font-black text-[#C07050] tracking-tight">&nbsp;AI</span>
           </div>
 
-          <div className="mb-12">
+          <div className="mb-8">
             <p className="text-[9px] font-bold tracking-[0.25em] text-[#C07050] uppercase mb-6">AI-Powered Content Transformation</p>
             <h1 className="text-[52px] font-black text-stone-950 tracking-tight leading-[1.05] mb-6 pr-12">
               Transform<br/>information<br/>into<br/>communication.
@@ -51,7 +51,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
             </p>
           </div>
 
-          <div className="flex flex-col gap-8 mt-auto mb-16 pl-4">
+          <div className="flex flex-col gap-6 mt-auto mb-10 pl-4">
             
             <div className="flex gap-5 items-start">
               <FileText className="h-6 w-6 text-stone-700 shrink-0 mt-0.5" strokeWidth={1.5} />
@@ -90,16 +90,16 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
       </div>
 
       {/* RIGHT SIDE: AUTH FORM */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#FDFCFB]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-[#FDFCFB]">
         
-        <div className="w-full max-w-[440px] bg-white rounded-2xl border border-stone-200 p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+        <div className="w-full max-w-[440px] bg-white rounded-2xl border border-stone-200 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           
-          <div className="mb-8">
-            <h2 className="text-[28px] font-black text-stone-900 tracking-tight mb-2">Welcome back</h2>
-            <p className="text-[14px] text-stone-500 font-medium">Sign in to your REVAMP AI account</p>
+          <div className="mb-6">
+            <h2 className="text-[26px] font-black text-stone-900 tracking-tight mb-1.5">Welcome back</h2>
+            <p className="text-[13px] text-stone-500 font-medium">Sign in to your REVAMP AI account</p>
           </div>
 
-          <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
             
             <div>
               <label className="block text-[13px] font-bold text-stone-900 mb-2">Email address</label>
@@ -198,7 +198,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
 
           </form>
 
-          <div className="flex items-center gap-4 my-8">
+          <div className="flex items-center gap-4 my-6">
             <div className="flex-1 h-px bg-stone-200"></div>
             <span className="text-[12px] text-stone-400 font-medium">Or continue with</span>
             <div className="flex-1 h-px bg-stone-200"></div>
@@ -225,7 +225,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: { onNavigate: (r: stri
             </button>
           </div>
 
-          <div className="mt-8 text-center">
+          <div className="mt-6 text-center">
             <p className="text-[13px] text-stone-500 font-medium">
               Don't have an account? <a href="#" className="font-bold text-[#A35E47] hover:text-[#8B4A2F]">Create account</a>
             </p>
