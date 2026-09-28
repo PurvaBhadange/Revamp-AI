@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { AuditLog } from '@/types/audit';
 import { mockAuditLogs } from './mock/mockData';

@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from 'zustand';
 import { User } from '@/types/auth';
 import { authApi } from '@/lib/api/auth';

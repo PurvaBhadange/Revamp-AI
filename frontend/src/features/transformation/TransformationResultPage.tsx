@@ -1,404 +1,363 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { transformationsApi } from '@/lib/api/transformations';
-import { artifactsApi } from '@/lib/api/artifacts';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { SeverityBadge } from '@/components/common/SeverityBadge';
-import { StatusBadge } from '@/components/common/StatusBadge';
-import { LoadingSpinner } from '@/components/ui/loading-state';
-import { formatDate } from '@/lib/utils';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip } from 'recharts';
-import {
-  Shield,
-  FileCheck,
-  Share2,
-  Presentation,
-  PieChart,
-  Video,
-  Download,
-  Copy,
-  CheckCircle2,
-  RefreshCw,
-  Play,
-  FileText,
-  Layers
+import { 
+  FileText, Presentation, Search, RefreshCw, Eye, Download, 
+  MoreHorizontal, Copy, Folder, ArrowLeft, CheckCircle2,
+  Globe2
 } from 'lucide-react';
-import { ICOInspector } from '@/components/common/ICOInspector';
-import { useUIStore } from '@/stores/uiStore';
+
+import { useQuery } from '@tanstack/react-query';
+import { artifactsApi } from '@/lib/api/artifacts';
+import { useWizardStore } from '@/stores/transformationWizardStore';
 
 interface TransformationResultPageProps {
-  transformationId: string;
-  onNavigate?: (route: string) => void;
+  transformationId?: string;
+  onNavigate: (route: string) => void;
 }
 
 export function TransformationResultPage({ transformationId, onNavigate }: TransformationResultPageProps) {
-  const navigate = onNavigate || ((route: string) => {
-    window.history.pushState({}, '', route);
-    window.dispatchEvent(new Event('popstate'));
-  });
-  const { addNotification } = useUIStore();
-  const [selectedSlideIdx, setSelectedSlideIdx] = useState(0);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const { selectedOutputs } = useWizardStore();
 
-  const { data: trans, isLoading: loadingTrans } = useQuery({
-    queryKey: ['transformation', transformationId],
-    queryFn: () => transformationsApi.get(transformationId),
-  });
-
-  const { data: artifacts, isLoading: loadingArt } = useQuery({
+  const { data: artifacts, isLoading } = useQuery({
     queryKey: ['artifacts', transformationId],
     queryFn: () => artifactsApi.list(transformationId),
+    enabled: !!transformationId,
   });
 
-  if (loadingTrans || loadingArt) {
-    return <LoadingSpinner text="Loading Transformation Artifact Workspace..." />;
-  }
-
-  if (!trans) {
-    return (
-      <div className="p-8 text-center">
-        <h3 className="text-sm font-semibold text-slate-300">Transformation not found</h3>
-        <Button className="mt-4" onClick={() => navigate('/dashboard')}>Return to Dashboard</Button>
-      </div>
-    );
-  }
-
-  const ctx = trans.central_context;
-  const artifactList = artifacts || [];
-
-  const getArtType = (a: any) => (a.type || a.artifact_type || '').toLowerCase();
-
-  const execBriefArt = artifactList.find((a) => getArtType(a).includes('brief') || getArtType(a).includes('executive'));
-  const advisoryArt = artifactList.find((a) => getArtType(a).includes('advisory') || getArtType(a).includes('security'));
-  const socialArt = artifactList.find((a) => getArtType(a).includes('social') || getArtType(a).includes('linkedin') || getArtType(a).includes('twitter') || getArtType(a).includes('x'));
-  const presentationArt = artifactList.find((a) => getArtType(a).includes('presentation') || getArtType(a).includes('deck') || getArtType(a).includes('pptx'));
-  const infographicArt = artifactList.find((a) => getArtType(a).includes('infographic'));
-  const videoArt = artifactList.find((a) => getArtType(a).includes('video') || getArtType(a).includes('script') || getArtType(a).includes('audio'));
-
-
-  const handleCopyText = (text: string) => {
-    navigator.clipboard.writeText(text);
-    addNotification({ type: 'success', title: 'Copied to Clipboard' });
-  };
-
-  const handleDownloadFile = async (artId: string, filename?: string) => {
-    try {
-      await artifactsApi.downloadFile(artId, filename);
-      addNotification({ type: 'success', title: 'Download Started' });
-    } catch (err: any) {
-      addNotification({ type: 'error', title: 'Download Failed', message: err.message });
-    }
-  };
-
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Transformation Result Header */}
-      <Card className="border-dark-800 bg-dark-900/90">
-        <CardContent className="p-6 space-y-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center space-x-3">
-                <SeverityBadge severity={trans.urgency_level} />
-                <h2 className="text-base font-bold text-slate-100 uppercase tracking-wide">
-                  {ctx?.core_topic || `Transformation #${trans.id.substring(0, 8)}`}
-                </h2>
+    <div className="min-h-full bg-[#F8F7F5] font-sans px-10 py-12">
+      <div className="max-w-[1300px] mx-auto">
+        
+        {/* HEADER & TOP RIGHT CARD */}
+        <div className="flex justify-between items-start mb-10">
+          <div>
+            <p className="text-[10px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-2">Transformation Complete</p>
+            <h1 className="text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">Your content is ready</h1>
+            <p className="text-[15px] text-stone-500 font-medium">
+              REVAMP AI has generated {isLoading ? '...' : (artifacts?.length || 0)} outputs from your source document.
+            </p>
+          </div>
+
+          {/* Source Document Card */}
+          <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-4 flex gap-5 w-[520px]">
+            {/* Mini Document */}
+            <div className="w-[85px] h-[110px] bg-white border border-stone-200 shadow-sm rounded flex flex-col shrink-0 overflow-hidden relative">
+              <div className="p-2 flex-1">
+                <p className="text-[6px] font-bold text-stone-900 leading-tight mb-1">Q3 Product Strategy Report</p>
+                <div className="w-3/4 h-[1.5px] bg-stone-300 mb-0.5 rounded"></div>
+                <div className="w-full h-[1.5px] bg-stone-200 mb-0.5 rounded"></div>
+                <div className="w-5/6 h-[1.5px] bg-stone-200 rounded"></div>
               </div>
-              <p className="text-xs text-slate-400">
-                Created: <span className="text-slate-300 font-mono">{formatDate(trans.created_at)}</span> | Target Audience: <span className="text-blue-400 capitalize">{trans.target_audience}</span> | Tone: <span className="text-slate-300 capitalize">{trans.tone}</span>
+              <div className="h-[45px] bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+            </div>
+
+            {/* Details */}
+            <div className="flex-1 pt-1">
+              <h3 className="text-[17px] font-black text-stone-900 leading-tight mb-1">Q3 Product Strategy Report</h3>
+              <p className="text-[11px] text-stone-500 font-medium flex items-center gap-1.5 mb-3">
+                <FileText className="h-3.5 w-3.5" /> PDF <span className="mx-0.5">•</span> 18 pages <span className="mx-0.5">•</span> 4.2 MB
+              </p>
+              <p className="text-[11px] text-stone-500 leading-relaxed pr-2">
+                Quarterly strategy report covering product performance, market analysis, key initiatives and roadmap for Q4. Includes competitive landscape and growth opportunities.
               </p>
             </div>
-            <div className="flex items-center space-x-2">
-              <StatusBadge status={trans.status} />
-              <Button variant="outline" size="sm" onClick={() => navigate('/transform/new')}>
-                New Transformation
-              </Button>
-            </div>
+          </div>
+        </div>
+
+        {/* FILTERS AND ACTIONS BAR */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setActiveFilter('all')}
+              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors ${
+                activeFilter === 'all' 
+                ? 'bg-[#FDF3F0] text-[#9E573F] border border-[#C07050]' 
+                : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+              }`}
+            >
+              All outputs (3)
+            </button>
+            <button 
+              onClick={() => setActiveFilter('docs')}
+              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors ${
+                activeFilter === 'docs' 
+                ? 'bg-[#FDF3F0] text-[#9E573F] border border-[#C07050]' 
+                : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+              }`}
+            >
+              Documents (1)
+            </button>
+            <button 
+              onClick={() => setActiveFilter('pres')}
+              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors ${
+                activeFilter === 'pres' 
+                ? 'bg-[#FDF3F0] text-[#9E573F] border border-[#C07050]' 
+                : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+              }`}
+            >
+              Presentations (1)
+            </button>
+            <button 
+              onClick={() => setActiveFilter('social')}
+              className={`px-5 py-2 rounded-full text-[13px] font-bold transition-colors ${
+                activeFilter === 'social' 
+                ? 'bg-[#FDF3F0] text-[#9E573F] border border-[#C07050]' 
+                : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+              }`}
+            >
+              Social Media (1)
+            </button>
           </div>
 
-          {/* Grounding & Guardrail Summary Banner */}
-          <div className="p-3 rounded bg-dark-950 border border-dark-800 flex items-center justify-between text-xs">
-            <div className="flex items-center space-x-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-              <span className="font-semibold text-slate-200">Compliance & Guardrail Status:</span>
-              <span className="text-emerald-400 font-mono uppercase font-bold">PASSED (100% Grounded)</span>
+          <div className="flex items-center gap-3">
+            <button className="h-9 w-9 rounded-lg bg-white border border-stone-200 flex items-center justify-center text-stone-600 hover:bg-stone-50 transition-colors shadow-sm">
+              <Search className="h-4 w-4" />
+            </button>
+            <button className="flex items-center gap-2 h-9 px-4 rounded-lg bg-white border border-stone-200 text-[12px] font-bold text-stone-700 hover:bg-stone-50 transition-colors shadow-sm">
+              <RefreshCw className="h-3.5 w-3.5" /> Regenerate all
+            </button>
+          </div>
+        </div>
+
+        {/* OUTPUTS GRID */}
+        <div className="grid grid-cols-3 gap-6 mb-12">
+          
+          {/* Card 1: Executive Summary */}
+          {selectedOutputs.includes('executive_brief') && (
+            <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-5 flex flex-col">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2.5">
+                  <FileText className="h-5 w-5 text-[#A35E47]" strokeWidth={1.5} />
+                  <h3 className="text-[15px] font-black text-stone-900 leading-tight">Executive Summary</h3>
+                </div>
+                <div className="flex items-center gap-1 bg-[#F0FDF4] border border-green-200 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="h-3 w-3 text-green-600" />
+                  <span className="text-[10px] font-bold text-green-700">Ready</span>
+                </div>
+              </div>
+              <p className="text-[12px] text-stone-500 leading-relaxed mb-6 h-10">
+                A concise executive summary with key insights and recommendations.
+              </p>
+            
+            {/* Visual Mockup */}
+            <div className="w-full aspect-[4/3] bg-[#F5F4F1] border border-stone-200 rounded-lg mb-5 flex items-center justify-center p-6 relative overflow-hidden">
+              <div className="w-full h-full bg-white shadow-md flex flex-row relative overflow-hidden">
+                <div className="w-1/2 p-5 flex flex-col">
+                  <div className="flex items-center gap-1 mb-6">
+                    <span className="text-[7px] font-black text-stone-900">REVAMP</span>
+                    <span className="text-[7px] font-black text-[#C07050]">AI</span>
+                  </div>
+                  <p className="text-[8px] font-bold text-stone-500 mb-1">Q3 2024</p>
+                  <h4 className="text-[16px] font-black text-stone-900 leading-tight mb-8">Executive<br/>Summary</h4>
+                  <div className="w-full h-[2px] bg-stone-200 mb-1.5 rounded"></div>
+                  <div className="w-full h-[2px] bg-stone-200 mb-1.5 rounded"></div>
+                  <div className="w-5/6 h-[2px] bg-stone-200 mb-1.5 rounded"></div>
+                  <div className="w-3/4 h-[2px] bg-stone-200 rounded"></div>
+                </div>
+                <div className="w-1/2 h-full bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+              </div>
             </div>
-            <div className="flex items-center space-x-2 text-slate-400 font-mono text-[11px]">
-              <span>Zero PII Exposed</span> • <span>Severity Aligned</span>
+
+            <p className="text-[11px] text-stone-400 font-medium flex items-center gap-1.5 mb-5">
+              <FileText className="h-3.5 w-3.5" /> PDF <span className="mx-1">•</span> 4 pages <span className="mx-1">•</span> 1.2 MB
+            </p>
+            
+            <div className="flex items-center gap-2 mt-auto">
+              <button 
+                onClick={() => onNavigate('/artifacts/exec-summary')}
+                className="flex-1 flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm"
+              >
+                <Eye className="h-4 w-4" /> View
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
+                <Download className="h-4 w-4" /> Download
+              </button>
+              <button className="flex items-center justify-center w-10 h-[38px] bg-white border border-stone-300 hover:bg-stone-50 text-stone-600 rounded-lg transition-colors shadow-sm shrink-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        )}
 
-      {/* Artifact Viewers Tabs */}
-      <Tabs defaultValue="executive">
-        <TabsList className="w-full justify-start overflow-x-auto">
-          <TabsTrigger value="ico"><Layers className="h-3.5 w-3.5 mr-1.5 text-blue-400" /> ICO Context & Provenance</TabsTrigger>
-          <TabsTrigger value="executive"><Shield className="h-3.5 w-3.5 mr-1.5" /> Executive Brief</TabsTrigger>
-          <TabsTrigger value="advisory"><FileCheck className="h-3.5 w-3.5 mr-1.5" /> Security Advisory</TabsTrigger>
-          <TabsTrigger value="social"><Share2 className="h-3.5 w-3.5 mr-1.5" /> Social Campaign</TabsTrigger>
-          <TabsTrigger value="presentation"><Presentation className="h-3.5 w-3.5 mr-1.5" /> Presentation Deck</TabsTrigger>
-          <TabsTrigger value="infographic"><PieChart className="h-3.5 w-3.5 mr-1.5" /> Infographic Data</TabsTrigger>
-          <TabsTrigger value="video"><Video className="h-3.5 w-3.5 mr-1.5" /> Video Package</TabsTrigger>
-        </TabsList>
-
-        {/* TAB 0: ICO CONTEXT & PROVENANCE */}
-        <TabsContent value="ico">
-          <ICOInspector ico={ctx} readOnly={true} />
-        </TabsContent>
-
-        {/* TAB 1: EXECUTIVE BRIEF */}
-        <TabsContent value="executive">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Executive Briefing Report</CardTitle>
-                <CardDescription>CISO & Executive Leadership Summary</CardDescription>
-              </div>
-              {execBriefArt && (
-                <Button variant="outline" size="sm" onClick={() => handleCopyText(JSON.stringify(execBriefArt.content, null, 2))}>
-                  <Copy className="h-3.5 w-3.5 mr-1.5" /> Copy JSON
-                </Button>
-              )}
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider">Executive Summary</h4>
-                <p className="text-xs text-slate-300 leading-relaxed bg-dark-950 p-4 rounded border border-dark-800">
-                  {execBriefArt?.content?.executive_summary || ctx?.executive_summary || 'Executive summary unavailable.'}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded border border-dark-800 bg-dark-950/60 space-y-2">
-                  <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">Business Impact</h4>
-                  <p className="text-xs text-slate-300">
-                    {execBriefArt?.content?.business_impact || 'Operational continuity impacted; high risk of unauthorized data exposure.'}
-                  </p>
+          {/* Card 2: Presentation */}
+          {selectedOutputs.includes('presentation') && (
+            <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-5 flex flex-col">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center gap-2.5">
+                  <Presentation className="h-5 w-5 text-[#A35E47]" strokeWidth={1.5} />
+                  <h3 className="text-[15px] font-black text-stone-900 leading-tight">Presentation</h3>
                 </div>
-                <div className="p-4 rounded border border-dark-800 bg-dark-950/60 space-y-2">
-                  <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider">Operational Risk</h4>
-                  <p className="text-xs text-slate-300">
-                    {execBriefArt?.content?.operational_risk || 'Domain controller compromise could result in enterprise identity hijack.'}
-                  </p>
+                <div className="flex items-center gap-1 bg-[#F0FDF4] border border-green-200 px-2 py-0.5 rounded-full">
+                  <CheckCircle2 className="h-3 w-3 text-green-600" />
+                  <span className="text-[10px] font-bold text-green-700">Ready</span>
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Immediate Recommended Actions</h4>
-                <ul className="list-disc pl-5 text-xs text-slate-300 space-y-1">
-                  {(execBriefArt?.content?.recommended_actions || ctx?.recommended_actions || []).map((act: string, idx: number) => (
-                    <li key={idx}>{act}</li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 2: SECURITY ADVISORY */}
-        <TabsContent value="advisory">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Technical Security Advisory</CardTitle>
-                <CardDescription>Formatted threat advisory for SOC & SecOps teams</CardDescription>
-              </div>
-              {advisoryArt && (
-                <Button variant="primary" size="sm" onClick={() => handleDownloadFile(advisoryArt.id, 'security_advisory.pdf')}>
-                  <Download className="h-3.5 w-3.5 mr-1.5" /> Download Advisory PDF
-                </Button>
-              )}
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 rounded bg-dark-950 border border-dark-800 space-y-3">
-                <div className="flex items-center justify-between border-b border-dark-800 pb-2">
-                  <span className="text-xs font-bold text-slate-100 uppercase">{advisoryArt?.content?.title || 'Vulnerability Advisory'}</span>
-                  <SeverityBadge severity={advisoryArt?.content?.severity || trans.urgency_level} />
+              <p className="text-[12px] text-stone-500 leading-relaxed mb-6 h-10">
+                A clean, professional presentation with key insights, visuals and takeaways.
+              </p>
+            
+            {/* Visual Mockup */}
+            <div className="w-full aspect-[4/3] bg-[#F5F4F1] border border-stone-200 rounded-lg mb-5 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+              {/* Background faded slide */}
+              <div className="absolute top-6 right-4 left-16 bottom-[80px] bg-white border border-stone-200 shadow-sm rounded-lg opacity-40 translate-x-4 scale-95" />
+              {/* Main Slide */}
+              <div className="w-full h-[140px] bg-white border border-stone-200 shadow-md rounded-lg mb-3 flex flex-col p-4 relative z-10">
+                <div className="flex items-center gap-1 mb-2">
+                  <span className="text-[6px] font-black text-stone-900">REVAMP</span>
+                  <span className="text-[6px] font-black text-[#C07050]">AI</span>
                 </div>
-                <p className="text-xs text-slate-300">{advisoryArt?.content?.threat_overview || ctx?.executive_summary}</p>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Indicators of Compromise (IoCs)</h4>
-                <div className="p-3 rounded bg-dark-950 border border-dark-800 font-mono text-xs text-emerald-400">
-                  {(advisoryArt?.content?.indicators || ctx?.threat_indicators || []).map((ioc: string, idx: number) => (
-                    <div key={idx}>{ioc}</div>
-                  ))}
+                <h4 className="text-[14px] font-black text-stone-900 leading-tight mb-auto w-2/3">Q3 Product<br/>Strategy Overview</h4>
+                {/* Bar chart graphic */}
+                <div className="flex items-end gap-1.5 h-[40px] w-[50%] self-end">
+                  <div className="w-full bg-[#E5DFD6] h-[30%] rounded-t-sm"></div>
+                  <div className="w-full bg-[#D4ACA0] h-[50%] rounded-t-sm"></div>
+                  <div className="w-full bg-[#C07050] h-[75%] rounded-t-sm"></div>
+                  <div className="w-full bg-[#8B4A2F] h-[100%] rounded-t-sm"></div>
+                </div>
+                <div className="absolute bottom-3 left-4 flex gap-[2px]">
+                  <div className="w-4 h-[2px] bg-stone-900"></div>
+                  <div className="w-2 h-[2px] bg-[#C07050]"></div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 3: SOCIAL CAMPAIGN */}
-        <TabsContent value="social">
-          <Card>
-            <CardHeader>
-              <CardTitle>Social Media Communications</CardTitle>
-              <CardDescription>Platform-tailored LinkedIn and Twitter/X posts</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* LinkedIn */}
-              <div className="p-4 rounded border border-dark-800 bg-dark-950 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">LinkedIn Post</span>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    Character Count: {socialArt?.content?.linkedin?.character_count || 450} / 3000
-                  </span>
+              {/* Thumbnail row */}
+              <div className="flex gap-2 w-full justify-between z-10">
+                <div className="h-9 flex-1 bg-white border-2 border-[#C07050] rounded flex relative overflow-hidden">
+                   <div className="absolute top-0.5 left-1 text-[5px] text-stone-400 font-bold">01</div>
+                   <div className="absolute bottom-0 right-0 left-4 h-1/2 bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
                 </div>
-                <p className="text-xs text-slate-200 whitespace-pre-wrap leading-relaxed">
-                  {socialArt?.content?.linkedin?.content || `🚨 CYBER THREAT ALERT: Emergency Response Required\n\nAnalyst Advisory: Critical zero-day vulnerability detected in perimeter infrastructure.`}
-                </p>
-                <Button variant="outline" size="sm" onClick={() => handleCopyText(socialArt?.content?.linkedin?.content || '')}>
-                  <Copy className="h-3.5 w-3.5 mr-1.5" /> Copy LinkedIn Content
-                </Button>
-              </div>
-
-              {/* Twitter / X */}
-              <div className="p-4 rounded border border-dark-800 bg-dark-950 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">Twitter / X Thread</span>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    Character Count: {socialArt?.content?.twitter?.character_count || 210} / 280
-                  </span>
+                <div className="h-9 flex-1 bg-white border border-stone-200 rounded flex relative overflow-hidden">
+                   <div className="absolute top-0.5 left-1 text-[5px] text-stone-400 font-bold">02</div>
+                   <div className="flex items-end gap-[1px] absolute bottom-1 right-1 h-3 w-4">
+                     <div className="w-full h-[40%] bg-stone-200"></div>
+                     <div className="w-full h-[70%] bg-stone-300"></div>
+                     <div className="w-full h-[100%] bg-stone-400"></div>
+                   </div>
                 </div>
-                <p className="text-xs text-slate-200 whitespace-pre-wrap">
-                  {socialArt?.content?.twitter?.content || `⚠️ SECURITY ALERT: Critical Remote Code Execution vulnerability in perimeter gateways. Patch immediately. #CyberSecurity #InfoSec`}
-                </p>
-                <Button variant="outline" size="sm" onClick={() => handleCopyText(socialArt?.content?.twitter?.content || '')}>
-                  <Copy className="h-3.5 w-3.5 mr-1.5" /> Copy Tweet Thread
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 4: PRESENTATION DECK */}
-        <TabsContent value="presentation">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Executive Presentation Deck</CardTitle>
-                <CardDescription>Structured slides previewer</CardDescription>
-              </div>
-              {presentationArt && (
-                <Button variant="primary" size="sm" onClick={() => handleDownloadFile(presentationArt.id, 'presentation.pptx')}>
-                  <Download className="h-3.5 w-3.5 mr-1.5" /> Download Editable PPTX
-                </Button>
-              )}
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {/* Slide List Navigator */}
-                <div className="space-y-2 border-r border-dark-800 pr-4">
-                  {(presentationArt?.content?.slides || [
-                    { slide_number: 1, title: 'Threat Overview' },
-                    { slide_number: 2, title: 'Affected Systems' },
-                    { slide_number: 3, title: 'Recommended Action' }
-                  ]).map((slide: any, idx: number) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedSlideIdx(idx)}
-                      className={`w-full p-2.5 rounded text-xs font-semibold text-left transition-colors ${
-                        selectedSlideIdx === idx ? 'bg-blue-600 text-white' : 'bg-dark-900 text-slate-400 hover:bg-dark-850'
-                      }`}
-                    >
-                      Slide {slide.slide_number}: {slide.title}
-                    </button>
-                  ))}
+                <div className="h-9 flex-1 bg-white border border-stone-200 rounded flex relative overflow-hidden">
+                   <div className="absolute top-0.5 left-1 text-[5px] text-stone-400 font-bold">03</div>
+                   <div className="flex items-end gap-[1px] absolute bottom-1 right-1 h-3 w-4">
+                     <div className="w-full h-[60%] bg-[#E5DFD6]"></div>
+                     <div className="w-full h-[80%] bg-[#C07050]"></div>
+                     <div className="w-full h-[40%] bg-[#8B4A2F]"></div>
+                   </div>
                 </div>
-
-                {/* Slide Preview Center */}
-                <div className="md:col-span-3 p-6 rounded-lg border border-dark-700 bg-dark-950 flex flex-col justify-between min-h-64">
-                  <div className="space-y-4">
-                    <h3 className="text-base font-bold text-slate-100 uppercase tracking-wide">
-                      {presentationArt?.content?.slides?.[selectedSlideIdx]?.title || 'Slide Title'}
-                    </h3>
-                    <ul className="list-disc pl-5 text-xs text-slate-300 space-y-2">
-                      {(presentationArt?.content?.slides?.[selectedSlideIdx]?.bullets || ['Key takeaway bullet point 1', 'Impact statement 2']).map((b: string, idx: number) => (
-                        <li key={idx}>{b}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="pt-4 border-t border-dark-800 text-[11px] text-slate-500 font-mono">
-                    Speaker Notes: {presentationArt?.content?.slides?.[selectedSlideIdx]?.speaker_notes || 'Emphasize urgent mitigation urgency to leadership.'}
-                  </div>
+                <div className="h-9 flex-1 bg-white border border-stone-200 rounded flex relative overflow-hidden">
+                   <div className="absolute top-0.5 left-1 text-[5px] text-stone-400 font-bold">04</div>
+                   <div className="absolute bottom-0 right-0 left-0 h-1/2 bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
 
-        {/* TAB 5: INFOGRAPHIC DATA */}
-        <TabsContent value="infographic">
-          <Card>
-            <CardHeader>
-              <CardTitle>Infographic Data & Metrics</CardTitle>
-              <CardDescription>Threat flow visualization and impacted indicators</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Recharts Metric Bar Chart */}
-              <div className="h-64 w-full p-4 rounded bg-dark-950 border border-dark-800">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={[
-                    { name: 'Threat Level', count: 90 },
-                    { name: 'Affected Systems', count: 65 },
-                    { name: 'IoC Indicators', count: 85 },
-                    { name: 'Mitigation Status', count: 40 },
-                  ]}>
-                    <XAxis dataKey="name" stroke="#64748b" fontSize={11} />
-                    <YAxis stroke="#64748b" fontSize={11} />
-                    <RechartsTooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', fontSize: '12px' }} />
-                    <Bar dataKey="count" fill="#38bdf8" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+            <p className="text-[11px] text-stone-400 font-medium flex items-center gap-1.5 mb-5">
+              <Presentation className="h-3.5 w-3.5" /> PPTX <span className="mx-1">•</span> 10 slides <span className="mx-1">•</span> 8.4 MB
+            </p>
+            
+            <div className="flex items-center gap-2 mt-auto">
+              <button className="flex-1 flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
+                <Eye className="h-4 w-4" /> View
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
+                <Download className="h-4 w-4" /> Download
+              </button>
+              <button className="flex items-center justify-center w-10 h-[38px] bg-white border border-stone-300 hover:bg-stone-50 text-stone-600 rounded-lg transition-colors shadow-sm shrink-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
+            </div>
+            </div>
+          )}
 
-              <div className="p-4 rounded border border-dark-800 bg-dark-950 space-y-2">
-                <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Threat Flow Lifecycle</h4>
-                <p className="text-xs text-slate-400">Core Topic: {ctx?.core_topic}</p>
+          {/* Card 3: LinkedIn Post */}
+          {selectedOutputs.includes('social') && (
+            <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-5 flex flex-col">
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex items-center gap-2.5">
+                <div className="h-5 w-5 bg-[#0A66C2] rounded-[4px] flex items-center justify-center">
+                  <span className="text-[12px] font-black text-white leading-none">in</span>
+                </div>
+                <h3 className="text-[15px] font-black text-stone-900 leading-tight">LinkedIn Post</h3>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 6: VIDEO PACKAGE */}
-        <TabsContent value="video">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Video Intelligence Package</CardTitle>
-                <CardDescription>Storyboard scenes, TTS voiceover MP3 narration & SRT subtitles</CardDescription>
+              <div className="flex items-center gap-1 bg-[#F0FDF4] border border-green-200 px-2 py-0.5 rounded-full">
+                <CheckCircle2 className="h-3 w-3 text-green-600" />
+                <span className="text-[10px] font-bold text-green-700">Ready</span>
               </div>
-              {videoArt && (
-                <Button variant="primary" size="sm" onClick={() => handleDownloadFile(videoArt.id, 'video_package.zip')}>
-                  <Download className="h-3.5 w-3.5 mr-1.5" /> Download Video Package ZIP
-                </Button>
-              )}
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Storyboard Scenes Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(videoArt?.content?.scenes || [
-                  { scene_number: 1, duration: 8, voiceover_text: 'Critical alert: Zero day vulnerability confirmed.', subtitle_text: 'Vulnerability Alert', visual_recommendation: 'Map view of gateway' },
-                  { scene_number: 2, duration: 10, voiceover_text: 'Attackers deploy Cobalt Strike payload within 4 hours.', subtitle_text: 'Ransomware Risk', visual_recommendation: 'Terminal shell exploit' },
-                ]).map((scene: any, idx: number) => (
-                  <div key={idx} className="p-4 rounded-lg border border-dark-800 bg-dark-950 space-y-2">
-                    <div className="flex items-center justify-between border-b border-dark-800 pb-2">
-                      <span className="text-xs font-bold text-blue-400 uppercase">Scene 0{scene.scene_number}</span>
-                      <span className="text-[10px] font-mono text-slate-500">{scene.duration}s</span>
+            </div>
+            <p className="text-[12px] text-stone-500 leading-relaxed mb-6 h-10">
+              A short, engaging post tailored for professional audiences on LinkedIn.
+            </p>
+            
+            {/* Visual Mockup */}
+            <div className="w-full aspect-[4/3] bg-[#F5F4F1] border border-stone-200 rounded-lg mb-5 flex items-center justify-center p-5 relative overflow-hidden">
+              <div className="w-full h-full bg-white shadow-md border border-stone-200 rounded-[6px] flex flex-col relative overflow-hidden">
+                <div className="p-3">
+                  {/* LinkedIn Header */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-7 w-7 bg-[#0A66C2] rounded-[4px] flex items-center justify-center shrink-0">
+                      <span className="text-[14px] font-black text-white">in</span>
                     </div>
-                    <p className="text-xs text-slate-200"><strong>Narration:</strong> "{scene.voiceover_text}"</p>
-                    <p className="text-[11px] text-slate-400"><strong>Visual Prompt:</strong> {scene.visual_recommendation}</p>
+                    <div>
+                      <p className="text-[10px] font-bold text-stone-900 leading-tight">REVAMP AI</p>
+                      <p className="text-[8px] text-stone-500 leading-tight flex items-center gap-0.5">1d • <Globe2 className="h-2 w-2" /></p>
+                    </div>
                   </div>
-                ))}
+                  {/* Post Content */}
+                  <p className="text-[10px] font-bold text-stone-900 leading-tight mb-2">
+                    5 key trends shaping the future of product strategy in 2024.
+                  </p>
+                  <p className="text-[9px] text-stone-600 leading-relaxed mb-2">
+                    From market shifts to emerging opportunities, here are the insights every leader should know.
+                  </p>
+                  <p className="text-[9px] font-medium text-[#0A66C2] leading-tight mb-2">
+                    #ProductStrategy #Leadership #Innovation #BusinessGrowth
+                  </p>
+                </div>
+                {/* Image Embed */}
+                <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </div>
+
+            <p className="text-[11px] text-stone-400 font-medium flex items-center gap-1.5 mb-5">
+              <div className="h-3.5 w-3.5 bg-[#0A66C2] rounded-[2px] flex items-center justify-center">
+                <span className="text-[8px] font-black text-white leading-none">in</span>
+              </div>
+              Social Media <span className="mx-1">•</span> ~1,100 characters
+            </p>
+            
+            <div className="flex items-center gap-2 mt-auto">
+              <button className="flex-1 flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
+                <Copy className="h-4 w-4" /> Copy
+              </button>
+              <button className="flex-1 flex items-center justify-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
+                <Download className="h-4 w-4" /> Download
+              </button>
+              <button className="flex items-center justify-center w-10 h-[38px] bg-white border border-stone-300 hover:bg-stone-50 text-stone-600 rounded-lg transition-colors shadow-sm shrink-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
+            </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* BOTTOM ACTION BAR */}
+        <div className="flex items-center justify-between pt-5 border-t border-stone-200">
+          <button 
+            onClick={() => onNavigate('/transform/new')}
+            className="flex items-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-[14px] px-6 py-3 rounded-lg transition-all shadow-sm"
+          >
+            <ArrowLeft className="h-4 w-4" /> Transform another document
+          </button>
+          
+          <button 
+            onClick={() => onNavigate('/dashboard')}
+            className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[14px] px-6 py-3 rounded-lg transition-all shadow-sm"
+          >
+            <Folder className="h-4 w-4" /> Save to project
+          </button>
+        </div>
+
+      </div>
     </div>
   );
 }

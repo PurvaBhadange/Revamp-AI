@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { Artifact } from '@/types/artifact';
 import { mockArtifacts } from './mock/mockData';

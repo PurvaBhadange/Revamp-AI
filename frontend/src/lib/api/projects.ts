@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { Project, ProjectCreateRequest } from '@/types/project';
 import { mockProjects } from './mock/mockData';

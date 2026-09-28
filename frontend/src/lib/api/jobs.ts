@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { JobStatusResponse, SSEJobEvent } from '@/types/job';
 

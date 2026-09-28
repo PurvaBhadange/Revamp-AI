@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
@@ -10,14 +12,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-dark-950 disabled:opacity-50 disabled:pointer-events-none select-none';
+    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-white disabled:opacity-50 disabled:pointer-events-none select-none';
 
     const variants = {
-      primary: 'bg-blue-600 hover:bg-blue-500 text-white shadow-sm border border-blue-500/30',
-      secondary: 'bg-dark-800 hover:bg-dark-750 text-slate-100 border border-dark-700/60 shadow-sm',
-      outline: 'bg-transparent hover:bg-dark-800 text-slate-200 border border-dark-700',
-      ghost: 'bg-transparent hover:bg-dark-800 text-slate-300 hover:text-white',
-      danger: 'bg-red-600/90 hover:bg-red-600 text-white border border-red-500/40',
+      primary: 'bg-orange-600 hover:bg-orange-700 text-white shadow-sm border border-orange-600',
+      secondary: 'bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 shadow-sm',
+      outline: 'bg-white hover:bg-stone-50 text-stone-700 border border-stone-300',
+      ghost: 'bg-transparent hover:bg-stone-100 text-stone-600 hover:text-stone-900',
+      danger: 'bg-red-600 hover:bg-red-700 text-white shadow-sm border border-red-600',
     };
 
     const sizes = {

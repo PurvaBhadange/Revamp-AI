@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  /* URBAN LOFT PALETTE */
+  --color-orange-50: #f5ece9;
+  --color-orange-100: #eaddd6;
+  --color-orange-200: #d5bcae;
+  --color-orange-300: #c19b88;
+  --color-orange-400: #b27d65;
+  --color-orange-500: #a3674f; 
+  --color-orange-600: #A35E47; /* Primary Action: Terracotta/Brick */
+  --color-orange-700: #894d3a;
+  --color-orange-800: #6e3e2f;
+  --color-orange-900: #553025;
+  --color-orange-950: #301a13;
+
+  --color-stone-50: #F9F9F9; /* App Background: Crisp Off-White */
+  --color-stone-100: #efefef;
+  --color-stone-200: #dcdcdc;
+  --color-stone-300: #b5b5b5;
+  --color-stone-400: #9C9A9A; /* Mid-Grey */
+  --color-stone-500: #7e7e7e;
+  --color-stone-600: #636363;
+  --color-stone-700: #464646; /* Dark Charcoal */
+  --color-stone-800: #2c2c2c;
+  --color-stone-900: #171717; 
+  --color-stone-950: #000000; /* Pure Black for High Contrast Text */
+
+  --color-cyber-orange: #f97316;
+  --color-cyber-emerald: #059669;
+  --color-cyber-amber: #d97706;
+  --color-cyber-red: #dc2626;
+  --color-cyber-purple: #7c3aed;
+
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Epilogue', sans-serif;
+  --font-tech: 'Rajdhani', sans-serif;
+  --font-mono: 'IBM Plex Mono', Consolas, monospace;
+
+  --shadow-subtle: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--color-stone-50);
+  color: var(--color-stone-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Utilities for Scrollbars and specific elements */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-stone-200);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone-300);
+}

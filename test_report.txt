@@ -1,0 +1,26 @@
+# Q3 2024 Cybersecurity Threat Intelligence Report
+
+## 1. Executive Summary
+In Q3 2024, our Security Operations Center (SOC) observed a 45% increase in targeted ransomware attacks against our third-party logistics vendors. The most prominent threat actor identified during this period was a group tracking under the designation UNC2465, utilizing a new variant of the LockBit 3.0 ransomware family. The primary vector of compromise was unpatched VPN appliances and stolen credential reuse. 
+
+## 2. Key Findings
+- **Vulnerability Exploitation:** 60% of successful breaches were attributed to CVE-2024-45321, a critical zero-day vulnerability in perimeter edge firewalls that was disclosed in late August.
+- **Ransomware Dwell Time:** The median dwell time before ransomware execution has decreased from 14 days to just 4 days, indicating highly automated attack playbooks.
+- **Data Exfiltration:** Attackers are prioritizing the exfiltration of sensitive PII and financial ledgers before encryption, employing double-extortion tactics.
+
+## 3. Incident Case Study: Logistics Provider Alpha
+On September 12th, Logistics Provider Alpha experienced a total network shutdown. Our forensic analysis revealed:
+1. Initial access was gained via an exposed RDP port using compromised credentials purchased on the dark web.
+2. The attackers escalated privileges using a misconfigured Active Directory service account.
+3. Cobalt Strike beacons were deployed to maintain persistence across 50+ Windows servers.
+4. Approximately 4.2 TB of data was exfiltrated to a cloud storage provider before the encryption payload was triggered.
+
+## 4. Recommendations and Action Plan
+To mitigate these emerging threats, we mandate the following actions across all internal systems and tier-1 vendors:
+1. **Patch Management:** Immediately apply the vendor-supplied patch for CVE-2024-45321 on all edge firewalls.
+2. **MFA Enforcement:** Enforce strict Multi-Factor Authentication (MFA) for all external access, including VPNs and RDP gateways. No exceptions.
+3. **Endpoint Detection:** Deploy the latest EDR agents with aggressive behavioral heuristics enabled on all domain controllers.
+4. **Vendor Audits:** Initiate emergency security posture audits for all logistics vendors with network integrations.
+
+## 5. Conclusion
+The threat landscape is rapidly evolving, with threat actors demonstrating increasing speed and sophistication. Failure to implement the recommended action plan within the next 14 days will result in an unacceptable level of operational risk.

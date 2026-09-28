@@ -16,10 +16,12 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # LLM Settings
-    LLM_PROVIDER: str = "gemini"  # gemini or ollama
+    LLM_PROVIDER: str = "sarvam"  # gemini, ollama, sarvam
     GEMINI_API_KEY: Optional[str] = Field(default=None)
     GEMINI_MODEL: str = "gemini-1.5-flash"
     GEMINI_FAST_MODEL: str = "gemini-1.5-flash"
+    SARVAM_API_KEY: Optional[str] = Field(default=None)
+    SARVAM_MODEL: str = "sarvam-1"
 
 
     OLLAMA_BASE_URL: str = "http://localhost:11434"

@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from 'zustand';
 import { TargetAudience, Tone, Objective, UrgencyLevel, OutputFormat } from '@/types/transformation';
 import { IngestionResponse } from '@/types/ingestion';

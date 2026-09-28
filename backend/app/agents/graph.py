@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Dict, Callable
+from typing import Any, Dict, Callable, List
 from app.agents.state import TransformationState, AgentProgress
 from app.agents.ingestion_agent import ingestion_agent
 from app.agents.context_agent import context_agent
@@ -130,7 +130,11 @@ class TransformationGraphRunner:
             return state
 
     def _determine_agent_routes(self, intent: str, requested_formats: List[str]) -> List[str]:
-        # Intelligent routing maps cybersecurity intent to recommended formats
+        # If the user explicitly requested formats, we must strictly honor their choice.
+        if requested_formats:
+            return requested_formats
+            
+        # Fallback: Intelligent routing maps cybersecurity intent to recommended formats
         intent_routes = {
             "incident_report": ["executive_brief", "advisory", "social", "presentation", "infographic", "video"],
             "vulnerability_advisory": ["advisory", "executive_brief", "presentation", "infographic"],
@@ -140,10 +144,7 @@ class TransformationGraphRunner:
             "risk_assessment": ["executive_brief", "presentation", "infographic"],
             "policy_update": ["executive_brief", "presentation"]
         }
-        recommended = intent_routes.get(intent, ["executive_brief", "advisory", "social", "presentation", "infographic", "video"])
-        # Intersection with user requested formats (ensure requested formats are honored)
-        final_routes = list(set(recommended).intersection(set(requested_formats))) if requested_formats else recommended
-        return final_routes if final_routes else requested_formats
+        return intent_routes.get(intent, ["executive_brief", "advisory", "social", "presentation", "infographic", "video"])
 
     def _render_artifacts(self, state: TransformationState):
         prefix = f"trans_{state.transformation_id[:8]}"

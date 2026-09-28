@@ -1,234 +1,245 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { settingsApi } from '@/lib/api/settings';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { LoadingState } from '@/components/ui/loading-state';
-import { EmptyState } from '@/components/ui/empty-state';
-import { Settings, Cpu, Shield, Database, Server, Check, Save, Sparkles, UserCheck } from 'lucide-react';
+import { 
+  User, Bell, Shield, Users, Link2, CreditCard, Trash2, Building, Database, ChevronDown
+} from 'lucide-react';
 
-export const SettingsPage: React.FC = () => {
-  const queryClient = useQueryClient();
-  const [selectedProvider, setSelectedProvider] = useState<'gemini' | 'ollama'>('gemini');
-  const [saveSuccess, setSaveSuccess] = useState(false);
+interface SettingsPageProps {
+  onNavigate: (route: string) => void;
+}
 
-  const { data: settings, isLoading, error } = useQuery({
-    queryKey: ['settings'],
-    queryFn: settingsApi.get,
-    onSuccess: (data) => {
-      setSelectedProvider(data.llm_provider as 'gemini' | 'ollama');
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: settingsApi.update,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['settings'] });
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    },
-  });
-
-  const handleProviderSwitch = (provider: 'gemini' | 'ollama') => {
-    setSelectedProvider(provider);
-    updateMutation.mutate({ llm_provider: provider });
-  };
-
-  if (isLoading) return <LoadingState label="Retrieving system configuration..." />;
-  if (error || !settings) return <EmptyState icon={Settings} title="Settings Error" description="Unable to connect to backend settings API endpoint." />;
+export function SettingsPage({ onNavigate }: SettingsPageProps) {
+  const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-100 flex items-center gap-2">
-            <Settings className="h-6 w-6 text-indigo-400" />
-            System & LLM Engine Settings
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Manage GenAI model providers, vector indexing parameters, operational defaults, and system telemetry.
-          </p>
-        </div>
-        {saveSuccess && (
-          <span className="inline-flex items-center gap-1.5 text-xs text-emerald-400 font-mono bg-emerald-950/40 border border-emerald-800/40 px-3 py-1.5 rounded-md">
-            <Check className="h-4 w-4" />
-            Settings Updated
-          </span>
-        )}
+    <div className="min-h-full bg-[#FDFCFB] font-sans px-8 py-10">
+      
+      {/* PAGE HEADER */}
+      <div className="mb-10">
+        <p className="text-[10px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-2">Settings</p>
+        <h1 className="text-[44px] font-black text-stone-950 tracking-tight leading-none mb-3">Settings</h1>
+        <p className="text-[15px] text-stone-500 font-medium">Manage your account, preferences, and workspace settings.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: LLM Provider Configuration */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* AI Model Provider */}
-          <Card className="bg-slate-900/60 border-slate-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-100 flex items-center gap-2">
-                <Cpu className="h-5 w-5 text-indigo-400" />
-                Specialized LLM Orchestration Engine
-              </CardTitle>
-              <p className="text-xs text-slate-400">
-                Select backend inference provider for agent transformation tasks. All direct API credentials remain secured strictly server-side.
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Provider 1: Gemini Cloud */}
-                <div
-                  onClick={() => handleProviderSwitch('gemini')}
-                  className={`p-4 rounded-lg border cursor-pointer transition flex flex-col justify-between space-y-3 ${
-                    selectedProvider === 'gemini'
-                      ? 'bg-indigo-950/30 border-indigo-500 shadow-md'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-                        Google Gemini 2.5 Flash
-                        <Sparkles className="h-4 w-4 text-amber-400" />
-                      </h4>
-                      <p className="text-xs text-slate-400 mt-1">
-                        Ultra-fast multi-modal processing with high structural reasoning.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-slate-800/80">
-                    <span className="text-slate-400">Status:</span>
-                    <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-950/20 text-[10px]">
-                      AVAILABLE
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Provider 2: Local Ollama */}
-                <div
-                  onClick={() => handleProviderSwitch('ollama')}
-                  className={`p-4 rounded-lg border cursor-pointer transition flex flex-col justify-between space-y-3 ${
-                    selectedProvider === 'ollama'
-                      ? 'bg-indigo-950/30 border-indigo-500 shadow-md'
-                      : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-100 flex items-center gap-1.5">
-                        Local Ollama (Llama 3.1)
-                        <Server className="h-4 w-4 text-purple-400" />
-                      </h4>
-                      <p className="text-xs text-slate-400 mt-1">
-                        Air-gapped on-premise model execution for ultra-sensitive intelligence.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-slate-800/80">
-                    <span className="text-slate-400">Status:</span>
-                    <Badge variant="outline" className="border-slate-700 text-slate-400 bg-slate-950 text-[10px]">
-                      CONFIGURED
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Operational Defaults */}
-          <Card className="bg-slate-900/60 border-slate-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-100 flex items-center gap-2">
-                <Shield className="h-5 w-5 text-emerald-400" />
-                Default Transformation Parameters
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-xs">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-1">
-                  <label className="text-slate-400 font-medium">Default Target Audience</label>
-                  <input
-                    type="text"
-                    disabled
-                    value="Executive / Board"
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-300 font-mono"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-slate-400 font-medium">Default Communication Tone</label>
-                  <input
-                    type="text"
-                    disabled
-                    value="Formal Threat Alert"
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-300 font-mono"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-slate-400 font-medium">Default Primary Language</label>
-                  <input
-                    type="text"
-                    disabled
-                    value="English (en-US)"
-                    className="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-slate-300 font-mono"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      <div className="flex gap-8">
+        
+        {/* LEFT COLUMN: Sub-navigation */}
+        <div className="w-[200px] shrink-0">
+          <div className="flex flex-col">
+            <button 
+              onClick={() => setActiveTab('profile')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'profile' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <User className="h-4 w-4" /> Profile
+            </button>
+            <button 
+              onClick={() => setActiveTab('notifications')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'notifications' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <Bell className="h-4 w-4" /> Notifications
+            </button>
+            <button 
+              onClick={() => setActiveTab('security')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'security' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <Shield className="h-4 w-4" /> Security
+            </button>
+            <button 
+              onClick={() => setActiveTab('workspace')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'workspace' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <Users className="h-4 w-4" /> Workspace
+            </button>
+            <button 
+              onClick={() => setActiveTab('integrations')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'integrations' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <Link2 className="h-4 w-4" /> Integrations
+            </button>
+            <button 
+              onClick={() => setActiveTab('billing')}
+              className={`flex items-center gap-3 px-4 py-3 text-[13px] font-bold transition-all ${
+                activeTab === 'billing' 
+                  ? 'bg-[#FDF3F0] text-[#A35E47] border-l-4 border-[#C07050]' 
+                  : 'text-stone-700 hover:bg-stone-50 border-l-4 border-transparent'
+              }`}
+            >
+              <CreditCard className="h-4 w-4" /> Billing
+            </button>
+          </div>
         </div>
 
-        {/* Right Column: Server Topology & Security Audit */}
-        <div className="space-y-6">
-          {/* Vector Storage Status */}
-          <Card className="bg-slate-900/60 border-slate-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-100 flex items-center gap-2">
-                <Database className="h-5 w-5 text-purple-400" />
-                Qdrant Vector DB Topology
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300 font-mono">
-                <span>Vector Host:</span>
-                <span className="text-slate-400">{settings.qdrant_url}</span>
+        {/* CENTER COLUMN: Settings Form */}
+        <div className="flex-1 flex flex-col gap-6 max-w-[640px]">
+          
+          {/* Profile Information Card */}
+          <div className="bg-white border border-stone-200 rounded-xl p-6 shadow-sm">
+            <div className="flex items-start justify-between mb-8">
+              <div>
+                <h2 className="text-[18px] font-black text-stone-900 leading-tight mb-1">Profile information</h2>
+                <p className="text-[12px] text-stone-500 font-medium">Update your personal details and how others see you on REVAMP AI.</p>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300 font-mono">
-                <span>RAG Collection:</span>
-                <span className="text-indigo-400">{settings.qdrant_collection}</span>
-              </div>
-              <div className="flex justify-between py-1 text-slate-300 font-mono">
-                <span>Distance Metric:</span>
-                <span className="text-slate-400">Cosine (384-dim)</span>
-              </div>
-            </CardContent>
-          </Card>
+              <button className="bg-[#A35E47] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] px-5 py-2 rounded-lg shadow-sm transition-colors shrink-0">
+                Save changes
+              </button>
+            </div>
 
-          {/* System Telemetry */}
-          <Card className="bg-slate-900/60 border-slate-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-100 flex items-center gap-2">
-                <Server className="h-5 w-5 text-sky-400" />
-                FastAPI Backend Health
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300 font-mono">
-                <span>Platform:</span>
-                <span className="text-slate-200">{settings.app_name}</span>
+            <div className="mb-6">
+              <label className="block text-[12px] font-bold text-stone-900 mb-3">Profile picture</label>
+              <div className="flex items-center gap-6">
+                <div className="h-20 w-20 rounded-full bg-stone-200 text-stone-800 flex items-center justify-center text-[24px] font-black shrink-0">
+                  AW
+                </div>
+                <div>
+                  <button className="bg-white border border-[#C07050] text-[#A35E47] hover:bg-[#FDF3F0] font-semibold text-[12px] px-4 py-2 rounded-lg transition-colors mb-2">
+                    Change photo
+                  </button>
+                  <p className="text-[11px] text-stone-400 font-medium">JPG, PNG up to 5MB</p>
+                </div>
               </div>
-              <div className="flex justify-between py-1 border-b border-slate-800 text-slate-300 font-mono">
-                <span>Environment:</span>
-                <span className="text-emerald-400 uppercase">{settings.environment}</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">Full name</label>
+                <input 
+                  type="text" 
+                  defaultValue="Atharva Wani"
+                  className="w-full h-10 px-3 rounded-lg border border-stone-200 text-[13px] text-stone-900 focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                />
               </div>
-              <div className="flex justify-between py-1 text-slate-300 font-mono">
-                <span>API Status:</span>
-                <span className="text-emerald-400 font-bold">ONLINE (200 OK)</span>
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">Email address</label>
+                <input 
+                  type="email" 
+                  defaultValue="atharvawani0811@gmail.com"
+                  className="w-full h-10 px-3 rounded-lg border border-stone-200 text-[13px] text-stone-900 focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-[12px] font-bold text-stone-900 mb-2">Workspace name</label>
+              <input 
+                type="text" 
+                defaultValue="Personal Workspace"
+                className="w-full h-10 px-3 rounded-lg border border-stone-200 text-[13px] text-stone-900 focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+              />
+              <p className="text-[10px] text-stone-400 font-medium mt-1.5">This is the name of your default workspace.</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">Language</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    readOnly
+                    defaultValue="English (US)"
+                    className="w-full h-10 px-3 pr-10 rounded-lg border border-stone-200 text-[13px] text-stone-900 cursor-pointer focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                  />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 pointer-events-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-[12px] font-bold text-stone-900 mb-2">Timezone</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    readOnly
+                    defaultValue="(GMT+05:30) Asia/Kolkata"
+                    className="w-full h-10 px-3 pr-10 rounded-lg border border-stone-200 text-[13px] text-stone-900 cursor-pointer focus:outline-none focus:border-[#C07050] focus:ring-1 focus:ring-[#C07050]"
+                  />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-400 pointer-events-none" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Danger Zone Card */}
+          <div className="bg-[#FDFCFB] border border-stone-200 rounded-xl p-6 shadow-sm flex items-center justify-between">
+            <div>
+              <h2 className="text-[16px] font-black text-stone-900 leading-tight mb-1">Danger zone</h2>
+              <p className="text-[11px] text-stone-500 font-medium">Permanently delete your account and all associated data. This action cannot be undone.</p>
+            </div>
+            <button className="bg-white border border-red-500 text-red-600 hover:bg-red-50 font-semibold text-[12px] px-4 py-2 rounded-lg shadow-sm transition-colors flex items-center gap-1.5 shrink-0">
+              <Trash2 className="h-3.5 w-3.5" /> Delete account
+            </button>
+          </div>
+
         </div>
+
+        {/* RIGHT COLUMN: Summary & Image */}
+        <div className="w-[280px] shrink-0 flex flex-col gap-6">
+          
+          {/* Account Summary */}
+          <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-sm">
+            <div className="mb-5">
+              <h3 className="text-[14px] font-black text-stone-900">Account summary</h3>
+              <p className="text-[10px] text-stone-500 font-medium">Your current plan and workspace details.</p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex gap-3">
+                <div className="mt-0.5"><User className="h-4 w-4 text-stone-700" strokeWidth={2} /></div>
+                <div>
+                  <p className="text-[12px] font-bold text-stone-900 leading-tight">Atharva Wani</p>
+                  <p className="text-[10px] text-stone-500 mt-0.5">atharvawani0811@gmail.com</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="mt-0.5"><Building className="h-4 w-4 text-stone-700" strokeWidth={2} /></div>
+                <div>
+                  <p className="text-[12px] font-bold text-stone-900 leading-tight">Personal Workspace</p>
+                  <p className="text-[10px] text-stone-500 mt-0.5">Free plan</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="mt-0.5"><Database className="h-4 w-4 text-stone-700" strokeWidth={2} /></div>
+                <div className="w-full">
+                  <p className="text-[12px] font-bold text-stone-900 leading-tight">Usage this month</p>
+                  <p className="text-[10px] text-stone-500 mt-0.5 mb-2">28 / 50 transformations</p>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-stone-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#A35E47] rounded-full w-[56%]"></div>
+                    </div>
+                    <span className="text-[9px] font-bold text-stone-500">56%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative Image */}
+          <div className="w-full h-[180px] rounded-xl bg-cover bg-center border border-stone-200 shadow-sm" style={{ backgroundImage: `url('/architecture.jpg')` }}></div>
+
+        </div>
+
       </div>
     </div>
   );
-};
+}

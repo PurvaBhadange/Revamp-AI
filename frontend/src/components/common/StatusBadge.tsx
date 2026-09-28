@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 
@@ -12,7 +14,7 @@ export function StatusBadge({ status }: { status: string }) {
     case 'running':
     case 'processing':
     case 'generating':
-      return <Badge variant="info" className="animate-pulse">RUNNING</Badge>;
+      return <Badge variant="info">RUNNING</Badge>;
     case 'queued':
     case 'pending':
       return <Badge variant="warning">QUEUED</Badge>;

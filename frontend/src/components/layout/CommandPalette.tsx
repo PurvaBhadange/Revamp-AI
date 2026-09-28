@@ -1,6 +1,9 @@
+"use client";
+
 import React, { useEffect, useState } from 'react';
 import { useUIStore } from '@/stores/uiStore';
-import { Search, PlusCircle, LayoutDashboard, Database, FileText, History, Settings, X } from 'lucide-react';
+import { Search, Terminal, Zap, ShieldAlert, Crosshair, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CommandPaletteProps {
   onNavigate: (route: string) => void;
@@ -9,6 +12,7 @@ interface CommandPaletteProps {
 export function CommandPalette({ onNavigate }: CommandPaletteProps) {
   const { isCommandPaletteOpen, setCommandPaletteOpen } = useUIStore();
   const [query, setQuery] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -26,63 +30,95 @@ export function CommandPalette({ onNavigate }: CommandPaletteProps) {
 
   if (!isCommandPaletteOpen) return null;
 
-  const commands = [
-    { label: 'Start New Transformation', icon: PlusCircle, route: '/transform/new' },
-    { label: 'Open Analyst Dashboard', icon: LayoutDashboard, route: '/dashboard' },
-    { label: 'Search Knowledge Base', icon: Database, route: '/knowledge-base' },
-    { label: 'Browse Artifacts Library', icon: FileText, route: '/artifacts' },
-    { label: 'View System Audit Log', icon: History, route: '/activity' },
-    { label: 'Open Platform Settings', icon: Settings, route: '/settings' },
-  ];
-
-  const filtered = commands.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()));
-
-  const handleSelect = (route: string) => {
-    setCommandPaletteOpen(false);
-    setQuery('');
-    onNavigate(route);
+  const handleExecute = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query) return;
+    setIsProcessing(true);
+    
+    // Simulate AI parsing the command
+    setTimeout(() => {
+      setIsProcessing(false);
+      setCommandPaletteOpen(false);
+      setQuery('');
+      
+      // If it looks like a transform command, go to new target
+      if (query.toLowerCase().includes('generate') || query.toLowerCase().includes('process')) {
+        onNavigate('/transform/new');
+      } else {
+        onNavigate('/dashboard');
+      }
+    }, 800);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-lg bg-dark-900 border border-dark-700 rounded-lg shadow-2xl overflow-hidden">
-        {/* Search Header */}
-        <div className="flex items-center px-4 border-b border-dark-800">
-          <Search className="h-4 w-4 text-slate-400 mr-3" />
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-32 bg-stone-950/80 backdrop-blur-sm">
+      <motion.div 
+        initial={{ opacity: 0, y: -20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.15 }}
+        className="w-full max-w-2xl bg-stone-950 border-2 border-stone-800 shadow-[8px_8px_0px_0px_rgba(234,88,12,0.2)]"
+      >
+        <form onSubmit={handleExecute} className="flex items-center p-4 border-b-2 border-stone-800 bg-stone-900">
+          <Terminal className="h-5 w-5 text-orange-600 mr-4 shrink-0" />
           <input
             type="text"
-            placeholder="Type a command or search..."
+            placeholder="> Enter command or NLP directive..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-transparent py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            className="w-full bg-transparent py-2 font-mono text-sm text-stone-100 placeholder:text-stone-600 focus:outline-none uppercase tracking-wider"
             autoFocus
+            disabled={isProcessing}
           />
-          <button onClick={() => setCommandPaletteOpen(false)} className="text-slate-400 hover:text-white">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+          <kbd className="hidden sm:inline-flex items-center px-2 py-1 bg-stone-800 text-[10px] font-tech text-stone-400 ml-4 border border-stone-700">
+            ENTER
+          </kbd>
+        </form>
 
-        {/* Command List */}
-        <div className="max-h-72 overflow-y-auto p-2 space-y-1">
-          {filtered.length > 0 ? (
-            filtered.map((cmd, idx) => {
-              const Icon = cmd.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => handleSelect(cmd.route)}
-                  className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-md text-xs font-medium text-slate-300 hover:bg-dark-800 hover:text-white transition-colors text-left"
-                >
-                  <Icon className="h-4 w-4 text-blue-400 shrink-0" />
-                  <span>{cmd.label}</span>
-                </button>
-              );
-            })
-          ) : (
-            <div className="p-4 text-center text-xs text-slate-500">No matching commands found.</div>
-          )}
+        <div className="p-4 bg-stone-950">
+           {isProcessing ? (
+              <div className="flex flex-col items-center justify-center py-8">
+                 <div className="w-48 h-1 bg-stone-800 mb-4 overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-orange-600"
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: 0.8 }}
+                    />
+                 </div>
+                 <span className="text-[10px] font-mono text-orange-500 animate-pulse">PARSING NLP DIRECTIVE...</span>
+              </div>
+           ) : query ? (
+              <div className="py-4">
+                 <div className="text-[10px] font-tech text-stone-500 uppercase mb-4 tracking-widest">Detected Intent</div>
+                 <button type="submit" onClick={handleExecute} className="w-full flex items-center justify-between p-4 bg-stone-900 border border-stone-800 hover:border-orange-600 group transition-colors text-left">
+                    <div className="flex items-center space-x-4">
+                       <Zap className="h-5 w-5 text-stone-600 group-hover:text-orange-500" />
+                       <div>
+                         <div className="text-xs font-bold text-stone-200 uppercase tracking-widest">Execute Autonomous Action</div>
+                         <div className="text-[10px] font-mono text-stone-500">Run '{query}' against Global Matrix</div>
+                       </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-stone-700 group-hover:text-orange-500" />
+                 </button>
+              </div>
+           ) : (
+              <div>
+                 <div className="text-[10px] font-tech text-stone-600 uppercase mb-4 tracking-widest">Suggested Directives</div>
+                 <div className="grid grid-cols-2 gap-2">
+                    <button onClick={() => setQuery("Generate CISO Briefing from active logs")} className="p-3 text-left bg-stone-900 border border-stone-800 hover:border-stone-600 flex items-center group">
+                       <ShieldAlert className="h-4 w-4 mr-3 text-stone-600 group-hover:text-orange-500" />
+                       <span className="text-[10px] font-mono text-stone-400 group-hover:text-stone-200">Generate CISO Briefing...</span>
+                    </button>
+                    <button onClick={() => setQuery("Target Payload ID 993-ALPHA")} className="p-3 text-left bg-stone-900 border border-stone-800 hover:border-stone-600 flex items-center group">
+                       <Crosshair className="h-4 w-4 mr-3 text-stone-600 group-hover:text-orange-500" />
+                       <span className="text-[10px] font-mono text-stone-400 group-hover:text-stone-200">Target Payload 993...</span>
+                    </button>
+                 </div>
+              </div>
+           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

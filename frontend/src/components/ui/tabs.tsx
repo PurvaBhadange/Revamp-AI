@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +43,7 @@ export function Tabs({
 
 export function TabsList({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={cn('inline-flex h-9 items-center justify-start rounded-md bg-dark-900 p-1 text-slate-400 border border-dark-800', className)}>
+    <div className={cn('inline-flex h-9 items-center justify-start rounded-md bg-stone-100 p-1 text-stone-600 border border-stone-200', className)}>
       {children}
     </div>
   );
@@ -58,8 +60,8 @@ export function TabsTrigger({ value, className, children }: { value: string; cla
       type="button"
       onClick={() => context.onValueChange(value)}
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1 text-xs font-semibold ring-offset-background transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
-        isActive ? 'bg-dark-800 text-white shadow-sm border border-dark-700/60' : 'hover:text-slate-200 hover:bg-dark-850',
+        'inline-flex items-center justify-center whitespace-nowrap rounded px-3 py-1 text-xs font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none',
+        isActive ? 'bg-white text-stone-900 shadow-sm border border-stone-200 font-semibold' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-200/50',
         className
       )}
     >

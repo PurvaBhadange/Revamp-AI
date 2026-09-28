@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { KnowledgeDocument, KnowledgeSearchResult } from '@/types/knowledge';
 import { mockKnowledgeDocuments } from './mock/mockData';

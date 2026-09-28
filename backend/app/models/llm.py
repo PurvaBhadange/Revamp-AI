@@ -21,6 +21,8 @@ class LLMService:
         provider = settings.LLM_PROVIDER
         if provider == "ollama":
             return self._call_ollama(prompt, system_prompt)
+        elif provider == "sarvam":
+            return self._call_sarvam(prompt, system_prompt)
         else:
             return self._call_gemini(prompt, system_prompt, use_fast_model)
 
@@ -141,6 +143,39 @@ class LLMService:
                 return data.get("response", "")
         except Exception as e:
             logger.error(f"Ollama call failed: {e}")
+            return self._simulated_response(prompt, system_prompt)
+
+    def _call_sarvam(self, prompt: str, system_prompt: Optional[str] = None) -> str:
+        key = getattr(settings, "SARVAM_API_KEY", None)
+        if not key:
+            return self._simulated_response(prompt, system_prompt)
+            
+        try:
+            import httpx
+            url = "https://api.sarvam.ai/chat/completions"
+            messages = []
+            if system_prompt:
+                messages.append({"role": "system", "content": system_prompt})
+            messages.append({"role": "user", "content": prompt})
+            
+            payload = {
+                "model": getattr(settings, "SARVAM_MODEL", "sarvam-1"),
+                "messages": messages,
+                "temperature": 0.5
+            }
+            
+            headers = {
+                "api-subscription-key": key,
+                "Content-Type": "application/json"
+            }
+
+            with httpx.Client(timeout=90.0) as client:
+                res = client.post(url, json=payload, headers=headers)
+                res.raise_for_status()
+                data = res.json()
+                return data["choices"][0]["message"]["content"]
+        except Exception as e:
+            logger.error(f"Sarvam API call failed: {e}")
             return self._simulated_response(prompt, system_prompt)
 
     def _simulated_response(self, prompt: str, system_prompt: Optional[str] = None) -> str:

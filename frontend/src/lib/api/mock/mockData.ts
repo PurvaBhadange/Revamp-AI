@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from '@/types/auth';
 import { Project } from '@/types/project';
 import { Transformation } from '@/types/transformation';

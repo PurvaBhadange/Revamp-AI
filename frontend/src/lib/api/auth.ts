@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { TokenResponse, User } from '@/types/auth';
 import { mockUser } from './mock/mockData';

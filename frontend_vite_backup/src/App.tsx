@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { AppShell } from '@/components/layout/AppShell';
 
 // Feature Views
+import { LandingPage } from '@/features/landing/LandingPage';
 import { LoginPage } from '@/features/auth/LoginPage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { NewTransformationPage } from '@/features/transformation/NewTransformationPage';
@@ -43,28 +44,33 @@ export const AppContent: React.FC = () => {
     return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center font-mono text-xs text-indigo-400">
-        Initializing Revamp AI Platform Session...
-      </div>
-    );
-  }
-
-  // Unauthenticated Route Handler
-  if (!isAuthenticated || currentPath === '/login') {
-    return <LoginPage />;
-  }
-
-  // Router Dispatcher for Authenticated Shell
   const handleNavigate = (route: string) => {
     window.history.pushState({}, '', route);
     setCurrentPath(route);
   };
 
-  const renderRoute = () => {
-    const path = currentPath.toLowerCase();
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center font-mono text-xs text-orange-600">
+        Initializing Revamp AI Enterprise Session...
+      </div>
+    );
+  }
 
+  const path = currentPath.toLowerCase();
+
+  // Landing Page Route (Available to all users at /landing or when unauthenticated at /)
+  if (path === '/landing' || (!isAuthenticated && path === '/')) {
+    return <LandingPage onNavigate={handleNavigate} />;
+  }
+
+  // Unauthenticated Route Handler
+  if (!isAuthenticated || path === '/login') {
+    return <LoginPage onNavigate={handleNavigate} onLoginSuccess={() => handleNavigate('/dashboard')} />;
+  }
+
+  // Authenticated Route Dispatcher within AppShell
+  const renderRoute = () => {
     if (path === '/' || path === '/dashboard') {
       return <DashboardPage onNavigate={handleNavigate} />;
     }
@@ -110,8 +116,8 @@ export const AppContent: React.FC = () => {
     return <DashboardPage onNavigate={handleNavigate} />;
   };
 
-  const getPageTitle = (path: string): string => {
-    const p = path.toLowerCase();
+  const getPageTitle = (pathName: string): string => {
+    const p = pathName.toLowerCase();
     if (p === '/' || p === '/dashboard') return 'Analyst Command Dashboard';
     if (p.startsWith('/transform/new')) return 'New Intelligence Transformation';
     if (p.startsWith('/jobs/')) return 'Live Agent Processing Pipeline';

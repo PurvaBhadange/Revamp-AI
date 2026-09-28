@@ -1,3 +1,5 @@
+"use client";
+
 import { apiFetch, API_MODE } from './client';
 import { Transformation, TransformationCreateRequest, TransformationCreateResponse } from '@/types/transformation';
 import { mockTransformations } from './mock/mockData';
