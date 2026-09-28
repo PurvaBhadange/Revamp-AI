@@ -1,0 +1,46 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: revamp-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /docs
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: revamp-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: revamp-redis
+          property: connectionString
+      - key: QDRANT_URL
+        value: http://revamp-qdrant:6333
+      - key: ENVIRONMENT
+        value: production
+      # Add other necessary API keys below in Render Dashboard
+      - key: OPENAI_API_KEY
+        sync: false
+
+  # Qdrant Vector Database (Private Service)
+  - type: pserv
+    name: revamp-qdrant
+    env: docker
+    image: qdrant/qdrant:latest
+    disk:
+      name: qdrant-data
+      mountPath: /qdrant/storage
+      sizeGB: 5
+
+databases:
+  # Managed PostgreSQL Database
+  - name: revamp-postgres
+    plan: starter
+    databaseName: revamp_ai
+    user: revamp_user
+
+# Managed Redis Instance (Requires Render Redis setup)
+# (Alternatively, you can create a Redis instance manually in the Render dashboard
+# and supply the REDIS_URL environment variable to the backend service)
