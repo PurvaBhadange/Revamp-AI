@@ -16,12 +16,33 @@ services:
       # REDIS_URL (from Upstash)
       - key: REDIS_URL
         sync: false
-      # QDRANT_URL (from Qdrant Cloud or your own instance)
-      - key: QDRANT_URL
+      # UPSTASH_VECTOR_REST_URL (from Upstash)
+      - key: UPSTASH_VECTOR_REST_URL
         sync: false
-      # QDRANT_API_KEY (if applicable)
-      - key: QDRANT_API_KEY
+      # UPSTASH_VECTOR_REST_TOKEN (from Upstash)
+      - key: UPSTASH_VECTOR_REST_TOKEN
         sync: false
       # OPENAI_API_KEY
+      - key: OPENAI_API_KEY
+        sync: false
+
+  # Background Worker (Celery)
+  - type: worker
+    name: revamp-worker
+    env: docker
+    dockerfilePath: ./Dockerfile
+    dockerCommand: celery -A app.workers.celery_app worker --loglevel=info
+    plan: starter
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: UPSTASH_VECTOR_REST_URL
+        sync: false
+      - key: UPSTASH_VECTOR_REST_TOKEN
+        sync: false
       - key: OPENAI_API_KEY
         sync: false
