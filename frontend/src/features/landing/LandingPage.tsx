@@ -280,7 +280,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] items-start gap-0">
             {/* Left label + heading */}
-            <div className="border-r border-[#E5DFD6] pr-10 py-2 h-full">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="border-r border-[#E5DFD6] pr-10 py-2 h-full"
+            >
               <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-2">
                 A Simple, Powerful Process
               </p>
@@ -288,7 +294,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <p className="text-[13px] text-stone-600 leading-relaxed max-w-[240px]">
                 From any source to multiple, high-quality communication artefacts in four simple steps.
               </p>
-            </div>
+            </motion.div>
 
             {/* 4 Steps */}
             <div className="flex justify-between items-start gap-6 pl-10 h-full py-2">
@@ -298,19 +304,27 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 { num: '03', icon: Zap, title: 'Transform', desc: 'REVAMP AI generates multiple communication artefacts.' },
                 { num: '04', icon: Edit3, title: 'Refine', desc: 'Review, edit and export for your audience and channels.' },
               ].map((step, i) => (
-                <div key={step.num} className="relative flex flex-col group flex-1">
+                <motion.div 
+                  key={step.num} 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="relative flex flex-col group flex-1 cursor-default"
+                >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="text-[14px] font-black text-[#8B4A2F] flex items-center gap-2">
+                    <div className="text-[14px] font-black text-[#8B4A2F] flex items-center gap-2 transition-transform group-hover:scale-110">
                       {i > 0 && <ArrowRight className="h-3.5 w-3.5 text-[#C07050]/60" strokeWidth={2.5} />}
                       {step.num}
                     </div>
-                    <div className="h-9 w-9 rounded-[10px] bg-white border border-stone-200 flex items-center justify-center shadow-sm">
-                      <step.icon className="h-4 w-4 text-stone-700" strokeWidth={1.5} />
+                    <div className="h-9 w-9 rounded-[10px] bg-white border border-stone-200 flex items-center justify-center shadow-sm group-hover:border-[#C07050] group-hover:shadow-md transition-all">
+                      <step.icon className="h-4 w-4 text-stone-700 group-hover:text-[#C07050] transition-colors" strokeWidth={1.5} />
                     </div>
                   </div>
-                  <h3 className="text-[14px] font-bold text-stone-900 mb-1.5">{step.title}</h3>
+                  <h3 className="text-[14px] font-bold text-stone-900 mb-1.5 group-hover:text-[#8B4A2F] transition-colors">{step.title}</h3>
                   <p className="text-[11px] text-stone-500 leading-relaxed pr-2">{step.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -327,7 +341,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="flex flex-col lg:flex-row gap-12 items-center">
             {/* Left */}
-            <div className="w-[300px] shrink-0 z-20 bg-white">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="w-[300px] shrink-0 z-20 bg-white"
+            >
               <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">
                 One Source, Multiple Outputs
               </p>
@@ -339,11 +359,11 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               </p>
               <button
                 onClick={() => onNavigate('/transform/new')}
-                className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] px-6 py-3.5 rounded-lg transition-all shadow-sm"
+                className="flex items-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] px-6 py-3.5 rounded-lg transition-all shadow-sm hover:shadow-md hover:scale-[1.02]"
               >
                 Start transforming <ArrowRight className="h-4 w-4" />
               </button>
-            </div>
+            </motion.div>
 
             {/* Right — Transformation diagram */}
             <div className="relative flex-1 h-[440px] w-full flex items-center -ml-10">
@@ -418,7 +438,10 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               {/* Outputs - Column 1 */}
               <div className="absolute left-[500px] top-1/2 -translate-y-1/2 h-full flex flex-col justify-between py-[80px] z-10 w-[180px]">
                 
-                <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 cursor-default hover:shadow-md hover:border-[#C07050] transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-50 border border-stone-100 rounded-lg flex items-center justify-center shrink-0">
                     <FileText className="h-4 w-4 text-stone-500" strokeWidth={1.5} />
                   </div>
@@ -426,9 +449,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-stone-900 leading-tight">Executive Summary</p>
                     <p className="text-[9px] text-stone-500 mt-0.5">PDF · 1,240 words</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 cursor-default hover:shadow-md hover:border-[#C07050] transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-50 border border-stone-100 rounded-lg flex items-center justify-center shrink-0">
                     <FileCheck className="h-4 w-4 text-[#A35E47]" strokeWidth={1.5} />
                   </div>
@@ -436,9 +462,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-stone-900 leading-tight">Advisory</p>
                     <p className="text-[9px] text-stone-500 mt-0.5">8 recommendations</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 cursor-default hover:shadow-md hover:border-[#C07050] transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-50 border border-stone-100 rounded-lg flex items-center justify-center shrink-0">
                     <div className="h-4 w-4 bg-[#0A66C2] rounded-[3px] flex items-center justify-center"><span className="text-[9px] font-black text-white leading-none">in</span></div>
                   </div>
@@ -446,12 +475,15 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-stone-900 leading-tight">LinkedIn Post</p>
                     <p className="text-[9px] text-stone-500 mt-0.5">1,100 characters</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Outputs - Column 2 */}
               <div className="absolute left-[720px] top-1/2 -translate-y-1/2 h-full flex flex-col justify-between py-[80px] z-10 w-[180px]">
-                <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 relative -mt-[60px]">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 relative -mt-[60px] cursor-default hover:shadow-md hover:border-[#C07050] transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-50 border border-stone-100 rounded-lg flex items-center justify-center shrink-0">
                     <Presentation className="h-4 w-4 text-[#A35E47]" strokeWidth={1.5} />
                   </div>
@@ -459,9 +491,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-stone-900 leading-tight">Presentation</p>
                     <p className="text-[9px] text-stone-500 mt-0.5">12 slides</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 relative mt-[60px] mb-[60px]">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-white border border-stone-200 shadow-sm rounded-xl p-3 flex items-center gap-3 relative mt-[60px] mb-[60px] cursor-default hover:shadow-md hover:border-[#C07050] transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-50 border border-stone-100 rounded-lg flex items-center justify-center shrink-0">
                     <PieChart className="h-4 w-4 text-stone-500" strokeWidth={1.5} />
                   </div>
@@ -469,9 +504,12 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-stone-900 leading-tight">Infographic</p>
                     <p className="text-[9px] text-stone-500 mt-0.5">Visual summary</p>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-stone-800 border border-stone-700 shadow-lg rounded-xl p-3 flex items-center gap-3 relative -mb-[60px]">
+                <motion.div 
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  className="bg-stone-800 border border-stone-700 shadow-lg rounded-xl p-3 flex items-center gap-3 relative -mb-[60px] cursor-default hover:shadow-xl hover:border-stone-500 transition-colors"
+                >
                   <div className="h-9 w-9 bg-stone-700 border border-stone-600 rounded-lg flex items-center justify-center shrink-0">
                     <Video className="h-4 w-4 text-white" strokeWidth={1.5} />
                   </div>
@@ -479,7 +517,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                     <p className="text-[11px] font-bold text-white leading-tight">Video Package</p>
                     <p className="text-[9px] text-stone-400 mt-0.5">60-90 seconds</p>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -493,19 +531,34 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       <section id="use-cases" className="py-16 bg-[#F9F8F6] border-t border-stone-200">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="text-center mb-16">
-            <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">Targeted Applications</p>
-            <h2 className="text-[34px] font-black text-stone-950 leading-[1.1]">Built for every team.</h2>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">Targeted Applications</p>
+              <h2 className="text-[34px] font-black text-stone-950 leading-[1.1]">Built for every team.</h2>
+            </motion.div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { title: 'Cybersecurity Teams', desc: 'Turn raw threat intelligence feeds into executive briefs, detailed advisories, and immediate Slack alerts instantly.' },
               { title: 'Marketing & Comms', desc: 'Transform technical release notes into engaging blog posts, social media updates, and customer-facing newsletters.' },
               { title: 'Executive Leadership', desc: 'Distill massive quarterly reports into concise presentations, infographics, and talking points for the board.' }
-            ].map(uc => (
-              <div key={uc.title} className="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm">
+            ].map((uc, i) => (
+              <motion.div 
+                key={uc.title} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                whileHover={{ y: -8 }}
+                className="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm hover:shadow-xl hover:border-stone-300 transition-all cursor-default"
+              >
                 <h3 className="text-lg font-black text-stone-900 mb-3">{uc.title}</h3>
                 <p className="text-[13px] text-stone-600 leading-relaxed">{uc.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -517,7 +570,13 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
       <section id="features" className="py-16 bg-white border-t border-stone-200">
         <div className="max-w-[1440px] mx-auto px-8 md:px-16 lg:px-24">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
-            <div className="flex-1">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex-1"
+            >
               <p className="text-[9px] font-bold tracking-[0.2em] text-[#C07050] uppercase mb-4">Enterprise Capabilities</p>
               <h2 className="text-[34px] font-black text-stone-950 leading-[1.1] mb-6">Unmatched accuracy & control.</h2>
               <div className="space-y-6">
@@ -537,19 +596,38 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="flex-1 w-full h-[400px] bg-[#F9F8F6] rounded-2xl border border-stone-200 shadow-inner flex items-center justify-center relative overflow-hidden">
-               <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{ backgroundImage: `url('/architecture.jpg')` }} />
-               <div className="relative z-10 bg-white/90 backdrop-blur-sm p-6 rounded-xl border border-stone-200 shadow-xl max-w-[320px]">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
+              className="flex-1 w-full h-[400px] bg-[#F9F8F6] rounded-2xl border border-stone-200 shadow-inner flex items-center justify-center relative overflow-hidden transition-transform cursor-default"
+            >
+               <div className="absolute inset-0 bg-cover bg-center opacity-30 transition-transform duration-1000 hover:scale-110" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+               <motion.div 
+                 initial={{ y: 20, opacity: 0 }}
+                 whileInView={{ y: 0, opacity: 1 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.5, duration: 0.5 }}
+                 className="relative z-10 bg-white/90 backdrop-blur-sm p-6 rounded-xl border border-stone-200 shadow-xl max-w-[320px]"
+               >
                  <p className="text-xs font-bold text-stone-900 mb-2">Confidence Score</p>
                  <div className="flex items-end gap-2 mb-4">
                    <span className="text-4xl font-black text-[#C07050]">99.8%</span>
                  </div>
                  <div className="h-2 w-full bg-stone-100 rounded-full overflow-hidden">
-                   <div className="h-full bg-[#C07050] w-[99.8%]" />
+                   <motion.div 
+                     initial={{ width: "0%" }}
+                     whileInView={{ width: "99.8%" }}
+                     viewport={{ once: true }}
+                     transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                     className="h-full bg-[#C07050]" 
+                   />
                  </div>
-               </div>
-            </div>
+               </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
