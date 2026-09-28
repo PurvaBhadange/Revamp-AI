@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy.orm import Session
 from app.db.models.knowledge_document import KnowledgeDocument
 from app.rag.retriever import rag_retriever
-from app.rag.qdrant_client import vector_store
+from app.rag.vector_store import vector_store
 from app.core.exceptions import NotFoundError
 
 class KnowledgeService:

@@ -14,7 +14,7 @@ def check_health(db: Session = None) -> Dict[str, Any]:
         "services": {
             "postgres": "unknown",
             "redis": "unknown",
-            "qdrant": "unknown",
+            "upstash_vector": "unknown",
             "gemini": "configured" if (settings.GEMINI_API_KEY and settings.GEMINI_API_KEY != "your_gemini_api_key_here") else "unconfigured",
             "ollama": "unknown"
         }
@@ -38,16 +38,16 @@ def check_health(db: Session = None) -> Dict[str, Any]:
     except Exception:
         status_dict["services"]["redis"] = "offline (fallback in-memory mode active)"
 
-    # Qdrant check
+    # Upstash Vector check
     try:
         with httpx.Client(timeout=2.0) as client:
-            res = client.get(f"{settings.QDRANT_URL.rstrip('/')}/healthz")
+            res = client.get(f"{settings.UPSTASH_VECTOR_REST_URL.rstrip('/')}/info", headers={"Authorization": f"Bearer {settings.UPSTASH_VECTOR_REST_TOKEN}"})
             if res.status_code == 200:
-                status_dict["services"]["qdrant"] = "healthy"
+                status_dict["services"]["upstash_vector"] = "healthy"
             else:
-                status_dict["services"]["qdrant"] = "unhealthy"
+                status_dict["services"]["upstash_vector"] = "unhealthy"
     except Exception:
-        status_dict["services"]["qdrant"] = "offline (in-memory vector store active)"
+        status_dict["services"]["upstash_vector"] = "offline (in-memory vector store active)"
 
     # Ollama check
     try:

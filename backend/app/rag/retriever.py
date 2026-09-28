@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 from app.rag.chunking import chunk_text
-from app.rag.qdrant_client import vector_store
+from app.rag.vector_store import vector_store
 
 class RAGRetriever:
     def index_document(self, document_id: str, text: str, metadata: Dict[str, Any]) -> int:

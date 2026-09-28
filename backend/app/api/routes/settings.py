@@ -17,8 +17,7 @@ def get_settings(current_user: User = Depends(get_current_user)):
         gemini_fast_model=settings.GEMINI_FAST_MODEL,
         ollama_base_url=settings.OLLAMA_BASE_URL,
         ollama_model=settings.OLLAMA_MODEL,
-        qdrant_url=settings.QDRANT_URL,
-        qdrant_collection=settings.QDRANT_COLLECTION,
+        vector_store_url=settings.UPSTASH_VECTOR_REST_URL,
         has_gemini_api_key=has_key
     )
 

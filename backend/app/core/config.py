@@ -28,9 +28,8 @@ class Settings(BaseSettings):
     OLLAMA_MODEL: str = "llama3.1:8b"
 
     # Vector Database
-    QDRANT_URL: str = "http://localhost:6333"
-    QDRANT_API_KEY: Optional[str] = None
-    QDRANT_COLLECTION: str = "revamp_kb"
+    UPSTASH_VECTOR_REST_URL: str = ""
+    UPSTASH_VECTOR_REST_TOKEN: str = ""
 
     # Database
     DATABASE_URL: str = "sqlite:///./storage/revamp_ai.db"

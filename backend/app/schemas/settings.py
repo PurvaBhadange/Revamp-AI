@@ -9,8 +9,7 @@ class SettingsResponse(BaseModel):
     gemini_fast_model: str
     ollama_base_url: str
     ollama_model: str
-    qdrant_url: str
-    qdrant_collection: str
+    vector_store_url: str
     has_gemini_api_key: bool
 
 class SettingsUpdateRequest(BaseModel):
