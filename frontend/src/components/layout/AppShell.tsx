@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { CommandPalette } from './CommandPalette';
@@ -18,6 +18,13 @@ interface AppShellProps {
 
 export function AppShell({ title, currentRoute, onNavigate, children }: AppShellProps) {
   const { notifications, removeNotification } = useUIStore();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo(0, 0);
+    }
+  }, [currentRoute]);
 
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
@@ -38,7 +45,7 @@ export function AppShell({ title, currentRoute, onNavigate, children }: AppShell
 
       <div className="flex flex-1 flex-col overflow-hidden pb-[72px] md:pb-0">
         {!currentRoute.startsWith('/artifacts') && <TopBar title={title} onNavigate={onNavigate} />}
-        <main className="flex-1 flex flex-col overflow-y-auto bg-stone-50">{children}</main>
+        <main ref={mainRef} className="flex-1 flex flex-col overflow-y-auto bg-stone-50">{children}</main>
       </div>
 
       <MobileBottomNav currentRoute={currentRoute} onNavigate={onNavigate} />

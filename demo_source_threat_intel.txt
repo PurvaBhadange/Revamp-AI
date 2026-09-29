@@ -1,0 +1,28 @@
+# RAW INCIDENT REPORT: CRITICAL
+## FOR INTERNAL NCIIPC / NTRO ANALYSIS ONLY
+Date: 29-SEP-2026
+Origin: Automated SOC Telemetry (Sensor Node Alpha-9)
+Confidence Level: HIGH
+
+1. EXECUTIVE OVERVIEW
+At 03:14 IST, our perimeter monitoring systems detected anomalous lateral movement originating from the HR subnet, attempting to access the core Active Directory (AD) servers. The attack appears to exploit a zero-day vulnerability in the enterprise identity management protocol (tentatively tracked as CVE-2026-9912). Immediate containment protocols were initiated, but evidence suggests partial exfiltration of encrypted service account credentials.
+
+2. TECHNICAL DETAILS & TACTICS (MITRE ATT&CK Mapping)
+- Initial Access (T1190): The adversary bypassed the external WAF by exploiting a deserialization flaw in the legacy employee portal.
+- Privilege Escalation (T1068): Once inside, the attacker deployed a custom PowerShell script to elevate privileges from standard user to SYSTEM.
+- Credential Access (T1003.001): The attacker dumped the LSASS memory space to extract NTLM hashes.
+- Command and Control (C2) (T1071.001): Beaconing activity was observed over port 443 to an external IP address.
+
+3. INDICATORS OF COMPROMISE (IoCs)
+- Malicious IP Address (C2 Server): 198.51.100.45 (RFC 5737 compliant safe IP)
+- Malicious IP Address (Staging): 203.0.113.88 (RFC 5737 compliant safe IP)
+- File Hash (SHA-256): e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 (Payload identifier)
+- Malicious Process: `svchost_updater.exe` executing from `C:\Windows\Temp\`
+
+4. CONTAINMENT ACTIONS TAKEN
+- The affected HR subnet (192.0.2.0/24) has been completely isolated from the core network.
+- Force-reset initiated for all service account passwords updated in the last 72 hours.
+- Active Directory synchronization has been temporarily paused pending a full forensic memory analysis of the primary Domain Controller.
+
+5. REQUIRED NEXT STEPS
+We need to urgently notify all internal departments about the temporary AD suspension. Furthermore, a highly technical advisory needs to be generated for the Security Operations Center (SOC) to update their firewalls with the new IoCs. A high-level brief is also required for the Ministry's morning briefing at 09:00 IST.

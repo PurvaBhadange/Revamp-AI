@@ -14,7 +14,7 @@ interface JobProcessingPageProps {
 
 export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps) {
   // Simulate progress
-  const [progress, setProgress] = useState(68);
+  const [progress, setProgress] = useState(0);
   
   useEffect(() => {
     if (!jobId) {
@@ -27,7 +27,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
           }
           return prev + 1;
         });
-      }, 300);
+      }, 100);
       return () => clearInterval(interval);
     } else {
       setTimeout(() => setProgress(10), 0);
@@ -74,18 +74,20 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
                 <div className="w-full h-[1.5px] bg-stone-200 mb-0.5 rounded"></div>
                 <div className="w-5/6 h-[1.5px] bg-stone-200 rounded"></div>
               </div>
-              <div className="h-[40px] bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+              <div className="h-[40px] bg-red-900 flex items-center justify-center">
+                <span className="text-[6px] font-black tracking-widest text-white">CRITICAL</span>
+              </div>
             </div>
 
             {/* Details */}
             <div className="flex-1">
               <p className="text-[10px] font-bold text-stone-900 mb-0.5">Source document</p>
-              <h3 className="text-[15px] font-black text-stone-900 leading-tight mb-1">Q3 Product Strategy Report</h3>
+              <h3 className="text-[15px] font-black text-stone-900 leading-tight mb-1">Active Directory Zero-Day</h3>
               <p className="text-[10px] text-stone-500 font-medium flex items-center gap-1.5 mb-2">
-                <FileText className="h-3 w-3" /> PDF <span className="mx-0.5">•</span> 18 pages <span className="mx-0.5">•</span> 4.2 MB
+                <FileText className="h-3 w-3" /> TXT <span className="mx-0.5">•</span> Source Intel <span className="mx-0.5">•</span> 2.4 KB
               </p>
               <p className="text-[9px] text-stone-400 leading-tight">
-                Quarterly strategy report covering product performance, market analysis, key initiatives and roadmap for Q4...
+                Raw incident report detailing anomalous lateral movement, WAF bypass via CVE-2026-9912...
               </p>
             </div>
           </div>
@@ -184,13 +186,15 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
                 <div className="flex-1 bg-[#F5F4F1] border border-stone-200 rounded-lg overflow-hidden flex items-center justify-center p-3 relative">
                   <div className="w-full h-full bg-white shadow-sm border border-stone-200 flex flex-col relative overflow-hidden">
                     <div className="p-3">
-                      <p className="text-[5px] font-black text-stone-900 mb-2">REVAMP AI</p>
-                      <h4 className="text-[11px] font-black text-stone-900 leading-tight mb-2">Executive<br/>Summary</h4>
+                      <p className="text-[5px] font-black text-stone-900 mb-2">NCIIPC ALERT</p>
+                      <h4 className="text-[11px] font-black text-stone-900 leading-tight mb-2">Executive<br/>Briefing</h4>
                       <div className="w-full h-px bg-stone-100 mb-1"></div>
                       <div className="w-full h-px bg-stone-100 mb-1"></div>
                       <div className="w-3/4 h-px bg-stone-100"></div>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 h-[40px] bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+                    <div className="absolute bottom-0 left-0 right-0 h-[40px] bg-red-900 flex items-center justify-center">
+                      <span className="text-[6px] font-black tracking-widest text-white">CRITICAL</span>
+                    </div>
                   </div>
                 </div>
 
@@ -224,7 +228,7 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
                   <div className="absolute right-4 top-4 bottom-4 left-10 bg-white shadow-sm border border-stone-200 rounded opacity-60 translate-x-4 scale-95" />
                   <div className="absolute right-6 top-4 bottom-4 left-8 bg-white shadow-sm border border-stone-200 rounded opacity-80 translate-x-2 scale-95" />
                   <div className="absolute inset-4 bg-white shadow-md border border-stone-200 rounded flex flex-col p-3 z-10">
-                    <h4 className="text-[10px] font-black text-stone-900 leading-tight mb-auto w-2/3">Q3 Product<br/>Strategy Overview</h4>
+                    <h4 className="text-[10px] font-black text-stone-900 leading-tight mb-auto w-2/3">AD Zero-Day<br/>Exploit Overview</h4>
                     <div className="flex items-end gap-1 h-[30px] w-[50%] self-end">
                       <div className="w-full bg-[#E5DFD6] h-[30%]"></div>
                       <div className="w-full bg-[#D4ACA0] h-[50%]"></div>
@@ -271,7 +275,9 @@ export function JobProcessingPage({ jobId, onNavigate }: JobProcessingPageProps)
                       </div>
                     </div>
                     <div className="h-full w-full bg-stone-100 rounded flex items-center justify-center overflow-hidden relative">
-                      <div className="absolute inset-0 bg-cover bg-center opacity-70 filter grayscale" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+                      <div className="absolute inset-0 bg-red-900 opacity-70 filter grayscale flex items-center justify-center">
+                        <span className="text-[8px] font-black tracking-widest text-white">CVE-2026-9912</span>
+                      </div>
                     </div>
                   </div>
                 </div>

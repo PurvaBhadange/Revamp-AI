@@ -265,7 +265,7 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex flex-col-reverse sm:flex-row items-center justify-between sm:justify-end gap-4 sm:gap-6 mt-8 sm:mt-4">
+        <div className="flex flex-col-reverse sm:flex-row items-center justify-between sm:justify-end gap-4 sm:gap-6 mt-8 sm:mt-10 pt-6 border-t border-stone-200 pb-12">
           <button className="text-[13px] font-semibold text-stone-700 hover:text-stone-900 underline underline-offset-4 transition-colors">
             Save as draft
           </button>
@@ -276,6 +276,9 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
             Continue <ArrowRight className="h-4 w-4" />
           </button>
         </div>
+
+        {/* Scroll Spacer */}
+        <div className="h-12 w-full shrink-0"></div>
 
       </div>
     </div>

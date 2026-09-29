@@ -45,22 +45,24 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
             {/* Mini Document */}
             <div className="w-[85px] h-[110px] bg-white border border-stone-200 shadow-sm rounded flex flex-col shrink-0 overflow-hidden relative">
               <div className="p-2 flex-1">
-                <p className="text-[6px] font-bold text-stone-900 leading-tight mb-1">Q3 Product Strategy Report</p>
+                <p className="text-[6px] font-bold text-stone-900 leading-tight mb-1">RAW INCIDENT REPORT...</p>
                 <div className="w-3/4 h-[1.5px] bg-stone-300 mb-0.5 rounded"></div>
                 <div className="w-full h-[1.5px] bg-stone-200 mb-0.5 rounded"></div>
                 <div className="w-5/6 h-[1.5px] bg-stone-200 rounded"></div>
               </div>
-              <div className="h-[45px] bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+              <div className="h-[45px] bg-red-900 flex items-center justify-center">
+                <span className="text-[8px] font-black tracking-widest text-white">CRITICAL</span>
+              </div>
             </div>
 
             {/* Details */}
             <div className="flex-1 pt-1">
-              <h3 className="text-[17px] font-black text-stone-900 leading-tight mb-1">Q3 Product Strategy Report</h3>
+              <h3 className="text-[17px] font-black text-stone-900 leading-tight mb-1">Active Directory Zero-Day Exploit</h3>
               <p className="text-[11px] text-stone-500 font-medium flex items-center gap-1.5 mb-3">
-                <FileText className="h-3.5 w-3.5" /> PDF <span className="mx-0.5">•</span> 18 pages <span className="mx-0.5">•</span> 4.2 MB
+                <FileText className="h-3.5 w-3.5" /> TXT <span className="mx-0.5">•</span> Source Intel <span className="mx-0.5">•</span> 2.4 KB
               </p>
               <p className="text-[11px] text-stone-500 leading-relaxed pr-2">
-                Quarterly strategy report covering product performance, market analysis, key initiatives and roadmap for Q4. Includes competitive landscape and growth opportunities.
+                Raw incident report detailing anomalous lateral movement, WAF bypass via CVE-2026-9912, and subsequent LSASS memory dumping on primary Active Directory controllers.
               </p>
             </div>
           </div>
@@ -146,17 +148,19 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
               <div className="w-full h-full bg-white shadow-md flex flex-row relative overflow-hidden">
                 <div className="w-1/2 p-5 flex flex-col">
                   <div className="flex items-center gap-1 mb-6">
-                    <span className="text-[7px] font-black text-stone-900">REVAMP</span>
-                    <span className="text-[7px] font-black text-[#C07050]">AI</span>
+                    <span className="text-[7px] font-black text-stone-900">NCIIPC</span>
+                    <span className="text-[7px] font-black text-[#C07050]">ALERT</span>
                   </div>
-                  <p className="text-[8px] font-bold text-stone-500 mb-1">Q3 2024</p>
-                  <h4 className="text-[16px] font-black text-stone-900 leading-tight mb-8">Executive<br/>Summary</h4>
+                  <p className="text-[8px] font-bold text-stone-500 mb-1">29-SEP-2026</p>
+                  <h4 className="text-[16px] font-black text-stone-900 leading-tight mb-8">Executive<br/>Briefing</h4>
                   <div className="w-full h-[2px] bg-stone-200 mb-1.5 rounded"></div>
                   <div className="w-full h-[2px] bg-stone-200 mb-1.5 rounded"></div>
                   <div className="w-5/6 h-[2px] bg-stone-200 mb-1.5 rounded"></div>
                   <div className="w-3/4 h-[2px] bg-stone-200 rounded"></div>
                 </div>
-                <div className="w-1/2 h-full bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+                <div className="w-1/2 h-full bg-red-900 flex items-center justify-center">
+                  <span className="text-[12px] font-black tracking-widest text-white transform rotate-90">CRITICAL</span>
+                </div>
               </div>
             </div>
 
@@ -205,10 +209,10 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
               {/* Main Slide */}
               <div className="w-full h-[140px] bg-white border border-stone-200 shadow-md rounded-lg mb-3 flex flex-col p-4 relative z-10">
                 <div className="flex items-center gap-1 mb-2">
-                  <span className="text-[6px] font-black text-stone-900">REVAMP</span>
-                  <span className="text-[6px] font-black text-[#C07050]">AI</span>
+                  <span className="text-[6px] font-black text-stone-900">NCIIPC</span>
+                  <span className="text-[6px] font-black text-[#C07050]">ALERT</span>
                 </div>
-                <h4 className="text-[14px] font-black text-stone-900 leading-tight mb-auto w-2/3">Q3 Product<br/>Strategy Overview</h4>
+                <h4 className="text-[14px] font-black text-stone-900 leading-tight mb-auto w-2/3">AD Zero-Day<br/>Exploit Overview</h4>
                 {/* Bar chart graphic */}
                 <div className="flex items-end gap-1.5 h-[40px] w-[50%] self-end">
                   <div className="w-full bg-[#E5DFD6] h-[30%] rounded-t-sm"></div>
@@ -303,26 +307,28 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
                   </div>
                   {/* Post Content */}
                   <p className="text-[10px] font-bold text-stone-900 leading-tight mb-2">
-                    5 key trends shaping the future of product strategy in 2024.
+                    Critical security alert: CVE-2026-9912 WAF bypass detected.
                   </p>
                   <p className="text-[9px] text-stone-600 leading-relaxed mb-2">
-                    From market shifts to emerging opportunities, here are the insights every leader should know.
+                    Ensure Active Directory environments are secured and service account credentials rotated. 
                   </p>
                   <p className="text-[9px] font-medium text-[#0A66C2] leading-tight mb-2">
-                    #ProductStrategy #Leadership #Innovation #BusinessGrowth
+                    #CyberSecurity #ThreatIntel #ZeroDay #ActiveDirectory
                   </p>
                 </div>
                 {/* Image Embed */}
-                <div className="flex-1 bg-cover bg-center" style={{ backgroundImage: `url('/architecture.jpg')` }} />
+                <div className="flex-1 bg-red-900 flex items-center justify-center">
+                  <span className="text-[16px] font-black tracking-widest text-white">CVE-2026-9912</span>
+                </div>
               </div>
             </div>
 
-            <p className="text-[11px] text-stone-400 font-medium flex items-center gap-1.5 mb-5">
+            <div className="text-[11px] text-stone-400 font-medium flex items-center gap-1.5 mb-5">
               <div className="h-3.5 w-3.5 bg-[#0A66C2] rounded-[2px] flex items-center justify-center">
                 <span className="text-[8px] font-black text-white leading-none">in</span>
               </div>
               Social Media <span className="mx-1">•</span> ~1,100 characters
-            </p>
+            </div>
             
             <div className="flex items-center gap-2 mt-auto">
               <button className="flex-1 flex items-center justify-center gap-2 bg-[#9E573F] hover:bg-[#8B4A2F] text-white font-semibold text-[13px] py-2.5 rounded-lg transition-colors shadow-sm">
@@ -341,7 +347,7 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between pt-5 border-t border-stone-200 gap-4 sm:gap-0">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between pt-5 mt-10 pb-12 border-t border-stone-200 gap-4 sm:gap-0">
           <button 
             onClick={() => onNavigate('/transform/new')}
             className="flex items-center justify-center gap-2 bg-white border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold text-[14px] px-6 py-3.5 sm:py-3 rounded-lg transition-all shadow-sm"
@@ -356,6 +362,9 @@ export function TransformationResultPage({ transformationId, onNavigate }: Trans
             <Folder className="h-4 w-4" /> Save to project
           </button>
         </div>
+
+        {/* Scroll Spacer */}
+        <div className="h-12 w-full shrink-0"></div>
 
       </div>
     </div>

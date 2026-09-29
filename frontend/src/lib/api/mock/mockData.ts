@@ -50,25 +50,25 @@ export const mockTransformations: Transformation[] = [
     output_formats: ['executive_brief', 'advisory', 'social', 'presentation', 'infographic', 'video'],
     source_document_ids: ['doc_001'],
     central_context: {
-      core_topic: 'Gateway Zero-Day Vulnerability & Cobalt Strike Exploitation',
-      executive_summary: 'An unauthenticated Remote Code Execution (RCE) vulnerability in edge perimeter firewalls has been actively exploited in the wild. Attackers deploy Cobalt Strike beacons to compromise Active Directory Domain Controllers within 4 hours of initial access.',
+      core_topic: 'Zero-Day AD Privilege Escalation via Perimeter Exploit',
+      executive_summary: 'At 03:14 IST, a zero-day exploit (CVE-2026-9912) was used to bypass the WAF, enabling lateral movement to the HR subnet. The attacker escalated privileges and extracted NTLM hashes from the primary Domain Controller. Containment isolated the subnet and suspended AD sync.',
       key_findings: [
-        'CVSS 9.8 Critical vulnerability in perimeter gateway software.',
-        'Exploit vector involves custom memory overflow payload over TCP/443.',
-        'Immediate lateral movement detected targeting primary Domain Controllers.'
+        'Initial Access via T1190 legacy portal flaw.',
+        'Privilege Escalation via T1068 PowerShell script.',
+        'Credential Access via T1003.001 LSASS dump.'
       ],
-      entities: ['APT29', 'CVE-2026-1001', 'Cobalt Strike', 'Exchange Server'],
-      threat_indicators: ['192.168.1.100', '10.0.4.5', 'sha256: 44d88612fea8a8f36de82e1278abb02f'],
-      affected_systems: ['Enterprise Edge Firewalls', 'Primary Active Directory Domain Controllers'],
-      timeline: ['02:00 UTC - Initial exploit attempt', '03:15 UTC - Beacon callback established'],
-      technical_details: ['Buffer overflow in SSL VPN parser', 'Shellcode injection via heap spray'],
+      entities: ['HR Subnet', 'Active Directory DC', 'svchost_updater.exe'],
+      threat_indicators: ['198.51.100.45', '203.0.113.88', 'sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'],
+      affected_systems: ['Legacy Employee Portal', 'Primary Active Directory Domain Controllers'],
+      timeline: ['03:14 IST - Initial lateral movement detected'],
+      technical_details: ['Deserialization flaw in WAF', 'PowerShell SYSTEM elevation'],
       urgency_level: 'critical',
       recommended_actions: [
-        'Apply emergency firmware update v4.2.1 immediately.',
-        'Isolate compromised IPs at border routers.',
-        'Reset Domain Admin credentials.'
+        'Isolate HR subnet (192.0.2.0/24).',
+        'Force-reset service account passwords.',
+        'Pause Active Directory synchronization.'
       ],
-      references: ['CISA Advisory AA26-080A', 'NIST NVD CVE-2026-1001']
+      references: ['CVE-2026-9912', 'MITRE ATT&CK T1190']
     },
     created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
     updated_at: new Date(Date.now() - 3600000 * 1).toISOString(),

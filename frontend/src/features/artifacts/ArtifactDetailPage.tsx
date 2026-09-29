@@ -72,19 +72,15 @@ export function ArtifactDetailPage({ id, onNavigate }: ArtifactDetailPageProps) 
             <div className="mb-2">
               <div className="flex items-center gap-2 px-4 py-1.5 bg-[#FAF6F4]">
                 <div className="h-5 w-5 rounded bg-stone-200/50 flex items-center justify-center text-[10px] font-bold text-stone-700">1</div>
-                <span className="text-[12px] font-bold text-stone-900">Overview</span>
+                <span className="text-[12px] font-bold text-stone-900">Executive Summary</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">1.1</span>
-                <span className="text-[11px] text-stone-600 font-medium">Executive Summary</span>
+                <span className="text-[11px] text-stone-600 font-medium">Incident Overview</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">1.2</span>
-                <span className="text-[11px] text-stone-600 font-medium">Background</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">1.3</span>
-                <span className="text-[11px] text-stone-600 font-medium">Objectives</span>
+                <span className="text-[11px] text-stone-600 font-medium">Business Impact</span>
               </div>
             </div>
 
@@ -92,19 +88,15 @@ export function ArtifactDetailPage({ id, onNavigate }: ArtifactDetailPageProps) 
             <div className="mb-2">
               <div className="flex items-center gap-2 px-4 py-1.5 hover:bg-stone-50 cursor-pointer">
                 <div className="h-5 w-5 rounded bg-stone-100 flex items-center justify-center text-[10px] font-bold text-stone-500">2</div>
-                <span className="text-[12px] font-bold text-stone-900">Market Analysis</span>
+                <span className="text-[12px] font-bold text-stone-900">Technical Details</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">2.1</span>
-                <span className="text-[11px] text-stone-500">Industry Landscape</span>
+                <span className="text-[11px] text-stone-500">CVE-2026-9912 WAF Bypass</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">2.2</span>
-                <span className="text-[11px] text-stone-500">Key Trends</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">2.3</span>
-                <span className="text-[11px] text-stone-500">Competitive Analysis</span>
+                <span className="text-[11px] text-stone-500">Active Directory Exploitation</span>
               </div>
             </div>
 
@@ -112,42 +104,17 @@ export function ArtifactDetailPage({ id, onNavigate }: ArtifactDetailPageProps) 
             <div className="mb-2">
               <div className="flex items-center gap-2 px-4 py-1.5 hover:bg-stone-50 cursor-pointer">
                 <div className="h-5 w-5 rounded bg-stone-100 flex items-center justify-center text-[10px] font-bold text-stone-500">3</div>
-                <span className="text-[12px] font-bold text-stone-900">Key Initiatives</span>
+                <span className="text-[12px] font-bold text-stone-900">IoCs & Mitigation</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">3.1</span>
-                <span className="text-[11px] text-stone-500">Product Innovation</span>
+                <span className="text-[11px] text-stone-500">Known C2 Servers</span>
               </div>
               <div className="pl-11 pr-4 py-1 flex items-center gap-3">
                 <span className="text-[10px] text-stone-400 font-medium">3.2</span>
-                <span className="text-[11px] text-stone-500">Go-to-Market Strategy</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">3.3</span>
-                <span className="text-[11px] text-stone-500">Operational Efficiency</span>
+                <span className="text-[11px] text-stone-500">Containment Actions</span>
               </div>
             </div>
-
-            {/* Outline 4 */}
-            <div>
-              <div className="flex items-center gap-2 px-4 py-1.5 hover:bg-stone-50 cursor-pointer">
-                <div className="h-5 w-5 rounded bg-stone-100 flex items-center justify-center text-[10px] font-bold text-stone-500">4</div>
-                <span className="text-[12px] font-bold text-stone-900">Recommendations</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">4.1</span>
-                <span className="text-[11px] text-stone-500">Strategic Priorities</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">4.2</span>
-                <span className="text-[11px] text-stone-500">Risk Considerations</span>
-              </div>
-              <div className="pl-11 pr-4 py-1 flex items-center gap-3">
-                <span className="text-[10px] text-stone-400 font-medium">4.3</span>
-                <span className="text-[11px] text-stone-500">Next Steps</span>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -194,115 +161,91 @@ export function ArtifactDetailPage({ id, onNavigate }: ArtifactDetailPageProps) 
             
             <div className="w-[816px] min-h-[1056px] bg-white shadow-sm border border-stone-200 pt-16 px-20 pb-20 relative">
               
-              {/* Header Image overlay */}
-              <div className="absolute top-16 right-0 left-20 h-[140px] bg-cover bg-center overflow-hidden" style={{ backgroundImage: `url('/architecture.jpg')` }}>
-                <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent flex flex-col justify-center pr-4">
-                  <div className="flex items-center gap-2 mb-2 w-[240px]">
-                    <span className="text-[10px] font-black tracking-widest text-[#C07050]">Q3 2024</span>
-                    <div className="h-px flex-1 bg-[#C07050]"></div>
+              {/* Header block (No image) */}
+              <div className="absolute top-16 right-20 left-20 border-b-2 border-[#C07050] pb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2 w-[240px]">
+                    <span className="text-[12px] font-black tracking-widest text-[#C07050]">NCIIPC INTERNAL</span>
                   </div>
-                  <h1 className="text-[42px] font-serif font-bold text-stone-900 leading-tight mb-2 tracking-tight">Executive Summary</h1>
-                  <p className="text-[16px] text-stone-600 font-serif">Q3 Product Strategy Report</p>
+                  <span className="text-[12px] font-bold text-red-600 tracking-widest border border-red-600 px-2 py-0.5">CRITICAL PRIORITY</span>
                 </div>
+                <h1 className="text-[42px] font-serif font-bold text-stone-900 leading-tight mb-2 tracking-tight">Executive Briefing</h1>
+                <p className="text-[18px] text-stone-700 font-serif font-medium">Incident Report: Zero-Day Lateral Movement to Active Directory</p>
               </div>
 
-              {/* Content Space (starts below header image) */}
-              <div className="mt-[180px]">
+              {/* Content Space */}
+              <div className="mt-[160px]">
                 
-                {/* Highlighted text with floating toolbar */}
                 <div className="relative">
-                  {/* Floating AI Toolbar */}
-                  <div className="absolute -top-12 left-8 bg-white border border-stone-200 shadow-md rounded-lg flex items-center p-1 gap-1 z-20">
-                    <button className="h-7 w-7 flex items-center justify-center hover:bg-stone-100 rounded text-stone-700 font-serif font-bold text-[12px]">B</button>
-                    <button className="h-7 w-7 flex items-center justify-center hover:bg-stone-100 rounded text-stone-700 font-serif italic text-[12px]">I</button>
-                    <button className="h-7 w-7 flex items-center justify-center hover:bg-stone-100 rounded text-stone-700 font-serif underline text-[12px]">U</button>
-                    <button className="h-7 w-7 flex items-center justify-center hover:bg-stone-100 rounded text-stone-700"><Link className="h-3.5 w-3.5" /></button>
-                    <div className="w-px h-4 bg-stone-200 mx-1"></div>
-                    <button className="flex items-center gap-1.5 px-3 h-7 bg-[#FDF3F0] hover:bg-[#FCE6DF] text-[#C07050] text-[11px] font-bold rounded transition-colors">
-                      <Wand2 className="h-3 w-3" /> Improve with AI
-                    </button>
-                    <button className="h-7 w-7 flex items-center justify-center hover:bg-stone-100 rounded text-stone-700"><MoreHorizontal className="h-3.5 w-3.5" /></button>
-                  </div>
-
                   <p className="text-[14px] leading-[1.7] text-stone-900 font-serif mb-4">
                     <span className="bg-blue-100/60 selection:bg-blue-200 relative inline">
-                      In Q3 2024, we made significant progress toward strengthening our product position, expanding into new markets, and building the foundation for sustainable growth. Our focus remained on delivering customer value through innovation, operational excellence, and data-driven decision making.
-                      {/* Fake caret */}
+                      At 03:14 IST, automated SOC telemetry detected anomalous lateral movement originating from the HR subnet. An adversary successfully bypassed perimeter WAF defenses utilizing a zero-day deserialization vulnerability (CVE-2026-9912) in the legacy employee portal, attempting to access core Active Directory (AD) servers.
                       <span className="absolute -right-px top-[2px] bottom-[2px] w-0.5 bg-blue-500 animate-pulse"></span>
                     </span>
                   </p>
                 </div>
                 
                 <p className="text-[14px] leading-[1.7] text-stone-900 font-serif mb-8">
-                  This report outlines the key achievements, market insights, strategic initiatives and recommendations to guide our efforts in the next quarter.
+                  Immediate containment protocols were initiated. However, forensic evidence suggests partial exfiltration of encrypted service account credentials via LSASS memory dumping.
                 </p>
 
                 <div className="grid grid-cols-[1fr_240px] gap-8 mb-8">
                   <div>
-                    <h2 className="text-[20px] font-bold font-serif text-stone-900 mb-4 tracking-tight">Key Highlights</h2>
+                    <h2 className="text-[20px] font-bold font-serif text-stone-900 mb-4 tracking-tight">Key Containment Actions</h2>
                     <ul className="space-y-3">
                       <li className="flex gap-3 text-[13px] text-stone-800 font-serif leading-relaxed">
                         <div className="h-1.5 w-1.5 rounded-full bg-[#C07050] mt-2 shrink-0"></div>
-                        12% growth in product adoption compared to Q2 2024.
+                        The affected HR subnet (192.0.2.0/24) has been completely isolated from the core network.
                       </li>
                       <li className="flex gap-3 text-[13px] text-stone-800 font-serif leading-relaxed">
                         <div className="h-1.5 w-1.5 rounded-full bg-[#C07050] mt-2 shrink-0"></div>
-                        Successful launch of two major feature enhancements.
+                        Force-reset initiated for all service account passwords updated in the last 72 hours.
                       </li>
                       <li className="flex gap-3 text-[13px] text-stone-800 font-serif leading-relaxed">
                         <div className="h-1.5 w-1.5 rounded-full bg-[#C07050] mt-2 shrink-0"></div>
-                        Expansion into 3 new international markets.
+                        Active Directory synchronization temporarily paused pending full forensic analysis.
                       </li>
                       <li className="flex gap-3 text-[13px] text-stone-800 font-serif leading-relaxed">
                         <div className="h-1.5 w-1.5 rounded-full bg-[#C07050] mt-2 shrink-0"></div>
-                        Improved customer satisfaction score to 4.6/5.
+                        Blocked outbound traffic to known C2 server (IP: 198.51.100.45).
                       </li>
                     </ul>
                   </div>
 
-                  {/* Graphic Mockup */}
+                  {/* Graphic Mockup (Threat severity indicator) */}
                   <div className="bg-[#FAF9F7] border border-stone-200 rounded-lg p-4 flex flex-col justify-between">
-                    <h4 className="text-[10px] font-bold text-stone-900 mb-4">Product Adoption Growth</h4>
-                    <div className="flex-1 flex items-end gap-3 justify-center px-2 relative mb-4">
+                    <h4 className="text-[11px] font-bold text-stone-900 mb-4">Risk Severity Matrix</h4>
+                    <div className="flex-1 flex flex-col gap-3 justify-center mb-2">
                       
-                      <div className="flex flex-col items-center gap-1 w-8">
-                        <div className="w-full bg-[#E5DFD6] h-[30%] rounded-t-sm"></div>
-                        <span className="text-[8px] font-bold text-stone-500">Q1</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1 w-8">
-                        <div className="w-full bg-[#D4ACA0] h-[45%] rounded-t-sm"></div>
-                        <span className="text-[8px] font-bold text-stone-500">Q2</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1 w-8">
-                        <div className="w-full bg-[#C07050] h-[65%] rounded-t-sm"></div>
-                        <span className="text-[8px] font-bold text-stone-500">Q3</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-1 w-8 relative">
-                        {/* Pill +12% */}
-                        <div className="absolute -top-6 bg-white border border-[#A35E47] text-[#A35E47] text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm z-10 whitespace-nowrap">
-                          +12%
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 text-[9px] font-bold text-stone-500 text-right">Data Loss</div>
+                        <div className="flex-1 h-3 bg-stone-200 rounded overflow-hidden">
+                          <div className="h-full bg-amber-500 w-[60%]"></div>
                         </div>
-                        <div className="w-full bg-[#8B4A2F] h-[85%] rounded-t-sm"></div>
-                        <span className="text-[8px] font-bold text-stone-500">Q4 (F)</span>
                       </div>
                       
-                      {/* Y-axis lines */}
-                      <div className="absolute left-0 bottom-6 right-0 h-px bg-stone-200"></div>
-                      <div className="absolute left-0 bottom-[35%] right-0 h-px bg-stone-200"></div>
-                      <div className="absolute left-0 bottom-[55%] right-0 h-px bg-stone-200"></div>
-                      <div className="absolute left-0 bottom-[75%] right-0 h-px bg-stone-200"></div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 text-[9px] font-bold text-stone-500 text-right">Lateral Mvmt</div>
+                        <div className="flex-1 h-3 bg-stone-200 rounded overflow-hidden">
+                          <div className="h-full bg-red-600 w-[95%]"></div>
+                        </div>
+                      </div>
 
-                      <div className="absolute -left-1 bottom-[20px] text-[7px] text-stone-400">0%</div>
-                      <div className="absolute -left-1 bottom-[32%] text-[7px] text-stone-400">10%</div>
-                      <div className="absolute -left-1 bottom-[52%] text-[7px] text-stone-400">20%</div>
-                      <div className="absolute -left-1 bottom-[72%] text-[7px] text-stone-400">30%</div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 text-[9px] font-bold text-stone-500 text-right">Extortion</div>
+                        <div className="flex-1 h-3 bg-stone-200 rounded overflow-hidden">
+                          <div className="h-full bg-stone-300 w-[10%]"></div>
+                        </div>
+                      </div>
+
                     </div>
+                    <p className="text-[9px] text-stone-500 leading-tight border-t border-stone-200 pt-2">Systemic risk remains HIGH until AD credentials are fully rotated.</p>
                   </div>
                 </div>
 
-                <h2 className="text-[20px] font-bold font-serif text-stone-900 mb-3 tracking-tight">Strategic Outlook</h2>
+                <h2 className="text-[20px] font-bold font-serif text-stone-900 mb-3 tracking-tight">Required Next Steps</h2>
                 <p className="text-[14px] leading-[1.7] text-stone-900 font-serif mb-4">
-                  Looking ahead, we will continue to invest in core product innovation, strengthen our market presence, and focus on operational scalability. The upcoming quarter presents significant opportunities to accelerate growth and deliver long-term value to our customers and stakeholders.
+                  We must urgently notify all internal departments about the temporary AD suspension to prevent operational panic. The Security Operations Center (SOC) is currently updating firewalls with the new IoCs extracted from the `svchost_updater.exe` payload (SHA-256: e3b0c44298fc...). A high-level brief will be presented at the Ministry's 09:00 IST morning briefing.
                 </p>
 
               </div>

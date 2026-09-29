@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { 
   Users, Target, CheckCircle2, ArrowRight, ArrowLeft,
   FileText, Presentation, FileCheck, PieChart, Video, FileOutput,
-  Briefcase, MessageSquare, BarChart3, Megaphone, Globe, Layers, Twitter
+  Briefcase, MessageSquare, BarChart3, Megaphone, Globe, Layers, Hash
 } from 'lucide-react';
 
 import { useWizardStore } from '@/stores/transformationWizardStore';
@@ -248,7 +248,7 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
                 { id: 'advisory',     icon: FileCheck,   label: 'Advisory',           sub: 'PDF document',         badge: null },
                 { id: 'infographic',  icon: PieChart,    label: 'Infographic',         sub: 'SVG visual',           badge: null },
                 { id: 'linkedin',     icon: FileOutput,  label: 'LinkedIn Post',       sub: 'Social media',         badge: 'in' },
-                { id: 'twitter',      icon: Twitter,     label: 'X / Twitter Post',    sub: '≤280 chars per tweet', badge: 'X' },
+                { id: 'twitter',      icon: Hash,        label: 'X / Twitter Post',    sub: '≤280 chars per tweet', badge: 'X' },
                 { id: 'video',        icon: Video,       label: 'Video Package',       sub: 'Script + MP3 + SRT',   badge: null },
               ].map((f) => {
                 const isSelected = formats[f.id as keyof typeof formats];
@@ -288,7 +288,7 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
             </div>
 
             {/* BOTTOM ACTION BAR */}
-            <div className="flex items-center justify-between pt-6">
+            <div className="flex items-center justify-between pt-6 mt-12 pb-12 border-t border-stone-200">
               <button 
                 onClick={() => onNavigate('/transform/new')}
                 className="flex items-center gap-2 bg-white border border-stone-300 text-stone-700 font-semibold text-[14px] px-5 py-2.5 rounded-lg hover:bg-stone-50 transition-all shadow-sm"
@@ -418,6 +418,8 @@ export function ConfigureTransformationPage({ onNavigate }: ConfigureTransformat
           </div>
         </div>
 
+        {/* Scroll Spacer */}
+        <div className="h-12 w-full shrink-0"></div>
       </div>
     </div>
   );

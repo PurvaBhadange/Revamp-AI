@@ -4,7 +4,7 @@ import React from 'react';
 import { useUIStore } from '@/stores/uiStore';
 import {
   LayoutDashboard, Plus, FolderOpen, History,
-  BookTemplate, Activity, Settings, ChevronRight, ChevronLeft
+  BookTemplate, Activity, Settings, ChevronRight, ChevronLeft, LogOut
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -15,9 +15,13 @@ interface SidebarProps {
 
 export function Sidebar({ currentRoute, onNavigate }: SidebarProps) {
   const { isSidebarCollapsed, toggleSidebar, setSidebarCollapsed } = useUIStore();
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
-  const handleNavClick = (route: string) => {
+  const handleNavClick = async (route: string) => {
+    if (route === '/logout') {
+      await logout();
+      return;
+    }
     onNavigate(route);
     if (window.innerWidth < 768) setSidebarCollapsed(true);
   };
@@ -101,24 +105,31 @@ export function Sidebar({ currentRoute, onNavigate }: SidebarProps) {
       )}
 
       {/* User Footer */}
-      <div className="border-t border-[#E5DFD6]/50 px-3 py-3">
+      <div className="border-t border-[#E5DFD6]/50 px-3 py-3 flex items-center justify-between gap-1">
         <button
           onClick={() => handleNavClick('/settings')}
-          className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-stone-50 transition-all group"
+          className="flex-1 flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-stone-50 transition-all group overflow-hidden"
         >
           <div className="h-8 w-8 rounded-full bg-[#8B4A2F] flex items-center justify-center text-white text-xs font-black shrink-0">
             {initials}
           </div>
           {!isSidebarCollapsed && (
-            <>
-              <div className="flex-1 min-w-0 text-left">
-                <p className="text-xs font-semibold text-stone-900 truncate">{user?.full_name || 'Atharva Wani'}</p>
-                <p className="text-[10px] text-stone-400 truncate">Personal Workspace</p>
-              </div>
-              <ChevronRight className="h-3.5 w-3.5 text-stone-300 group-hover:text-stone-500 shrink-0" />
-            </>
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-xs font-semibold text-stone-900 truncate">{user?.full_name || 'Atharva Wani'}</p>
+              <p className="text-[10px] text-stone-400 truncate">Personal Workspace</p>
+            </div>
           )}
         </button>
+        
+        {!isSidebarCollapsed && (
+          <button 
+            onClick={() => handleNavClick('/logout')}
+            title="Log out"
+            className="p-2 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </aside>
   );

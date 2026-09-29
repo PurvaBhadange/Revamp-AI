@@ -35,9 +35,10 @@ const queryClient = new QueryClient({
 
 export const AppContent: React.FC = () => {
   const { isAuthenticated, initialize, isLoading } = useAuthStore();
-  const [currentPath, setCurrentPath] = useState(typeof window !== 'undefined' ? window.location.pathname : '/');
+  const [currentPath, setCurrentPath] = useState('/');
 
   useEffect(() => {
+    setCurrentPath(window.location.pathname);
     initialize();
   }, [initialize]);
 

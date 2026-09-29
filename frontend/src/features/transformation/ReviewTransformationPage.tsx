@@ -395,7 +395,7 @@ export function ReviewTransformationPage({ onNavigate }: ReviewTransformationPag
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex items-center justify-between mt-12 pt-6 border-t border-stone-200">
+        <div className="flex items-center justify-between mt-12 pt-6 pb-12 border-t border-stone-200">
           <button 
             onClick={() => onNavigate('/transform/2')}
             className="flex items-center gap-2 bg-white border border-stone-300 text-stone-700 font-semibold text-[14px] px-5 py-2.5 rounded-lg hover:bg-stone-50 transition-all shadow-sm"
@@ -435,6 +435,9 @@ export function ReviewTransformationPage({ onNavigate }: ReviewTransformationPag
             </button>
           </div>
         </div>
+
+        {/* Scroll Spacer */}
+        <div className="h-12 w-full shrink-0"></div>
 
       </div>
     </div>

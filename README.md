@@ -6,6 +6,8 @@ Smart India Hackathon 2026 · Problem Statement 26154 · NTRO/NCIIPC
 
 Revamp AI is a multimodal, RAG-grounded and agentic AI platform that converts raw cybersecurity intelligence into consistent, audience-specific communication artifacts such as executive briefs, security advisories, social campaigns, presentations, infographics and video packages.
 
+**Demo Video:** [Insert YouTube / Drive Link Here]
+
 ## 🎯 Problem & Solution
 
 Cybersecurity analysts often need to manually transform the same intelligence into multiple formats for different audiences. Revamp AI provides a unified pipeline:
@@ -133,10 +135,9 @@ The pipeline validates:
 ### AI & RAG
 - LangGraph
 - LangChain
-- Gemini 2.5 Flash
-- Ollama / Llama 3.1 8B
+- Ollama / Llama 3.1 8B (Local Execution)
 - Qdrant
-- Sentence Transformers
+- Sentence Transformers (all-MiniLM-L6-v2)
 
 ### Multimodal Processing
 - PyMuPDF

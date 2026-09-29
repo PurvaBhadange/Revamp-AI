@@ -43,7 +43,13 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   initialize: async () => {
-    const token = localStorage.getItem('revamp_ai_jwt');
+    let token = null;
+    try {
+      token = localStorage.getItem('revamp_ai_jwt');
+    } catch (e) {
+      console.error("localStorage access error:", e);
+    }
+
     if (!token) {
       set({ user: null, isAuthenticated: false, isLoading: false });
       return;
@@ -53,7 +59,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authApi.me();
       set({ user, isAuthenticated: true, isLoading: false });
     } catch {
-      localStorage.removeItem('revamp_ai_jwt');
+      try {
+        localStorage.removeItem('revamp_ai_jwt');
+      } catch (e) {}
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },
