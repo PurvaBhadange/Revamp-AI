@@ -146,13 +146,41 @@ export function NewTransformationPage({ onNavigate }: NewTransformationPageProps
                   {isUploading ? 'Uploading...' : 'Upload'}
                 </button>
                 <button 
-                  onClick={() => alert("Paste text triggered")}
+                  onClick={async () => {
+                    const text = prompt("Paste text:");
+                    if (text) {
+                      setIsUploading(true);
+                      try {
+                        const doc = await ingestionApi.ingestText('proj_01', 'Pasted Text', text);
+                        setIngestedDocument(doc);
+                      } catch (e) {
+                        console.error('Failed to paste text', e);
+                      } finally {
+                        setIsUploading(false);
+                      }
+                    }
+                  }}
+                  disabled={isUploading}
                   className="w-full flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-4 rounded-lg transition-all flex-col"
                 >
                   <FileText className="h-5 w-5" /> Paste text
                 </button>
                 <button 
-                  onClick={() => alert("Add URL triggered")}
+                  onClick={async () => {
+                    const url = prompt("Enter URL:");
+                    if (url) {
+                      setIsUploading(true);
+                      try {
+                        const doc = await ingestionApi.ingestUrl('proj_01', url);
+                        setIngestedDocument(doc);
+                      } catch (e) {
+                        console.error('Failed to add URL', e);
+                      } finally {
+                        setIsUploading(false);
+                      }
+                    }
+                  }}
+                  disabled={isUploading}
                   className="w-full flex items-center justify-center gap-2 bg-white hover:bg-stone-50 border border-stone-300 text-stone-700 font-semibold text-[13px] py-4 rounded-lg transition-all flex-col"
                 >
                   <LinkIcon className="h-5 w-5" /> Add URL

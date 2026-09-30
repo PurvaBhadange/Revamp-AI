@@ -57,8 +57,9 @@ class ICOSchema(BaseModel):
 CentralContextSchema = ICOSchema
 
 class TransformationCreateRequest(BaseModel):
-    project_id: str
-    source_document_ids: List[str]
+    project_id: Optional[str] = "default_project"
+    source_document_ids: Optional[List[str]] = []
+    source_document_id: Optional[str] = None
     user_intent: Optional[str] = None
     target_audience: str = Field(default="executive", description="technical, executive, general_public, defense")
     tone: str = Field(default="formal", description="urgent, formal, educational, neutral, threat_alert")

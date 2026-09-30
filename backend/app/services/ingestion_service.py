@@ -15,16 +15,7 @@ from app.processors.url_processor import url_processor
 from app.core.exceptions import ValidationError, NotFoundError
 
 class IngestionService:
-    def process_file_upload(
-        self,
-        db: Session,
-        project_id: str,
-        filename: str,
-        content: bytes,
-        content_type: str
-    ) -> SourceDocument:
-        ext = os.path.splitext(filename)[1].lower().strip(".")
-        
+    def _ensure_project(self, db: Session, project_id: str):
         from app.db.models.project import Project
         from app.db.models.user import User
         proj = db.query(Project).filter(Project.id == project_id).first()
@@ -41,6 +32,17 @@ class IngestionService:
             )
             db.add(proj)
             db.commit()
+
+    def process_file_upload(
+        self,
+        db: Session,
+        project_id: str,
+        filename: str,
+        content: bytes,
+        content_type: str
+    ) -> SourceDocument:
+        self._ensure_project(db, project_id)
+        ext = os.path.splitext(filename)[1].lower().strip(".")
         
         # Determine source type
         if ext in ["pdf"]:
@@ -105,6 +107,7 @@ class IngestionService:
         return doc
 
     def process_url_ingestion(self, db: Session, project_id: str, url: str, title: Optional[str] = None) -> SourceDocument:
+        self._ensure_project(db, project_id)
         norm_doc = url_processor.process_url(url, title=title)
         
         doc = SourceDocument(
@@ -123,6 +126,7 @@ class IngestionService:
         return doc
 
     def process_text_ingestion(self, db: Session, project_id: str, title: str, text: str) -> SourceDocument:
+        self._ensure_project(db, project_id)
         norm_doc = text_processor.process(text, title=title)
         
         doc = SourceDocument(

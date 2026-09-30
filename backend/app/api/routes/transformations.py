@@ -36,10 +36,15 @@ def create_transformation(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    project_id = request.project_id or "default_project"
+    doc_ids = request.source_document_ids or []
+    if request.source_document_id and request.source_document_id not in doc_ids:
+        doc_ids.append(request.source_document_id)
+
     trans = transformation_service.create_transformation(
         db,
-        project_id=request.project_id,
-        source_document_ids=request.source_document_ids,
+        project_id=project_id,
+        source_document_ids=doc_ids,
         target_audience=request.target_audience,
         tone=request.tone,
         objective=request.objective,

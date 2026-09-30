@@ -3,12 +3,12 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, HttpUrl
 
 class IngestionUrlRequest(BaseModel):
-    project_id: str
+    project_id: Optional[str] = "default_project"
     url: str
     title: Optional[str] = None
 
 class IngestionTextRequest(BaseModel):
-    project_id: str
+    project_id: Optional[str] = "default_project"
     title: str
     text: str
 
